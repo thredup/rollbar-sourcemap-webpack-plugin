@@ -1,32 +1,63 @@
 import async from 'async';
-// import request from 'request';
+import request from 'request';
+import VError from 'verror';
 import find from 'lodash.find';
 import reduce from 'lodash.reduce';
-import { /* ROLLBAR_ENDPOINT, */ ROLLBAR_REQ_FIELDS } from './helpers';
+import { ROLLBAR_ENDPOINT, ROLLBAR_REQ_FIELDS } from './constants';
+
+// Take a single Error or array of Errors, prepend message of each with the
+// plugin name and push onto webpack compilation's errors
+export function handleError(compilation, err) {
+  const errors = [].concat(err);
+  compilation.errors.push(
+    ...errors.map(e => new VError(e, 'RollbarSourceMapPlugin'))
+  );
+}
+
+// Validate required options and return an array of errors or null if there
+// are no errors.
+export function validateOptions(ref) {
+  const errors = ROLLBAR_REQ_FIELDS.reduce((result, field) => {
+    if (ref[field]) {
+      return result;
+    }
+
+    return [
+      ...result,
+      new Error(`required field, '${field}', is missing.`)
+    ];
+  }, []);
+
+  return errors.length ? errors : null;
+}
 
 class RollbarSourceMapPlugin {
-  constructor({ accessToken, version, publicPath, includeChunks = [] }) {
+  constructor({
+    accessToken,
+    version,
+    publicPath,
+    includeChunks = [],
+    silent = false
+  }) {
     this.accessToken = accessToken;
     this.version = version;
     this.publicPath = publicPath;
     this.includeChunks = [].concat(includeChunks);
+    this.silent = silent;
   }
 
   apply(compiler) {
     compiler.plugin('after-emit', (compilation, cb) => {
-      ROLLBAR_REQ_FIELDS.forEach(field => {
-        if (!this[field]) {
-          compilation.errors.push(
-            new Error(`RollbarSourceMapPlugin: required field '${field}' is missing.`)
-          );
-        }
-      });
+      const errors = validateOptions(this);
+
+      if (errors) {
+        handleError(compilation, errors);
+        return cb();
+      }
 
       this.uploadSourceMaps(compilation, (err) => {
         if (err) {
-          console.log('error in uploadSourceMaps', err);
-        } else {
-          console.log('upload success');
+          handleError(compilation, err);
         }
         cb();
       });
@@ -57,20 +88,35 @@ class RollbarSourceMapPlugin {
   }
 
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
-    const formData = {
-      access_token: this.accessToken,
-      version: this.version,
-      minified_url: `${this.publicPath}/${sourceFile}`,
-      // source_map: compilation.assets[sourceMap].source()
-    };
+    const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
+      if (!err && res.statusCode === 200) {
+        if (!this.silent) {
+          console.info(`\nUploaded ${sourceMap} to Rollbar`);
+        }
+        return cb();
+      }
 
-    console.log({ formData });
+      const errMessage = `failed to upload ${sourceMap} to Rollbar`;
+      if (err) {
+        return cb(new VError(err, errMessage));
+      }
 
-    // request.post({
-    //   url: ROLLBAR_ENDPOINT,
-    //   formData
-    // }, cb);
-    setTimeout(() => cb(null), 200);
+      try {
+        const { message } = JSON.parse(body);
+        return cb(new Error(message ? `${errMessage}: ${message}` : errMessage));
+      } catch (parseErr) {
+        return cb(new VError(parseErr, errMessage));
+      }
+    });
+
+    const form = req.form();
+    form.append('access_token', this.accessToken);
+    form.append('version', this.version);
+    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+    form.append('source_map', compilation.assets[sourceMap].source(), {
+      filename: sourceMap,
+      contentType: 'application/json'
+    });
   }
 
   uploadSourceMaps(compilation, cb) {

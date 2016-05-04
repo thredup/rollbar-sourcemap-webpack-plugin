@@ -1,18 +1,25 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/RollbarSourceMapPlugin.js",
+  "version": "0.1.0",
+  "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
+  "main": "dist/RollbarSourceMapPlugin.js",
   "scripts": {
     "clean": "rimraf dist",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
-    "prebuild": "npm run -s lint",
+    "prebuild": "npm run -s lint && npm run -s clean",
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
     "pretest": "npm run -s lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "webpack",
+    "plugin",
+    "rollbar",
+    "source map",
+    "sourcemap"
+  ],
   "author": "Brandon Doran",
   "license": "MIT",
   "devDependencies": {
@@ -33,6 +40,7 @@
     "lodash.find": "^4.3.0",
     "lodash.foreach": "^4.2.0",
     "lodash.reduce": "^4.3.0",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "verror": "^1.6.1"
   }
 }
