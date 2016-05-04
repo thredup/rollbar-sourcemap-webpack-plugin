@@ -1,0 +1,5 @@
+.*rc
+.eslintignore
+test
+examples
+docs
