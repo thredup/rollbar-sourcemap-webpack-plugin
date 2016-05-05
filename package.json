@@ -6,13 +6,12 @@
   "scripts": {
     "clean": "rimraf dist && rimraf coverage.lcov",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
-    "prebuild": "npm run -s lint && npm run -s clean",
+    "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
     "test": "NODE_ENV='test' nyc mocha --compilers js:babel-register",
     "test:watch": "npm test -- -w",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov",
-    "coverage:report": "cat ./coverage.lcov && codecov",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublish": "npm run build"
   },
   "repository": {
