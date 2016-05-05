@@ -1,6 +1,6 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
   "main": "dist/RollbarSourceMapPlugin.js",
   "scripts": {
@@ -17,9 +17,14 @@
     "plugin",
     "rollbar",
     "source map",
-    "sourcemap"
+    "sourcemap",
+    "production"
   ],
-  "author": "Brandon Doran",
+  "author": "Brandon Doran <bdoran@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin#readme",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.8.0",
