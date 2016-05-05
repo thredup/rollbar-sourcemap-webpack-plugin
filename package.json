@@ -12,6 +12,10 @@
     "test": "NODE_ENV='test' mocha --compilers js:babel-register",
     "prepublish": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin.git"
+  },
   "keywords": [
     "webpack",
     "plugin",
