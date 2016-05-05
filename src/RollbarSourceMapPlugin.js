@@ -91,7 +91,7 @@ class RollbarSourceMapPlugin {
     const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
       if (!err && res.statusCode === 200) {
         if (!this.silent) {
-          console.info(`\nUploaded ${sourceMap} to Rollbar`);
+          console.info(`\nUploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
         }
         return cb();
       }
