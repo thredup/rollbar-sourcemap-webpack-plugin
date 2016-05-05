@@ -1,15 +1,18 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
   "main": "dist/RollbarSourceMapPlugin.js",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf coverage.lcov",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
     "prebuild": "npm run -s lint && npm run -s clean",
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
-    "test": "NODE_ENV='test' mocha --compilers js:babel-register",
+    "test": "NODE_ENV='test' nyc mocha --compilers js:babel-register",
+    "test:watch": "npm test -- -w",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov",
+    "coverage:report": "codecov",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -37,10 +40,12 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.8.0",
     "chai": "^3.5.0",
+    "codecov": "^1.0.1",
     "eslint": "^2.8.0",
     "eslint-config-airbnb-base": "^1.0.3",
     "eslint-plugin-import": "^1.5.0",
     "mocha": "^2.4.5",
+    "nyc": "^6.4.2",
     "rimraf": "^2.5.2",
     "watch": "^0.18.0",
     "webpack": "^1.13.0"
