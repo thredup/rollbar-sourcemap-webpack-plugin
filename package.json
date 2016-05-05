@@ -1,6 +1,6 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
   "main": "dist/RollbarSourceMapPlugin.js",
   "scripts": {
@@ -12,6 +12,8 @@
     "test": "NODE_ENV='test' nyc mocha --compilers js:babel-register",
     "test:watch": "npm test -- -w",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "preversion": "npm run -s lint && npm run -s test",
+    "postversion": "git push --follow-tags",
     "prepublish": "npm run build"
   },
   "repository": {
