@@ -12,7 +12,7 @@
     "test": "NODE_ENV='test' nyc mocha --compilers js:babel-register",
     "test:watch": "npm test -- -w",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov",
-    "coverage:report": "codecov",
+    "coverage:report": "cat ./coverage.lcov && codecov",
     "prepublish": "npm run build"
   },
   "repository": {
