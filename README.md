@@ -1,5 +1,8 @@
 RollbarSourceMapPlugin
 ========================
+[![Dependency Status](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin.svg)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin) 
+[![Build Status](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin.svg?branch=master)](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin)
+
 This is a [Webpack](https://webpack.github.io) plugin that simplifies uploading the sourcemaps,
 generated from a webpack build, to [Rollbar](https://rollbar.com).
 
