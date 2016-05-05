@@ -1,9 +1,9 @@
 RollbarSourceMapPlugin
 ========================
-[![Dependency Status](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin.svg)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin) 
-[![Build Status](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin.svg?branch=master)](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin)
-[![codecov](https://codecov.io/gh/brandondoran/rollbar-sourcemap-webpack-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/brandondoran/rollbar-sourcemap-webpack-plugin)
-
+[![Dependency Status](https://img.shields.io/david/brandondoran/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000&style=flat-square)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin)
+[![devDependency Status](https://img.shields.io/david/dev/brandondoran/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/brandondoran/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin)
+[![Coverage](https://img.shields.io/codecov/c/github/brandondoran/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000&style=flat-square)](https://codecov.io/gh/brandondoran/rollbar-sourcemap-webpack-plugin)
 
 This is a [Webpack](https://webpack.github.io) plugin that simplifies uploading the sourcemaps,
 generated from a webpack build, to [Rollbar](https://rollbar.com).
