@@ -92,6 +92,18 @@ describe('helpers', function() {
         .with.property('message', 'required field, \'version\', is missing.');
     });
 
+    it('should return an error if publicPath is not supplied', function() {
+      const options = {
+        accessToken: 'aaabbbccc000111',
+        version: 'latest'
+      };
+      const result = helpers.validateOptions(options);
+      expect(result).to.be.an('array').with.lengthOf(1);
+      expect(result[0])
+        .to.be.an('error')
+        .with.property('message', 'required field, \'publicPath\', is missing.');
+    });
+
     it('should handle multiple missing required options', function() {
       const options = {};
       const result = helpers.validateOptions(options);
