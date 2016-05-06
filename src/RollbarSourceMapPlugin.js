@@ -3,33 +3,8 @@ import request from 'request';
 import VError from 'verror';
 import find from 'lodash.find';
 import reduce from 'lodash.reduce';
-import { ROLLBAR_ENDPOINT, ROLLBAR_REQ_FIELDS } from './constants';
-
-// Take a single Error or array of Errors, prepend message of each with the
-// plugin name and push onto webpack compilation's errors
-export function handleError(compilation, err) {
-  const errors = [].concat(err);
-  compilation.errors.push(
-    ...errors.map(e => new VError(e, 'RollbarSourceMapPlugin'))
-  );
-}
-
-// Validate required options and return an array of errors or null if there
-// are no errors.
-export function validateOptions(ref) {
-  const errors = ROLLBAR_REQ_FIELDS.reduce((result, field) => {
-    if (ref[field]) {
-      return result;
-    }
-
-    return [
-      ...result,
-      new Error(`required field, '${field}', is missing.`)
-    ];
-  }, []);
-
-  return errors.length ? errors : null;
-}
+import { handleError, validateOptions } from './helpers';
+import { ROLLBAR_ENDPOINT } from './constants';
 
 class RollbarSourceMapPlugin {
   constructor({
@@ -51,13 +26,13 @@ class RollbarSourceMapPlugin {
       const errors = validateOptions(this);
 
       if (errors) {
-        handleError(compilation, errors);
+        compilation.errors.push(...handleError(errors));
         return cb();
       }
 
       this.uploadSourceMaps(compilation, (err) => {
         if (err) {
-          handleError(compilation, err);
+          compilation.errors.push(...handleError(err));
         }
         cb();
       });
