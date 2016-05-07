@@ -11,10 +11,14 @@
     "build:watch": "watch 'npm run build' ./src",
     "test": " cross-env NODE_ENV='test' nyc mocha --compilers js:babel-register",
     "test:watch": "npm test -- -w",
+    "changelog": "npm run changelog:generate && npm run changelog:add",
+    "changelog:add": "git add CHANGELOG.md",
+    "changelog:generate": "github_changelog_generator --future-release $npm_package_version",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "preversion": "npm run -s lint && npm run -s test",
-    "postversion": "git push --follow-tags",
-    "prepublish": "npm run build"
+    "preversion": "npm run -s lint && npm run -s test && npm run -s build",
+    "version": "npm run changelog",
+    "version:amend": "git commit --amend -m \"Release v${npm_package_version}\"",
+    "postversion": "npm run version:amend && git push origin master --tags && npm publish"
   },
   "repository": {
     "type": "git",
