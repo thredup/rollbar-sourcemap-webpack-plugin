@@ -21,22 +21,24 @@ class RollbarSourceMapPlugin {
     this.silent = silent;
   }
 
-  apply(compiler) {
-    compiler.plugin('after-emit', (compilation, cb) => {
-      const errors = validateOptions(this);
+  afterEmit(compilation, cb) {
+    const errors = validateOptions(this);
 
-      if (errors) {
-        compilation.errors.push(...handleError(errors));
-        return cb();
+    if (errors) {
+      compilation.errors.push(...handleError(errors));
+      return cb();
+    }
+
+    this.uploadSourceMaps(compilation, (err) => {
+      if (err) {
+        compilation.errors.push(...handleError(err));
       }
-
-      this.uploadSourceMaps(compilation, (err) => {
-        if (err) {
-          compilation.errors.push(...handleError(err));
-        }
-        cb();
-      });
+      cb();
     });
+  }
+
+  apply(compiler) {
+    compiler.plugin('after-emit', this.afterEmit.bind(this));
   }
 
   getAssets(compilation) {
