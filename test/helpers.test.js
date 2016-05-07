@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import expect from 'expect';
 import { ROLLBAR_REQ_FIELDS } from '../src/constants';
 import * as helpers from '../src/helpers';
 
@@ -6,7 +6,8 @@ describe('helpers', function() {
   describe('handleError', function() {
     it('should return an array of length 1 given a single error', function() {
       const result = helpers.handleError(new Error('required field missing'));
-      expect(result).to.be.an('array').with.lengthOf(1);
+      expect(result).toBeA(Array);
+      expect(result.length).toEqual(1);
     });
 
     it('should return an array of length 2 given an array of length 2', function() {
@@ -14,16 +15,14 @@ describe('helpers', function() {
         new Error('required field missing'),
         new Error('request failed')
       ]);
-      expect(result)
-        .to.be.an('array')
-        .and.to.have.lengthOf(2);
+      expect(result).toBeA(Array);
+      expect(result.length).toEqual(2);
     });
 
     it('should prefix message of single error', function() {
       const result = helpers.handleError(new Error('required field missing'), 'Plugin');
-      expect(result[0]).to.have.property('message',
-        'Plugin: required field missing'
-      );
+      expect(result.length).toEqual(1);
+      expect(result[0]).toInclude({ message: 'Plugin: required field missing' });
     });
 
     it('should prefix message of an array of errors', function() {
@@ -31,29 +30,26 @@ describe('helpers', function() {
         new Error('required field missing'),
         new Error('request failed')
       ], 'Plugin');
-      expect(result[0]).to.have.property('message',
-        'Plugin: required field missing'
-      );
-      expect(result[1]).to.have.property('message',
-        'Plugin: request failed'
-      );
+      expect(result.length).toEqual(2);
+      expect(result[0]).toInclude({ message: 'Plugin: required field missing' });
     });
 
     it('should default prefix to "RollbarSourceMapPlugin"', function() {
       const result = helpers.handleError(new Error('required field missing'));
-      expect(result[0]).to.have.property('message',
-        'RollbarSourceMapPlugin: required field missing'
-      );
+      expect(result.length).toEqual(1);
+      expect(result[0]).toInclude({
+        message: 'RollbarSourceMapPlugin: required field missing'
+      });
     });
 
     it('should handle null', function() {
       const result = helpers.handleError(null);
-      expect(result).to.eql([]);
+      expect(result).toEqual([]);
     });
 
     it('should handle empty []', function() {
       const result = helpers.handleError([]);
-      expect(result).to.eql([]);
+      expect(result).toEqual([]);
     });
   });
 
@@ -65,7 +61,7 @@ describe('helpers', function() {
         publicPath: 'https://my.cdn.net/assets'
       };
       const result = helpers.validateOptions(options);
-      expect(result).to.be.null; // eslint-disable-line no-unused-expressions
+      expect(result).toBe(null); // eslint-disable-line no-unused-expressions
     });
 
     it('should return an error if accessToken is not supplied', function() {
@@ -74,10 +70,10 @@ describe('helpers', function() {
         publicPath: 'https://my.cdn.net/assets'
       };
       const result = helpers.validateOptions(options);
-      expect(result).to.be.an('array').with.lengthOf(1);
-      expect(result[0])
-        .to.be.an('error')
-        .with.property('message', 'required field, \'accessToken\', is missing.');
+      expect(result).toBeA('array');
+      expect(result.length).toBe(1);
+      expect(result[0]).toBeA(Error)
+        .toInclude({ message: 'required field, \'accessToken\', is missing.' });
     });
 
     it('should return an error if version is not supplied', function() {
@@ -86,10 +82,10 @@ describe('helpers', function() {
         publicPath: 'https://my.cdn.net/assets'
       };
       const result = helpers.validateOptions(options);
-      expect(result).to.be.an('array').with.lengthOf(1);
-      expect(result[0])
-        .to.be.an('error')
-        .with.property('message', 'required field, \'version\', is missing.');
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(1);
+      expect(result[0]).toBeA(Error)
+        .toInclude({ message: 'required field, \'version\', is missing.' });
     });
 
     it('should return an error if publicPath is not supplied', function() {
@@ -98,26 +94,29 @@ describe('helpers', function() {
         version: 'latest'
       };
       const result = helpers.validateOptions(options);
-      expect(result).to.be.an('array').with.lengthOf(1);
-      expect(result[0])
-        .to.be.an('error')
-        .with.property('message', 'required field, \'publicPath\', is missing.');
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(1);
+      expect(result[0]).toBeA(Error)
+        .toInclude({ message: 'required field, \'publicPath\', is missing.' });
     });
 
     it('should handle multiple missing required options', function() {
       const options = {};
       const result = helpers.validateOptions(options);
-      expect(result).to.be.an('array').with.lengthOf(ROLLBAR_REQ_FIELDS.length);
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
 
     it('should handle null for options', function() {
       const result = helpers.validateOptions(null);
-      expect(result).to.be.an('array').with.lengthOf(ROLLBAR_REQ_FIELDS.length);
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
 
     it('should handle no options passed', function() {
       const result = helpers.validateOptions();
-      expect(result).to.be.an('array').with.lengthOf(ROLLBAR_REQ_FIELDS.length);
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
   });
 });

@@ -16,7 +16,7 @@ export function handleError(err, prefix = 'RollbarSourceMapPlugin') {
 // are no errors.
 export function validateOptions(ref) {
   const errors = ROLLBAR_REQ_FIELDS.reduce((result, field) => {
-    if (ref && ref.hasOwnProperty(field)) {
+    if (ref && ref[field]) {
       return result;
     }
 
