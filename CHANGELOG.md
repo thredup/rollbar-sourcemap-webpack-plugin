@@ -1,7 +1,20 @@
 # Change Log
 
-## [v1.1.0](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/v1.1.0) (2016-05-07)
-[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.2...v1.1.0)
+## [1.0.4](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/1.0.4) (2016-05-08)
+[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...1.0.4)
+
+**Merged pull requests:**
+
+- chore\(package\): update nyc to version 6.4.4 [\#12](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/pull/12) ([brandondoran](https://github.com/brandondoran))
+- Update eslint-config-airbnb-base to version 3.0.1 🚀 [\#10](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/pull/10) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update eslint-config-airbnb-base to version 3.0.0 🚀 [\#9](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/pull/9) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [v1.0.3](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/v1.0.3) (2016-05-07)
+[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.2...v1.0.3)
+
+**Implemented enhancements:**
+
+- Add a change log [\#7](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/issues/7)
 
 **Fixed bugs:**
 
