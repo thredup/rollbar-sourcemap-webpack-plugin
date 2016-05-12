@@ -15,5 +15,10 @@
     "func-names": 0,
     "prefer-arrow-callback": 0,
     "space-before-function-paren": 0
+  },
+  "globals": {
+    // Constants defined in examples webpack.config
+    "__ROLLBAR_ACCESS_TOKEN__": true,
+    "__GIT_REVISION__": true
   }
 }

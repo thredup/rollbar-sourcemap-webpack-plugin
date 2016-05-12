@@ -51,12 +51,12 @@ Allowed values are as follows:
 - `version`: *(required)* A string identifying the version of your code this source map package is for.
   Typically this will be the full git sha.
 - `publicPath`: *(required)* The base url for the cdn where your production bundles are hosted.
-- `includeChunks`: An array of chunks for which sourcemaps should be uploaded.
+- `includeChunks`: *(optional)* An array of chunks for which sourcemaps should be uploaded.
   This should correspond to the names in the webpack config `entry` field.
-  If there's only one chunk, it can be a string rather than an array. In not supplied,
+  If there's only one chunk, it can be a string rather than an array. If not supplied,
   all sourcemaps emitted by webpack will be uploaded.
-- `silent`: `true | false` If `true`, success messages will be logged to the console for each upload.
-   defaults to `false`.
+- `silent`: *(optional)* `true | false` If `true`, success messages will be logged to the console for each upload.
+   Defaults to `false`.
 
 App Configuration
 --------------------
@@ -65,3 +65,22 @@ App Configuration
   for how to configure the client side for sourcemap support.
   The `code_version` parameter must match the `version` parameter used for the plugin.
 - More general info on the using [Rollbar for browser JS](https://rollbar.com/doc`s/notifier/rollbar.js/).
+
+Examples
+--------
+- React [(source)](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
+A minimal single page app with webpack build. The app includes a local Express server that
+serves an index.html. The build is meant to mimic a production build in that js bundles and sourcemaps are uploaded
+to AWS S3. You will need AWS and Rollbar accounts. To run the example:
+
+  - Set your aws and rollbar options in `examples/react/webpack.config.babel.js`
+  - `$ cd examples/react`
+  - `$ npm run build`
+  - `$ npm start`
+  - open [http://localhost:8000](http://localhost:8000/)
+  
+  When the example app is loaded in a browser,
+  the app will throw an error, which will be sent to Rollbar.
+  You should be able to log in to Rollbar and see the error with stacktrace
+  with line numbers that map to the original source.
+	
