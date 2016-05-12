@@ -1,7 +1,19 @@
 # Change Log
 
-## [1.0.4](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/1.0.4) (2016-05-08)
-[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...1.0.4)
+## [1.1.0](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/1.1.0) (2016-05-12)
+[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.4...1.1.0)
+
+**Implemented enhancements:**
+
+- Add a simple working example for usage in a React app [\#5](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/issues/5)
+
+**Merged pull requests:**
+
+- chore\(package\): update eslint-plugin-import to version 1.8.0 [\#14](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/pull/14) ([brandondoran](https://github.com/brandondoran))
+- Add an example for React [\#13](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/pull/13) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.0.4](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/v1.0.4) (2016-05-09)
+[Full Changelog](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...v1.0.4)
 
 **Merged pull requests:**
 
