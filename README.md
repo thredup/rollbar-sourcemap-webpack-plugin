@@ -1,9 +1,9 @@
 RollbarSourceMapPlugin
 ========================
-[![Dependency Status](https://img.shields.io/david/brandondoran/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin)
-[![devDependency Status](https://img.shields.io/david/dev/brandondoran/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/brandondoran/rollbar-sourcemap-webpack-plugin#info=devDependencies)
-[![Build Status](https://img.shields.io/travis/brandondoran/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://travis-ci.org/brandondoran/rollbar-sourcemap-webpack-plugin)
-[![Coverage](https://img.shields.io/codecov/c/github/brandondoran/rollbar-sourcemap-webpack-plugin/master.svg?style=flat-square)](https://codecov.io/gh/brandondoran/rollbar-sourcemap-webpack-plugin)
+[![Dependency Status](https://img.shields.io/david/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin)
+[![devDependency Status](https://img.shields.io/david/dev/thredup/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://travis-ci.org/thredup/rollbar-sourcemap-webpack-plugin)
+[![Coverage](https://img.shields.io/codecov/c/github/thredup/rollbar-sourcemap-webpack-plugin/master.svg?style=flat-square)](https://codecov.io/gh/thredup/rollbar-sourcemap-webpack-plugin)
 
 This is a [Webpack](https://webpack.github.io) plugin that simplifies uploading the sourcemaps,
 generated from a webpack build, to [Rollbar](https://rollbar.com).
@@ -68,7 +68,7 @@ App Configuration
 
 Examples
 --------
-- React [(source)](https://github.com/brandondoran/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
+- React [(source)](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
 A minimal single page app with webpack build. The app includes a local Express server that
 serves an index.html. The build is meant to mimic a production build in that js bundles and sourcemaps are uploaded
 to AWS S3. You will need AWS and Rollbar accounts. To run the example:
@@ -83,4 +83,11 @@ to AWS S3. You will need AWS and Rollbar accounts. To run the example:
   the app will throw an error, which will be sent to Rollbar.
   You should be able to log in to Rollbar and see the error with stacktrace
   with line numbers that map to the original source.
-	
+
+Contributing
+------------
+See the [Contributors Guide](/CONTRIBUTING.md)
+
+License
+-------
+[MIT](/LICENSE.md)
