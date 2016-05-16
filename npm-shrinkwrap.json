@@ -1,6 +1,6 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "dependencies": {
     "async": {
       "version": "1.5.2",
