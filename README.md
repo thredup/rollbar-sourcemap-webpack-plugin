@@ -4,6 +4,7 @@ RollbarSourceMapPlugin
 [![devDependency Status](https://img.shields.io/david/dev/thredup/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin#info=devDependencies)
 [![Build Status](https://img.shields.io/travis/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://travis-ci.org/thredup/rollbar-sourcemap-webpack-plugin)
 [![Coverage](https://img.shields.io/codecov/c/github/thredup/rollbar-sourcemap-webpack-plugin/master.svg?style=flat-square)](https://codecov.io/gh/thredup/rollbar-sourcemap-webpack-plugin)
+[![Downloads](https://img.shields.io/npm/dm/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://www.npmjs.com/package/rollbar-sourcemap-webpack-plugin)
 
 This is a [Webpack](https://webpack.github.io) plugin that simplifies uploading the sourcemaps,
 generated from a webpack build, to [Rollbar](https://rollbar.com).
