@@ -257,12 +257,12 @@ describe('RollbarSourceMapPlugin', function() {
         if (err) {
           return done(err);
         }
-        expect(this.info).toHaveBeenCalledWith('\nUploaded vendor.5190.js.map to Rollbar');
+        expect(this.info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
         done();
       });
     });
 
-    it('should not log upload if silent option is true', function(done) {
+    it('should not log upload to console if silent option is true', function(done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
@@ -274,6 +274,22 @@ describe('RollbarSourceMapPlugin', function() {
           return done(err);
         }
         expect(this.info).toNotHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should log upload to console if silent option is false', function(done) {
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
+
+      const { compilation, chunk } = this;
+      this.plugin.silent = false;
+      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+        if (err) {
+          return done(err);
+        }
+        expect(this.info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
         done();
       });
     });
