@@ -1,7 +1,19 @@
 # Change Log
 
-## [1.2.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.2.1) (2016-07-27)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.2.0...1.2.1)
+## [1.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.3.0) (2016-09-26)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.2.1...1.3.0)
+
+**Closed issues:**
+
+- Success messages are only shown if silent: true [\#16](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/16)
+
+**Merged pull requests:**
+
+- Uprade devDependencies [\#19](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/19) ([brandondoran](https://github.com/brandondoran))
+- Add test case for silent flag [\#18](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/18) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.2.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.2.1) (2016-07-27)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.2.0...v1.2.1)
 
 **Merged pull requests:**
 
