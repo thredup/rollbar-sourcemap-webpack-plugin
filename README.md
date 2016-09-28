@@ -12,8 +12,8 @@ generated from a webpack build, to [Rollbar](https://rollbar.com).
 Production JavaScript bundles are typically minified before deploying,
 making Rollbar stacktraces pretty useless unless you take steps to upload the sourcemaps.
 You may be doing this now in a shell script, triggered during your deploy process,
-that makes curl posts to the Rollbar api. This can be finicky and error prone to setup.
-RollbarSourceMapPlugin aims to remove that burden and automatically upload the sourcemaps when they are emitted by webpack
+that makes curl posts to the Rollbar API. This can be finicky and error prone to setup.
+RollbarSourceMapPlugin aims to remove that burden and automatically upload the sourcemaps when they are emitted by webpack.
 
 Installation
 ------------
@@ -30,7 +30,7 @@ const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin')
 const PUBLIC_PATH = 'https://my.cdn.net/assets'
 const webpackConfig = {
   entry: 'index',
-  publicPath: PUBLIC_PATH
+  publicPath: PUBLIC_PATH,
   output: {
     path: 'dist',
     filename: 'index-[hash].js'
@@ -56,7 +56,7 @@ Allowed values are as follows:
   This should correspond to the names in the webpack config `entry` field.
   If there's only one chunk, it can be a string rather than an array. If not supplied,
   all sourcemaps emitted by webpack will be uploaded.
-- `silent`: *(optional)* `true | false` If `true`, success messages will be logged to the console for each upload.
+- `silent`: *(optional)* `true | false` If `false`, success messages will be logged to the console for each upload.
    Defaults to `false`.
 
 App Configuration
@@ -65,7 +65,7 @@ App Configuration
 - See the [Rollbar source map](https://rollbar.com/docs/source-maps/) documentation
   for how to configure the client side for sourcemap support.
   The `code_version` parameter must match the `version` parameter used for the plugin.
-- More general info on the using [Rollbar for browser JS](https://rollbar.com/doc`s/notifier/rollbar.js/).
+- More general info on the using [Rollbar for browser JS](https://rollbar.com/docs/notifier/rollbar.js/).
 
 Examples
 --------
