@@ -1,7 +1,19 @@
 # Change Log
 
-## [1.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.4.0) (2016-10-07)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.3.1...1.4.0)
+## [1.5.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.5.0) (2016-11-22)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.4.0...1.5.0)
+
+**Closed issues:**
+
+- Remove support for Node 0.12 [\#24](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/24)
+
+**Merged pull requests:**
+
+- Upgrade dependencies to latest [\#26](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/26) ([brandondoran](https://github.com/brandondoran))
+- Upgrade eslint version [\#25](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/25) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.4.0) (2016-10-07)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.3.1...v1.4.0)
 
 **Merged pull requests:**
 
