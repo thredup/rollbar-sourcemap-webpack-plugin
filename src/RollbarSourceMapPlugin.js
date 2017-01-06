@@ -43,15 +43,16 @@ class RollbarSourceMapPlugin {
 
   getAssets(compilation) {
     const { includeChunks } = this;
-    const { assetsByChunkName } = compilation.getStats().toJson();
+    const { chunks } = compilation.getStats().toJson();
 
-    return reduce(assetsByChunkName, (result, assets, chunkName) => {
+    return reduce(chunks, (result, chunk) => {
+      const chunkName = chunk.names[0];
       if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
         return result;
       }
 
-      const sourceFile = find(assets, asset => /\.js$/.test(asset));
-      const sourceMap = find(assets, asset => /\.js\.map$/.test(asset));
+      const sourceFile = find(chunk.files, file => /\.js$/.test(file));
+      const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
 
       if (!sourceFile || !sourceMap) {
         return result;
