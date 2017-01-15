@@ -133,13 +133,20 @@ describe('RollbarSourceMapPlugin', function() {
 
   describe('getAssets', function() {
     beforeEach(function() {
-      this.assetsByChunkName = {
-        vendor: ['vendor.5190.js', 'vendor.5190.js.map'],
-        app: ['app.81c1.js', 'app.81c1.js.map']
-      };
+      this.chunks = [
+        {
+          id: 0,
+          names: ['vendor'],
+          files: ['vendor.5190.js', 'vendor.5190.js.map']
+        }, {
+          id: 1,
+          names: ['app'],
+          files: ['app.81c1.js', 'app.81c1.js.map']
+        }
+      ];
       this.compilation = {
         getStats: () => ({
-          toJson: () => ({ assetsByChunkName: this.assetsByChunkName })
+          toJson: () => ({ chunks: this.chunks })
         })
       };
     });
@@ -153,12 +160,48 @@ describe('RollbarSourceMapPlugin', function() {
     });
 
     it('should ignore chunks that do not have a sourcemap asset', function() {
-      this.assetsByChunkName = {
-        vendor: ['vendor.5190.js'],
-        app: ['app.81c1.js', 'app.81c1.js.map']
-      };
+      this.chunks = [
+        {
+          id: 0,
+          names: ['vendor'],
+          files: ['vendor.5190.js']
+        }, {
+          id: 1,
+          names: ['app'],
+          files: ['app.81c1.js', 'app.81c1.js.map']
+        }
+      ];
       const assets = this.plugin.getAssets(this.compilation);
       expect(assets).toEqual([
+        { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
+      ]);
+    });
+
+    it('should include unnamed chunks when includeChunks is not specified', function() {
+      this.chunks = [
+        {
+          id: 0,
+          names: ['vendor'],
+          files: ['vendor.5190.js', 'vendor.5190.js.map']
+        }, {
+          id: 1,
+          names: [],
+          files: ['1.cfea.js', '1.cfea.js.map']
+        }, {
+          id: 2,
+          names: [],
+          files: ['2-a364.js', '2-a364.js.map']
+        }, {
+          id: 3,
+          names: ['app'],
+          files: ['app.81c1.js', 'app.81c1.js.map']
+        }
+      ];
+      const assets = this.plugin.getAssets(this.compilation);
+      expect(assets).toEqual([
+        { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' },
+        { sourceFile: '1.cfea.js', sourceMap: '1.cfea.js.map' },
+        { sourceFile: '2-a364.js', sourceMap: '2-a364.js.map' },
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ]);
     });
@@ -185,7 +228,7 @@ describe('RollbarSourceMapPlugin', function() {
     });
 
     afterEach(function() {
-      [this.getAssets, this.uploadSourceMap].forEach(func => {
+      [this.getAssets, this.uploadSourceMap].forEach((func) => {
         if (isSpy(func)) {
           func.restore();
         }

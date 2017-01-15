@@ -55,7 +55,7 @@ Allowed values are as follows:
 - `includeChunks`: *(optional)* An array of chunks for which sourcemaps should be uploaded.
   This should correspond to the names in the webpack config `entry` field.
   If there's only one chunk, it can be a string rather than an array. If not supplied,
-  all sourcemaps emitted by webpack will be uploaded.
+  all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
 - `silent`: *(optional)* `true | false` If `false`, success messages will be logged to the console for each upload.
    Defaults to `false`.
 
