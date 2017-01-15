@@ -1,7 +1,15 @@
 # Change Log
 
-## [1.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.6.0) (2017-01-08)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.5.0...1.6.0)
+## [1.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.7.0) (2017-01-14)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.6.0...1.7.0)
+
+**Fixed bugs:**
+
+- Code splitted sourcemaps not uploaded, despite being emitted by webpack [\#27](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/27)
+- Upload unnamed chunks when includeChunks is not specified [\#28](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/28) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.6.0) (2017-01-09)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.5.0...v1.6.0)
 
 **Merged pull requests:**
 
