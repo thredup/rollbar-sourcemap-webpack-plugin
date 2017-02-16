@@ -100,16 +100,30 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
-    it('should add upload errors to compilation', function(done) {
+    it('should add upload warnings to compilation', function(done) {
       const compilation = {
-        errors: []
+        warnings: []
       };
       this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
       this.plugin.afterEmit(compilation, () => {
         expect(this.uploadSourceMaps.calls.length).toBe(1);
-        expect(compilation.errors.length).toBe(1);
-        expect(compilation.errors[0]).toBeA(Error);
+        expect(compilation.warnings.length).toBe(1);
+        expect(compilation.warnings[0]).toBeA(Error);
+        done();
+      });
+    });
+
+    it('should not add upload warnings to compilation if showWarnings is false', function(done) {
+      const compilation = {
+        warnings: []
+      };
+      this.plugin.showWarnings = false;
+      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+        .andCall((comp, callback) => callback(new Error()));
+      this.plugin.afterEmit(compilation, () => {
+        expect(this.uploadSourceMaps.calls.length).toBe(1);
+        expect(compilation.warnings.length).toBe(0);
         done();
       });
     });
