@@ -91,46 +91,74 @@ describe('RollbarSourceMapPlugin', function() {
 
     it('should call uploadSourceMaps', function(done) {
       const compilation = {
-        errors: []
+        errors: [],
+        warnings: []
       };
       this.plugin.afterEmit(compilation, () => {
         expect(this.uploadSourceMaps.calls.length).toBe(1);
         expect(compilation.errors.length).toBe(0);
+        expect(compilation.warnings.length).toBe(0);
         done();
       });
     });
 
-    it('should add upload warnings to compilation', function(done) {
+    it('should add upload warnings to compilation warnings, ' +
+      'if ignoreErrors is true and silent is false', function(done) {
       const compilation = {
+        errors: [],
         warnings: []
       };
+      this.plugin.ignoreErrors = true;
+      this.plugin.silent = false;
       this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
       this.plugin.afterEmit(compilation, () => {
         expect(this.uploadSourceMaps.calls.length).toBe(1);
+        expect(compilation.errors.length).toBe(0);
         expect(compilation.warnings.length).toBe(1);
         expect(compilation.warnings[0]).toBeA(Error);
         done();
       });
     });
 
-    it('should not add upload warnings to compilation if showWarnings is false', function(done) {
+    it('should not add upload errors to compilation warnings if silent is true', function(done) {
       const compilation = {
+        errors: [],
         warnings: []
       };
-      this.plugin.showWarnings = false;
+      this.plugin.ignoreErrors = true;
+      this.plugin.silent = true;
       this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
       this.plugin.afterEmit(compilation, () => {
         expect(this.uploadSourceMaps.calls.length).toBe(1);
+        expect(compilation.errors.length).toBe(0);
         expect(compilation.warnings.length).toBe(0);
         done();
       });
     });
 
-    it('should add to validation errors to compilation', function(done) {
+    it('should add upload errors to compilation errors', function(done) {
       const compilation = {
-        errors: []
+        errors: [],
+        warnings: []
+      };
+      this.plugin.ignoreErrors = false;
+      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+        .andCall((comp, callback) => callback(new Error()));
+      this.plugin.afterEmit(compilation, () => {
+        expect(this.uploadSourceMaps.calls.length).toBe(1);
+        expect(compilation.warnings.length).toBe(0);
+        expect(compilation.errors.length).toBe(1);
+        expect(compilation.errors[0]).toBeA(Error);
+        done();
+      });
+    });
+
+    it('should add validation errors to compilation', function(done) {
+      const compilation = {
+        errors: [],
+        warnings: []
       };
 
       this.plugin = new RollbarSourceMapPlugin({
@@ -351,7 +379,7 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
-    it('should return detailed error message if failure response includes message', function(done) {
+    it('should return error message if failure response includes message', function(done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(422, JSON.stringify({ err: 1, message: 'missing source_map file upload' }));

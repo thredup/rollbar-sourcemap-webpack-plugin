@@ -58,8 +58,8 @@ Allowed values are as follows:
   all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
 - `silent`: *(optional)* `true | false` If `false`, success messages will be logged to the console for each upload.
    Defaults to `false`.
-- `showWarnings`: *(optional)* `true | false` If `true`, all warning messages will be logged to the console for each upload.
-   Defaults to `true`.
+- `ignoreErrors`: *(optional)* `true | false` Set to `true` to bypass adding upload errors to the webpack compilation. Do this if you do not want to fail the build when sourcemap uploads fail. If you do not want to fail the build but you do want to see the failures as warnings, make sure `silent` option is set to `false`.
+   Defaults to `false`.
 
 App Configuration
 --------------------
