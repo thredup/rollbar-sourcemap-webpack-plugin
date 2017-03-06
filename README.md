@@ -58,6 +58,8 @@ Allowed values are as follows:
   all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
 - `silent`: *(optional)* `true | false` If `false`, success messages will be logged to the console for each upload.
    Defaults to `false`.
+- `showWarnings`: *(optional)* `true | false` If `true`, all warning messages will be logged to the console for each upload.
+   Defaults to `true`.
 
 App Configuration
 --------------------

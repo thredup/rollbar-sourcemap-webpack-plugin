@@ -12,13 +12,15 @@ class RollbarSourceMapPlugin {
     version,
     publicPath,
     includeChunks = [],
-    silent = false
+    silent = false,
+    showWarnings = true
   }) {
     this.accessToken = accessToken;
     this.version = version;
     this.publicPath = publicPath;
     this.includeChunks = [].concat(includeChunks);
     this.silent = silent;
+    this.showWarnings = showWarnings;
   }
 
   afterEmit(compilation, cb) {
@@ -30,8 +32,8 @@ class RollbarSourceMapPlugin {
     }
 
     this.uploadSourceMaps(compilation, (err) => {
-      if (err) {
-        compilation.errors.push(...handleError(err));
+      if (err && this.showWarnings) {
+        compilation.warnings.push(...handleError(err));
       }
       cb();
     });
