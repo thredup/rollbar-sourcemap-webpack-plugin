@@ -15,15 +15,13 @@ You may be doing this now in a shell script, triggered during your deploy proces
 that makes curl posts to the Rollbar API. This can be finicky and error prone to setup.
 RollbarSourceMapPlugin aims to remove that burden and automatically upload the sourcemaps when they are emitted by webpack.
 
-Installation
-------------
+## Installation
 Install the plugin with npm:
 ```shell
 $ npm install rollbar-sourcemap-webpack-plugin --save-dev
 ```
 
-Basic Usage
--------------
+## Basic Usage
 An example webpack.config.js:
 ```javascript
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin')
@@ -43,35 +41,37 @@ const webpackConfig = {
 }
 ```
 
-Plugin Configuration
--------------
+## Plugin Configuration
 You can pass a hash of configuration options to `RollbarSourceMapPlugin`.
 Allowed values are as follows:
 
-- `accessToken`: *(required)* Your rollbar `post_server_item` access token.
-- `version`: *(required)* A string identifying the version of your code this source map package is for.
-  Typically this will be the full git sha.
-- `publicPath`: *(required)* The base url for the cdn where your production bundles are hosted.
-- `includeChunks`: *(optional)* An array of chunks for which sourcemaps should be uploaded.
-  This should correspond to the names in the webpack config `entry` field.
-  If there's only one chunk, it can be a string rather than an array. If not supplied,
-  all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
-- `silent`: *(optional)* `true | false` If `false`, success messages will be logged to the console for each upload.
-   Defaults to `false`.
-- `showWarnings`: *(optional)* `true | false` If `true`, all warning messages will be logged to the console for each upload.
-   Defaults to `true`.
+#### `accessToken: string` **(required)**
+Your rollbar `post_server_item` access token.
 
-App Configuration
---------------------
+#### `version: string` **(required)**
+A string identifying the version of your code this source map package is for. Typically this will be the full git sha.
+
+#### `publicPath: string` **(required)**
+The base url for the cdn where your production bundles are hosted.
+
+#### `includeChunks: string | [string]` **(optional)**
+An array of chunks for which sourcemaps should be uploaded. This should correspond to the names in the webpack config `entry` field. If there's only one chunk, it can be a string rather than an array. If not supplied, all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
+
+#### `silent: boolean` **(default: `false`)**
+If `false`, success and warning messages will be logged to the console for each upload. Note: if you also do not want to see errors, set the `ignoreErrors` option to `true`.
+
+#### `ignoreErrors: boolean` **(default: `false`)**
+Set to `true` to bypass adding upload errors to the webpack compilation. Do this if you do not want to fail the build when sourcemap uploads fail. If you do not want to fail the build but you do want to see the failures as warnings, make sure `silent` option is set to `false`.
+
+## App Configuration
 - The web app should have [rollbar-browser](https://github.com/rollbar/rollbar.js) installed and configured for webpack as described [here](https://github.com/rollbar/rollbar.js/tree/master/examples/webpack#using-rollbar-with-webpack).
 - See the [Rollbar source map](https://rollbar.com/docs/source-maps/) documentation
   for how to configure the client side for sourcemap support.
   The `code_version` parameter must match the `version` parameter used for the plugin.
 - More general info on the using [Rollbar for browser JS](https://rollbar.com/docs/notifier/rollbar.js/).
 
-Examples
---------
-- React [(source)](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
+## Examples
+### React [(source)](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
 A minimal single page app with webpack build. The app includes a local Express server that
 serves an index.html. The build is meant to mimic a production build in that js bundles and sourcemaps are uploaded
 to AWS S3. You will need AWS and Rollbar accounts. To run the example:
@@ -87,10 +87,8 @@ to AWS S3. You will need AWS and Rollbar accounts. To run the example:
   You should be able to log in to Rollbar and see the error with stacktrace
   with line numbers that map to the original source.
 
-Contributing
-------------
+## Contributing
 See the [Contributors Guide](/CONTRIBUTING.md)
 
-License
--------
+# License
 [MIT](/LICENSE.md)
