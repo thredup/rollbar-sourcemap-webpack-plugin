@@ -1,7 +1,19 @@
 # Change Log
 
-## [1.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/1.7.0) (2017-01-14)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.6.0...1.7.0)
+## [2.0.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.0.0) (2017-03-05)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.7.0...2.0.0)
+
+**Implemented enhancements:**
+
+- Add a simple working example for usage in an Angular app [\#6](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/6)
+- Add showWarnings option to avoid logging when not needed [\#30](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/30) ([nicoecheza](https://github.com/nicoecheza))
+
+**Merged pull requests:**
+
+- Add an ignoreErrors option [\#31](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/31) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.7.0) (2017-01-15)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.6.0...v1.7.0)
 
 **Fixed bugs:**
 
