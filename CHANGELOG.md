@@ -1,7 +1,15 @@
 # Change Log
 
-## [2.0.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.0.1) (2017-03-14)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.0.0...2.0.1)
+## [2.1.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.1.0) (2017-05-29)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.0.1...2.1.0)
+
+**Merged pull requests:**
+
+- Update cross-env to version 5.0.0 🚀 [\#35](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/35) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update cross-env to version 4.0.0 🚀 [\#33](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/33) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [v2.0.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.0.1) (2017-03-15)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.0.0...v2.0.1)
 
 **Merged pull requests:**
 
