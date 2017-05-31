@@ -36,7 +36,10 @@ const webpackConfig = {
   plugins: [new RollbarSourceMapPlugin({
     accessToken: 'aaaabbbbccccddddeeeeffff00001111',
     version: 'version_string_here',
-    publicPath: PUBLIC_PATH
+    publicPath: PUBLIC_PATH,
+    transform: function (sourceFile, sourceMap, sourceContent) {
+      return {sourceFile, sourceMap}
+    }
   })]
 }
 ```

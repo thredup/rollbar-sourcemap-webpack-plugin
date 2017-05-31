@@ -11,6 +11,7 @@ class RollbarSourceMapPlugin {
     accessToken,
     version,
     publicPath,
+    transform,
     includeChunks = [],
     silent = false,
     ignoreErrors = false
@@ -18,6 +19,7 @@ class RollbarSourceMapPlugin {
     this.accessToken = accessToken;
     this.version = version;
     this.publicPath = publicPath;
+    this.transform = transform;
     this.includeChunks = [].concat(includeChunks);
     this.silent = silent;
     this.ignoreErrors = ignoreErrors;
@@ -92,6 +94,11 @@ class RollbarSourceMapPlugin {
         return cb(new VError(parseErr, errMessage));
       }
     });
+
+    // transform sourceFile and sourceMap names
+    if (this.transform) {
+      {sourceFile, sourceMap} = this.transform(sourceFile, sourceMap, compilation.assets[sourceFile].source());
+    }
 
     const form = req.form();
     form.append('access_token', this.accessToken);
