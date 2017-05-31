@@ -96,16 +96,21 @@ class RollbarSourceMapPlugin {
     });
 
     // transform sourceFile and sourceMap names
+    let transformResults;
     if (this.transform) {
-      {sourceFile, sourceMap} = this.transform(sourceFile, sourceMap, compilation.assets[sourceFile].source());
+      transformResults = this.transform(
+        sourceFile,
+        sourceMap,
+        compilation.assets[sourceFile].source()
+      );
     }
 
     const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
-    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+    form.append('minified_url', `${this.publicPath}/${transformResults.sourceFile || sourceFile}`);
     form.append('source_map', compilation.assets[sourceMap].source(), {
-      filename: sourceMap,
+      filename: transformResults.sourceMap || sourceMap,
       contentType: 'application/json'
     });
   }
