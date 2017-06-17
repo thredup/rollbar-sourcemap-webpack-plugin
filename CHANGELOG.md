@@ -1,7 +1,14 @@
 # Change Log
 
-## [2.1.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.1.0) (2017-05-29)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.0.1...2.1.0)
+## [2.2.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.2.0) (2017-06-16)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.1.0...2.2.0)
+
+**Merged pull requests:**
+
+- Run tests in Node 8 in CI [\#37](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/37) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.1.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.1.0) (2017-05-30)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.0.1...v2.1.0)
 
 **Merged pull requests:**
 
