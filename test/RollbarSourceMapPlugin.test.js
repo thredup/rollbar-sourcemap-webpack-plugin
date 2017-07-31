@@ -48,6 +48,10 @@ describe('RollbarSourceMapPlugin', function() {
       expect(this.plugin).toInclude({ silent: false });
     });
 
+    it('should default number of retries to 1', function() {
+      expect(this.plugin).toInclude({ retries: 1 });
+    });
+
     it('should default includeChunks to []', function() {
       expect(this.plugin).toInclude({ includeChunks: [] });
     });
@@ -64,6 +68,14 @@ describe('RollbarSourceMapPlugin', function() {
       });
       const plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ includeChunks: ['foo', 'bar'] });
+    });
+
+    it('should accept numeric value for retries', function() {
+      const options = Object.assign({}, this.options, {
+        retries: 3
+      });
+      const plugin = new RollbarSourceMapPlugin(options);
+      expect(plugin).toInclude({ retries: 3 });
     });
   });
 
@@ -394,6 +406,24 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
+    it('should return error message if failure response includes message after the specified number of retries', function(done) {
+      this.plugin.retries = 3;
+
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .times(3)
+        .reply(422, JSON.stringify({ err: 1, message: 'missing source_map file upload' }));
+
+      const { compilation, chunk } = this;
+      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+        expect(err).toExist();
+        expect(err).toInclude({
+          message: 'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
+        });
+        done();
+      });
+    });
+
     it('should handle error response with empty body', function(done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
@@ -407,9 +437,43 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
+    it('should handle error response with empty body after the specified number of retries', function(done) {
+      this.plugin.retries = 3;
+
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .times(3)
+        .reply(422, null);
+
+      const { compilation, chunk } = this;
+      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+        expect(err).toExist();
+        expect(err.message).toMatch(/failed to upload vendor\.5190.js\.map to Rollbar: [\w\s]+/);
+        done();
+      });
+    });
+
     it('should handle HTTP request error', function(done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
+        .replyWithError('something awful happened');
+
+      const { compilation, chunk } = this;
+      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+        expect(err).toExist();
+        expect(err).toInclude({
+          message: 'failed to upload vendor.5190.js.map to Rollbar: something awful happened'
+        });
+        done();
+      });
+    });
+
+   it('should handle HTTP request error after the specified number of retries', function(done) {
+      this.plugin.retries = 3;
+
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .times(3)
         .replyWithError('something awful happened');
 
       const { compilation, chunk } = this;

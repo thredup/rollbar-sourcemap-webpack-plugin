@@ -12,6 +12,7 @@ class RollbarSourceMapPlugin {
     version,
     publicPath,
     includeChunks = [],
+    retries = 1,
     silent = false,
     ignoreErrors = false
   }) {
@@ -19,6 +20,7 @@ class RollbarSourceMapPlugin {
     this.version = version;
     this.publicPath = publicPath;
     this.includeChunks = [].concat(includeChunks);
+    this.retries = retries;
     this.silent = silent;
     this.ignoreErrors = ignoreErrors;
   }
@@ -72,8 +74,26 @@ class RollbarSourceMapPlugin {
   }
 
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
-    const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
-      if (!err && res.statusCode === 200) {
+    async.retry({ times: this.retries, interval: 100 }, function (callback) {
+      const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
+        if (!err && res.statusCode !== 200) {
+          callback(new Error(''), res, body);
+          return;
+        }
+
+        callback(err, res, body);
+      });
+
+      const form = req.form();
+      form.append('access_token', this.accessToken);
+      form.append('version', this.version);
+      form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+      form.append('source_map', compilation.assets[sourceMap].source(), {
+        filename: sourceMap,
+        contentType: 'application/json'
+      });
+    }.bind(this), function(err, res, body) {
+      if (res && res.statusCode === 200) {
         if (!this.silent) {
           console.info(`Uploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
         }
@@ -81,7 +101,7 @@ class RollbarSourceMapPlugin {
       }
 
       const errMessage = `failed to upload ${sourceMap} to Rollbar`;
-      if (err) {
+      if (err && err.message) {
         return cb(new VError(err, errMessage));
       }
 
@@ -91,16 +111,7 @@ class RollbarSourceMapPlugin {
       } catch (parseErr) {
         return cb(new VError(parseErr, errMessage));
       }
-    });
-
-    const form = req.form();
-    form.append('access_token', this.accessToken);
-    form.append('version', this.version);
-    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
-    form.append('source_map', compilation.assets[sourceMap].source(), {
-      filename: sourceMap,
-      contentType: 'application/json'
-    });
+    }.bind(this));
   }
 
   uploadSourceMaps(compilation, cb) {
