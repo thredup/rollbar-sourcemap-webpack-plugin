@@ -60,6 +60,9 @@ An array of chunks for which sourcemaps should be uploaded. This should correspo
 #### `silent: boolean` **(default: `false`)**
 If `false`, success and warning messages will be logged to the console for each upload. Note: if you also do not want to see errors, set the `ignoreErrors` option to `true`.
 
+#### `retries: number` **(default: `1`)**
+An integer indicating the number of attempts to get a successful response during the upload process of a single sourcemap.
+
 #### `ignoreErrors: boolean` **(default: `false`)**
 Set to `true` to bypass adding upload errors to the webpack compilation. Do this if you do not want to fail the build when sourcemap uploads fail. If you do not want to fail the build but you do want to see the failures as warnings, make sure `silent` option is set to `false`.
 
