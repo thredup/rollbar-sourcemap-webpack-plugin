@@ -400,7 +400,7 @@ describe('RollbarSourceMapPlugin', function() {
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
         expect(err).toInclude({
-          message: 'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
+          message: 'failed to upload vendor.5190.js.map to Rollbar with status code 422: missing source_map file upload'
         });
         done();
       });
@@ -418,7 +418,7 @@ describe('RollbarSourceMapPlugin', function() {
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
         expect(err).toInclude({
-          message: 'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
+          message: 'failed to upload vendor.5190.js.map to Rollbar with status code 422: missing source_map file upload'
         });
         done();
       });
@@ -432,7 +432,24 @@ describe('RollbarSourceMapPlugin', function() {
       const { compilation, chunk } = this;
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
-        expect(err.message).toMatch(/failed to upload vendor\.5190.js\.map to Rollbar: [\w\s]+/);
+        expect(err).toInclude({
+          message: 'failed to upload vendor.5190.js.map to Rollbar with status code 422: failed to parse : Unexpected end of JSON input'
+        });
+        done();
+      });
+    });
+
+    it('should handle non JSON error responses', function(done) {
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .reply(403, '<Error>Boom</Error>');
+
+      const { compilation, chunk } = this;
+      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+        expect(err).toExist();
+        expect(err).toInclude({
+          message: 'failed to upload vendor.5190.js.map to Rollbar with status code 403: failed to parse <Error>Boom</Error>: Unexpected token < in JSON at position 0'
+        });
         done();
       });
     });
@@ -448,7 +465,7 @@ describe('RollbarSourceMapPlugin', function() {
       const { compilation, chunk } = this;
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
-        expect(err.message).toMatch(/failed to upload vendor\.5190.js\.map to Rollbar: [\w\s]+/);
+        expect(err.message).toMatch(/failed to upload vendor\.5190.js\.map to Rollbar with status code 422: [\w\s]+/);
         done();
       });
     });
@@ -461,8 +478,8 @@ describe('RollbarSourceMapPlugin', function() {
       const { compilation, chunk } = this;
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
-        expect(err).toInclude({
-          message: 'failed to upload vendor.5190.js.map to Rollbar: something awful happened'
+        expect(err).toMatch({
+          message: 'something awful happened'
         });
         done();
       });
@@ -479,8 +496,8 @@ describe('RollbarSourceMapPlugin', function() {
       const { compilation, chunk } = this;
       this.plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
-        expect(err).toInclude({
-          message: 'failed to upload vendor.5190.js.map to Rollbar: something awful happened'
+        expect(err).toMatch({
+          message: 'something awful happened'
         });
         done();
       });
