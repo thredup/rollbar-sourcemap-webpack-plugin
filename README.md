@@ -63,6 +63,9 @@ If `false`, success and warning messages will be logged to the console for each 
 #### `ignoreErrors: boolean` **(default: `false`)**
 Set to `true` to bypass adding upload errors to the webpack compilation. Do this if you do not want to fail the build when sourcemap uploads fail. If you do not want to fail the build but you do want to see the failures as warnings, make sure `silent` option is set to `false`.
 
+#### `rollbarEndpoint: string` **(default: `https://api.rollbar.com/api/1/sourcemap`)**
+A string defining the Rollbar API endpoint to upload the sourcemaps to. It can be used for self-hosted Rollbar instances.
+
 ## App Configuration
 - The web app should have [rollbar-browser](https://github.com/rollbar/rollbar.js) installed and configured for webpack as described [here](https://github.com/rollbar/rollbar.js/tree/master/examples/webpack#using-rollbar-with-webpack).
 - See the [Rollbar source map](https://rollbar.com/docs/source-maps/) documentation

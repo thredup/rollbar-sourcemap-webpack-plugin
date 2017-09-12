@@ -1,6 +1,7 @@
 import expect, { isSpy, spyOn, createSpy } from 'expect';
 import nock from 'nock';
 import RollbarSourceMapPlugin from '../src/RollbarSourceMapPlugin';
+import { ROLLBAR_ENDPOINT } from '../src/constants';
 
 describe('RollbarSourceMapPlugin', function() {
   beforeEach(function() {
@@ -64,6 +65,17 @@ describe('RollbarSourceMapPlugin', function() {
       });
       const plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ includeChunks: ['foo', 'bar'] });
+    });
+
+    it('should default rollbarEndpoint to ROLLBAR_ENDPOINT constant', function() {
+      expect(this.plugin).toInclude({ rollbarEndpoint: ROLLBAR_ENDPOINT });
+    });
+
+    it('should access string value for rollbarEndpoint', function() {
+      const customEndpoint = 'https://api.rollbar.custom.com/api/1/sourcemap';
+      const options = Object.assign({}, this.options, { rollbarEndpoint: customEndpoint });
+      const plugin = new RollbarSourceMapPlugin(options);
+      expect(plugin).toInclude({ rollbarEndpoint: customEndpoint });
     });
   });
 
