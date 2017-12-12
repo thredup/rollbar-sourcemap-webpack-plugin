@@ -59,6 +59,7 @@ class RollbarSourceMapPlugin {
 
       const sourceFile = find(chunk.files, file => /\.js$/.test(file));
       const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
+      const sourceHash = chunk.hash;
 
       if (!sourceFile || !sourceMap) {
         return result;
@@ -66,12 +67,12 @@ class RollbarSourceMapPlugin {
 
       return [
         ...result,
-        { sourceFile, sourceMap }
+        { sourceFile, sourceMap, sourceHash }
       ];
     }, {});
   }
 
-  uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
+  uploadSourceMap(compilation, { sourceFile, sourceMap, sourceHash }, cb) {
     const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
       if (!err && res.statusCode === 200) {
         if (!this.silent) {
@@ -96,7 +97,7 @@ class RollbarSourceMapPlugin {
     const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
-    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+    form.append('minified_url', `${this.publicPath}/${sourceFile.replace(/\.js$/, `-${sourceHash}.js`)}`);
     form.append('source_map', compilation.assets[sourceMap].source(), {
       filename: sourceMap,
       contentType: 'application/json'
