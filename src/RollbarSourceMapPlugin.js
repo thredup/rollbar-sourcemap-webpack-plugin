@@ -91,7 +91,7 @@ class RollbarSourceMapPlugin {
         const { message } = JSON.parse(body);
         return cb(new Error(message ? `${errMessage}: ${message}` : errMessage));
       } catch (parseErr) {
-        return cb(new VError(parseErr, errMessage));
+        return cb(new Error(errMessage));
       }
     });
 

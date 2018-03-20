@@ -1,60 +1,61 @@
-import expect from 'expect';
 import { ROLLBAR_REQ_FIELDS } from '../src/constants';
 import * as helpers from '../src/helpers';
 
-describe('helpers', function() {
-  describe('handleError', function() {
-    it('should return an array of length 1 given a single error', function() {
+describe('helpers', () => {
+  describe('handleError', () => {
+    test('should return an array of length 1 given a single error', () => {
       const result = helpers.handleError(new Error('required field missing'));
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toEqual(1);
     });
 
-    it('should return an array of length 2 given an array of length 2', function() {
-      const result = helpers.handleError([
-        new Error('required field missing'),
-        new Error('request failed')
-      ]);
-      expect(result).toBeA(Array);
-      expect(result.length).toEqual(2);
-    });
+    test(
+      'should return an array of length 2 given an array of length 2',
+      () => {
+        const result = helpers.handleError([
+          new Error('required field missing'),
+          new Error('request failed')
+        ]);
+        expect(result).toBeInstanceOf(Array);
+        expect(result.length).toEqual(2);
+      }
+    );
 
-    it('should prefix message of single error', function() {
+    test('should prefix message of single error', () => {
       const result = helpers.handleError(new Error('required field missing'), 'Plugin');
       expect(result.length).toEqual(1);
-      expect(result[0]).toInclude({ message: 'Plugin: required field missing' });
+      expect(result[0]).toMatchObject({ message: 'Plugin: required field missing' });
     });
 
-    it('should prefix message of an array of errors', function() {
+    test('should prefix message of an array of errors', () => {
       const result = helpers.handleError([
         new Error('required field missing'),
         new Error('request failed')
       ], 'Plugin');
       expect(result.length).toEqual(2);
-      expect(result[0]).toInclude({ message: 'Plugin: required field missing' });
+      expect(result[0]).toMatchObject({ message: 'Plugin: required field missing' });
     });
 
-    it('should default prefix to "RollbarSourceMapPlugin"', function() {
+    test('should default prefix to "RollbarSourceMapPlugin"', () => {
       const result = helpers.handleError(new Error('required field missing'));
       expect(result.length).toEqual(1);
-      expect(result[0]).toInclude({
+      expect(result[0]).toMatchObject({
         message: 'RollbarSourceMapPlugin: required field missing'
       });
     });
 
-    it('should handle null', function() {
-      const result = helpers.handleError(null);
-      expect(result).toEqual([]);
+    test('should handle null', () => {
+      const err = null;
+      expect(helpers.handleError(err)).toEqual([]);
     });
 
-    it('should handle empty []', function() {
-      const result = helpers.handleError([]);
-      expect(result).toEqual([]);
+    test('should handle empty []', () => {
+      expect(helpers.handleError([])).toEqual([]);
     });
   });
 
-  describe('validateOptions', function() {
-    it('should return null if all required options are supplied', function() {
+  describe('validateOptions', () => {
+    test('should return null if all required options are supplied', () => {
       const options = {
         accessToken: 'aaabbbccc000111',
         version: 'latest',
@@ -64,58 +65,64 @@ describe('helpers', function() {
       expect(result).toBe(null); // eslint-disable-line no-unused-expressions
     });
 
-    it('should return an error if accessToken is not supplied', function() {
+    test('should return an error if accessToken is not supplied', () => {
       const options = {
         version: 'latest',
         publicPath: 'https://my.cdn.net/assets'
       };
       const result = helpers.validateOptions(options);
-      expect(result).toBeA('array');
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
-      expect(result[0]).toBeA(Error)
-        .toInclude({ message: 'required field, \'accessToken\', is missing.' });
+      expect(result[0]).toBeInstanceOf(Error);
+      expect(result[0]).toMatchObject({
+        message: 'required field, \'accessToken\', is missing.'
+      });
     });
 
-    it('should return an error if version is not supplied', function() {
+    test('should return an error if version is not supplied', () => {
       const options = {
         accessToken: 'aaabbbccc000111',
         publicPath: 'https://my.cdn.net/assets'
       };
       const result = helpers.validateOptions(options);
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
-      expect(result[0]).toBeA(Error)
-        .toInclude({ message: 'required field, \'version\', is missing.' });
+      expect(result[0]).toBeInstanceOf(Error);
+      expect(result[0]).toMatchObject({
+        message: 'required field, \'version\', is missing.'
+      });
     });
 
-    it('should return an error if publicPath is not supplied', function() {
+    test('should return an error if publicPath is not supplied', () => {
       const options = {
         accessToken: 'aaabbbccc000111',
         version: 'latest'
       };
       const result = helpers.validateOptions(options);
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
-      expect(result[0]).toBeA(Error)
-        .toInclude({ message: 'required field, \'publicPath\', is missing.' });
+      expect(result[0]).toBeInstanceOf(Error);
+      expect(result[0]).toMatchObject({
+        message: 'required field, \'publicPath\', is missing.'
+      });
     });
 
-    it('should handle multiple missing required options', function() {
+    test('should handle multiple missing required options', () => {
       const options = {};
       const result = helpers.validateOptions(options);
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
 
-    it('should handle null for options', function() {
+    test('should handle null for options', () => {
       const result = helpers.validateOptions(null);
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
 
-    it('should handle no options passed', function() {
+    test('should handle no options passed', () => {
       const result = helpers.validateOptions();
-      expect(result).toBeA(Array);
+      expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
   });
