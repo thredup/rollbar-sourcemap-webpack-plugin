@@ -13,7 +13,8 @@ class RollbarSourceMapPlugin {
     publicPath,
     includeChunks = [],
     silent = false,
-    ignoreErrors = false
+    ignoreErrors = false,
+    rollbarEndpoint = ROLLBAR_ENDPOINT
   }) {
     this.accessToken = accessToken;
     this.version = version;
@@ -21,6 +22,7 @@ class RollbarSourceMapPlugin {
     this.includeChunks = [].concat(includeChunks);
     this.silent = silent;
     this.ignoreErrors = ignoreErrors;
+    this.rollbarEndpoint = rollbarEndpoint;
   }
 
   afterEmit(compilation, cb) {
@@ -72,7 +74,7 @@ class RollbarSourceMapPlugin {
   }
 
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
-    const req = request.post(ROLLBAR_ENDPOINT, (err, res, body) => {
+    const req = request.post(this.rollbarEndpoint, (err, res, body) => {
       if (!err && res.statusCode === 200) {
         if (!this.silent) {
           console.info(`Uploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
