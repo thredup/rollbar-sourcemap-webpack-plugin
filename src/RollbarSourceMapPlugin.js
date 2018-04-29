@@ -66,11 +66,9 @@ class RollbarSourceMapPlugin {
         return result;
       }
 
-      return [
-        ...result,
-        { sourceFile, sourceMap }
-      ];
-    }, {});
+      result.push({ sourceFile, sourceMap });
+      return result;
+    }, []);
   }
 
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
