@@ -1,7 +1,19 @@
 # Change Log
 
-## [2.2.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.2.0) (2017-06-16)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.1.0...2.2.0)
+## [2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.3.0) (2018-04-28)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...2.3.0)
+
+**Closed issues:**
+
+- Source maps aren't getting uploaded  [\#44](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/44)
+
+**Merged pull requests:**
+
+- Update dependencies [\#48](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/48) ([brandondoran](https://github.com/brandondoran))
+- Support configurable Rollbar sourcemap endpoint [\#43](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/43) ([chengderrick](https://github.com/chengderrick))
+
+## [v2.2.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.2.0) (2017-06-17)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.1.0...v2.2.0)
 
 **Merged pull requests:**
 
@@ -117,6 +129,10 @@
 ## [v1.0.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.4) (2016-05-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...v1.0.4)
 
+**Implemented enhancements:**
+
+- Add a change log [\#7](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/7)
+
 **Merged pull requests:**
 
 - chore\(package\): update nyc to version 6.4.4 [\#12](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/12) ([brandondoran](https://github.com/brandondoran))
@@ -125,10 +141,6 @@
 
 ## [v1.0.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.3) (2016-05-07)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.2...v1.0.3)
-
-**Implemented enhancements:**
-
-- Add a change log [\#7](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/7)
 
 **Fixed bugs:**
 
