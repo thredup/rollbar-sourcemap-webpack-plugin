@@ -1,4 +1,4 @@
-RollbarSourceMapPlugin
+Next.js + RollbarSourceMapPlugin
 ========================
 [![Dependency Status](https://img.shields.io/david/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin)
 [![devDependency Status](https://img.shields.io/david/dev/thredup/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin#info=devDependencies)
@@ -21,7 +21,7 @@ Install the plugin with npm:
 $ npm install rollbar-sourcemap-webpack-plugin --save-dev
 ```
 
-## Basic Usage
+## Basic Usage without Next.js
 An example webpack.config.js:
 ```javascript
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin')
@@ -36,10 +36,23 @@ const webpackConfig = {
   plugins: [new RollbarSourceMapPlugin({
     accessToken: 'aaaabbbbccccddddeeeeffff00001111',
     version: 'version_string_here',
-    publicPath: PUBLIC_PATH
+    publicPath: PUBLIC_PATH,
+    buildId: '34348sdfsfdsg385353',
   })]
 }
 ```
+Or use for Next.js: (>=5.x.x)
+```javascript
+const { withRollbar } = require('rollbar-sourcemap-webpack-plugin');
+const PUBLIC_PATH = 'https://my.cdn.net/assets';
+
+module.exports = withRollbar({
+    accessToken: 'aaaabbbbccccddddeeeeffff00001111',
+    version: 'version_string_here',
+    publicPath: PUBLIC_PATH,
+    buildId: '34348sdfsfdsg385353',
+});
+````
 
 ## Plugin Configuration
 You can pass a hash of configuration options to `RollbarSourceMapPlugin`.
@@ -53,6 +66,9 @@ A string identifying the version of your code this source map package is for. Ty
 
 #### `publicPath: string` **(required)**
 The base url for the cdn where your production bundles are hosted.
+
+#### `buildId: string` **(required)**
+Unique BuildId from Next.js (name of directory on dist/_next).
 
 #### `includeChunks: string | [string]` **(optional)**
 An array of chunks for which sourcemaps should be uploaded. This should correspond to the names in the webpack config `entry` field. If there's only one chunk, it can be a string rather than an array. If not supplied, all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.

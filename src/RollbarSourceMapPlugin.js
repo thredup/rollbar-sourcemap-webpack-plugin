@@ -11,18 +11,22 @@ class RollbarSourceMapPlugin {
     accessToken,
     version,
     publicPath,
+    buildId,
     includeChunks = [],
     silent = false,
     ignoreErrors = false,
-    rollbarEndpoint = ROLLBAR_ENDPOINT
+    rollbarEndpoint = ROLLBAR_ENDPOINT,
+    nextJs = false,
   }) {
     this.accessToken = accessToken;
     this.version = version;
     this.publicPath = publicPath;
+    this.buildId = buildId;
     this.includeChunks = [].concat(includeChunks);
     this.silent = silent;
     this.ignoreErrors = ignoreErrors;
     this.rollbarEndpoint = rollbarEndpoint;
+    this.nextJs = nextJs;
   }
 
   afterEmit(compilation, cb) {
@@ -73,16 +77,22 @@ class RollbarSourceMapPlugin {
     }, {});
   }
 
+  getMinifiedUrl(sourceFile) {
+    return this.nextJs ?
+      `${this.publicPath}/_next/${sourceFile.replace('bundles/pages/', `${this.buildId}/page/`)}` :
+      `${this.publicPath}/${sourceFile}`;
+  }
+
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
     const req = request.post(this.rollbarEndpoint, (err, res, body) => {
       if (!err && res.statusCode === 200) {
         if (!this.silent) {
-          console.info(`Uploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
+          console.info(`Uploaded ${this.getMinifiedUrl(sourceFile)}.map to Rollbar`); // eslint-disable-line no-console
         }
         return cb();
       }
 
-      const errMessage = `failed to upload ${sourceMap} to Rollbar`;
+      const errMessage = `failed to upload ${this.getMinifiedUrl(sourceFile)}.map to Rollbar`;
       if (err) {
         return cb(new VError(err, errMessage));
       }
@@ -98,7 +108,7 @@ class RollbarSourceMapPlugin {
     const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
-    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+    form.append('minified_url', this.getMinifiedUrl(sourceFile));
     form.append('source_map', compilation.assets[sourceMap].source(), {
       filename: sourceMap,
       contentType: 'application/json'

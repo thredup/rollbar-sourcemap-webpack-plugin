@@ -1,8 +1,8 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
-  "main": "./dist/RollbarSourceMapPlugin.js",
+  "main": "./dist/index.js",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage.lcov",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
