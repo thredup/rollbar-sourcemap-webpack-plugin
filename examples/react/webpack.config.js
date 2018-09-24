@@ -1,17 +1,17 @@
-import path from 'path';
-import cp from 'child_process';
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import S3Plugin from 'webpack-s3-plugin';
-import RollbarSourcemapPlugin from 'rollbar-sourcemap-webpack-plugin';
+const path = require('path');
+const cp = require('child_process');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const S3Plugin = require('webpack-s3-plugin');
+const RollbarSourcemapPlugin = require('rollbar-sourcemap-webpack-plugin');
 
-const rollbarClientAccessToken = 'aaaabbbbccccddddeeeeffff00001111';
-const rollbarServerAccessToken = '11112222gggghhhhiiiijjjjkkkkllll';
-const bucket = 'BUCKET_HERE';
+const rollbarClientAccessToken = process.env.ROLLBAR_CLIENT_TOKEN;
+const rollbarServerAccessToken = process.env.ROLLBAR_SERVER_TOKEN;
+const bucket = process.env.S3_BUCKET;
 const s3Options = {
-  accessKeyId: 'ACCESS_KEY_HERE',
-  secretAccessKey: 'SECRECT_KEY_HERE',
-  region: 'REGION_HERE'
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION
 };
 const basePath = 'assets';
 const publicPath = `https://s3-${s3Options.region}.amazonaws.com/${bucket}/${basePath}`;
@@ -26,11 +26,11 @@ try {
   process.exit(1);
 }
 
-export default {
-  devtool: 'source-map',
+module.exports = {
+  mode: 'production',
+  devtool: 'hidden-source-map',
   entry: {
-    app: './src/index',
-    vendor: ['react', 'react-dom']
+    app: './src/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -38,13 +38,13 @@ export default {
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js'
   },
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      chunks: 'initial',
+    },
+  },
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity
-    }),
     new webpack.DefinePlugin({
       /* eslint-disable quote-props */
       'process.env': {
@@ -53,12 +53,6 @@ export default {
       /* eslint-enable quote-props */
       __ROLLBAR_ACCESS_TOKEN__: JSON.stringify(rollbarClientAccessToken),
       __GIT_REVISION__: JSON.stringify(version)
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      mangle: false
     }),
     new HtmlWebpackPlugin({ template: 'src/index.html' }),
     // Publish minified source
@@ -91,12 +85,14 @@ export default {
     })
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loaders: ['babel'],
         exclude: /node_modules/,
-        include: path.join(__dirname, 'src')
+        include: path.join(__dirname, 'src'),
+        use: [{
+          loader: 'babel-loader'
+        }]
       }
     ]
   }
