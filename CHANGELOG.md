@@ -1,7 +1,15 @@
 # Change Log
 
-## [2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.3.0) (2018-04-28)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...2.3.0)
+## [2.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.4.0) (2018-09-24)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.3.0...2.4.0)
+
+**Merged pull requests:**
+
+- Update example to use webpack 4 [\#57](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/57) ([brandondoran](https://github.com/brandondoran))
+- Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
+
+## [v2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.3.0) (2018-04-29)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...v2.3.0)
 
 **Closed issues:**
 
@@ -129,10 +137,6 @@
 ## [v1.0.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.4) (2016-05-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...v1.0.4)
 
-**Implemented enhancements:**
-
-- Add a change log [\#7](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/7)
-
 **Merged pull requests:**
 
 - chore\(package\): update nyc to version 6.4.4 [\#12](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/12) ([brandondoran](https://github.com/brandondoran))
@@ -141,6 +145,10 @@
 
 ## [v1.0.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.3) (2016-05-07)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.2...v1.0.3)
+
+**Implemented enhancements:**
+
+- Add a change log [\#7](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/7)
 
 **Fixed bugs:**
 
