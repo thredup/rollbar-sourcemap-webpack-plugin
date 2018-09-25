@@ -29,23 +29,24 @@
   },
   "homepage": "https://github.com/thredup/rollbar-sourcemap-webpack-plugin#readme",
   "dependencies": {
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
-    "rollbar-browser": "^1.9.1"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "rollbar": "^2.4.7"
   },
   "devDependencies": {
     "babel-core": "^6.8.0",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.6.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.5.0",
     "babel-register": "^6.8.0",
-    "cross-env": "^1.0.7",
+    "cross-env": "^5.2.0",
     "express": "^4.13.4",
-    "html-webpack-plugin": "^2.16.1",
+    "html-webpack-plugin": "^3.2.0",
     "rimraf": "^2.5.2",
-    "rollbar-sourcemap-webpack-plugin": "^1.0.4",
-    "webpack": "^1.13.0",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-s3-plugin": "^0.7.2"
+    "rollbar-sourcemap-webpack-plugin": "^2.3.0",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-middleware": "^3.3.0",
+    "webpack-s3-plugin": "^1.0.2"
   }
 }
