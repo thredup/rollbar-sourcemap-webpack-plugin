@@ -8,6 +8,11 @@ describe('RollbarSourceMapPlugin', function() {
     this.compiler = {
       options: {},
       plugin: createSpy(),
+      hooks: {
+        afterEmit: {
+          tapAsync: createSpy()
+        },
+      },
       resolvers: {
         loader: {
           plugin: createSpy(),
@@ -27,8 +32,6 @@ describe('RollbarSourceMapPlugin', function() {
     };
 
     this.plugin = new RollbarSourceMapPlugin(this.options);
-
-    this.plugin.apply(this.compiler);
   });
 
   describe('constructor', function() {
@@ -80,7 +83,18 @@ describe('RollbarSourceMapPlugin', function() {
   });
 
   describe('apply', function() {
-    it('should hook into `after-emit"', function() {
+    it('should hook into "after-emit"', function() {
+      this.plugin.apply(this.compiler);
+      expect(this.compiler.hooks.afterEmit.tapAsync.calls.length).toBe(1);
+      expect(this.compiler.hooks.afterEmit.tapAsync.calls[0].arguments).toEqual([
+        'after-emit',
+        this.plugin.afterEmit.bind(this.plugin)
+      ]);
+    });
+
+    it('should plug into `after-emit" when "hooks" is undefined', function() {
+      delete this.compiler.hooks;
+      this.plugin.apply(this.compiler);
       expect(this.compiler.plugin.calls.length).toBe(1);
       expect(this.compiler.plugin.calls[0].arguments).toEqual([
         'after-emit',
