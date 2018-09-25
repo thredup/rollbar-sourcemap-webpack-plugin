@@ -1,4 +1,4 @@
-import rollbar from 'rollbar-browser/dist/rollbar.umd.nojson';
+import rollbar from 'rollbar';
 
 export default rollbar.init({
   accessToken: __ROLLBAR_ACCESS_TOKEN__,
