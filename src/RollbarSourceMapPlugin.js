@@ -50,7 +50,11 @@ class RollbarSourceMapPlugin {
   }
 
   apply(compiler) {
-    compiler.plugin('after-emit', this.afterEmit.bind(this));
+    if (compiler.hooks) {
+      compiler.hooks.afterEmit.tapAsync('after-emit', this.afterEmit.bind(this));
+    } else {
+      compiler.plugin('after-emit', this.afterEmit.bind(this));
+    }
   }
 
   getAssets(compilation) {
