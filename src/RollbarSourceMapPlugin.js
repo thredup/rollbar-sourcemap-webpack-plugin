@@ -3,6 +3,7 @@ import request from 'request';
 import VError from 'verror';
 import find from 'lodash.find';
 import reduce from 'lodash.reduce';
+import isString from 'lodash.isstring';
 import { handleError, validateOptions } from './helpers';
 import { ROLLBAR_ENDPOINT } from './constants';
 
@@ -77,6 +78,13 @@ class RollbarSourceMapPlugin {
     }, {});
   }
 
+  getPublicPath(sourceFile) {
+    if (isString(this.publicPath)) {
+      return `${this.publicPath}/${sourceFile}`;
+    }
+    return this.publicPath(sourceFile);
+  }
+
   uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
     const req = request.post(this.rollbarEndpoint, (err, res, body) => {
       if (!err && res.statusCode === 200) {
@@ -102,7 +110,7 @@ class RollbarSourceMapPlugin {
     const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
-    form.append('minified_url', `${this.publicPath}/${sourceFile}`);
+    form.append('minified_url', this.getPublicPath(sourceFile));
     form.append('source_map', compilation.assets[sourceMap].source(), {
       filename: sourceMap,
       contentType: 'application/json'

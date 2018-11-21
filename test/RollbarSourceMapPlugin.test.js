@@ -199,6 +199,30 @@ describe('RollbarSourceMapPlugin', function() {
     });
   });
 
+  describe('getPublicPath', function() {
+    beforeEach(function() {
+      this.options = {
+        accessToken: 'aaaabbbbccccddddeeeeffff00001111',
+        version: 'master-latest-sha',
+        publicPath: 'https://my.cdn.net/assets'
+      };
+      this.sourceFile = 'vendor.5190.js';
+    });
+
+    it('should return \'publicPath\' value if it\'s a string', function() {
+      const plugin = new RollbarSourceMapPlugin(this.options);
+      const result = plugin.getPublicPath(this.sourceFile);
+      expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
+    });
+
+    it('should return whatever is returned by publicPath argument when it\'s a function', function () {
+      const options = Object.assign({}, this.options, { publicPath: sourceFile => `https://my.function.proxy.cdn/assets/${sourceFile}` });
+      const plugin = new RollbarSourceMapPlugin(options);
+      const result = plugin.getPublicPath(this.sourceFile);
+      expect(result).toBe('https://my.function.proxy.cdn/assets/vendor.5190.js');
+    });
+  });
+
   describe('getAssets', function() {
     beforeEach(function() {
       this.chunks = [

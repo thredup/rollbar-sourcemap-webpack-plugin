@@ -118,5 +118,28 @@ describe('helpers', function() {
       expect(result).toBeA(Array);
       expect(result.length).toBe(ROLLBAR_REQ_FIELDS.length);
     });
+
+    it('should return an error if publicPath is not a string nor a function', function () {
+      const options = {
+        accessToken: 'aaabbbccc000111',
+        version: 'latest',
+        publicPath: 3
+      };
+      const result = helpers.validateOptions(options);
+      expect(result).toBeA(Array);
+      expect(result.length).toBe(1);
+      expect(result[0]).toBeA(TypeError)
+        .toInclude({ message: 'invalid type. \'publicPath\' expected to be string or function.' });
+    });
+
+    it('should return null if all required arguments are provided and accept a function as the publicPath argument', function () {
+      const options = {
+        accessToken: 'aaabbbccc000111',
+        version: 'latest',
+        publicPath: () => {}
+      };
+      const result = helpers.validateOptions(options);
+      expect(result).toBe(null);
+    });
   });
 });
