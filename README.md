@@ -52,7 +52,7 @@ Your rollbar `post_server_item` access token.
 A string identifying the version of your code this source map package is for. Typically this will be the full git sha.
 
 #### `publicPath: string | function(string): string` **(required)**
-The base url for the cdn where your production bundles are hosted or a function that receives the source file local address and returns the url for that file in the cdn where your production bundles are hosted.
+The base url for the cdn where your production bundles are hosted or a function that receives the source file local address and returns the url for that file in the cdn where your production bundles are hosted. You should use the function form when your project has some kind of divergence between url routes and actual folder structure. For example: NextJs projects can serve bundled files in the following url `http://my.app/_next/123abc123abc123/page/home.js` but have a folder structure like this `APP_ROOT/build/bundles/pages/home.js`. The function form allows you to transform the final public url in order to conform with your routing needs.
 
 #### `includeChunks: string | [string]` **(optional)**
 An array of chunks for which sourcemaps should be uploaded. This should correspond to the names in the webpack config `entry` field. If there's only one chunk, it can be a string rather than an array. If not supplied, all sourcemaps emitted by webpack will be uploaded, including those for unnamed chunks.
