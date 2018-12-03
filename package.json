@@ -62,6 +62,8 @@
     "babel-runtime": "^6.26.0",
     "lodash.find": "^4.3.0",
     "lodash.foreach": "^4.2.0",
+    "lodash.isfunction": "^3.0.9",
+    "lodash.isstring": "^4.0.1",
     "lodash.reduce": "^4.3.0",
     "request": "^2.85.0",
     "verror": "^1.6.1"
