@@ -1,7 +1,14 @@
 # Change Log
 
-## [2.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.4.0) (2018-09-24)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.3.0...2.4.0)
+## [2.5.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.5.0) (2018-12-02)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.4.0...2.5.0)
+
+**Merged pull requests:**
+
+- Feature/public path as function [\#58](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/58) ([IgorCRD](https://github.com/IgorCRD))
+
+## [v2.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.4.0) (2018-09-25)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.3.0...v2.4.0)
 
 **Merged pull requests:**
 
