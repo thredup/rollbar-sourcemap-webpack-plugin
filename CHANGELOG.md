@@ -52,6 +52,8 @@
 ## [v2.0.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.0.0) (2017-03-06)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.7.0...v2.0.0)
 
+**NOTE: THERE WERE NO BREAKING CHANGES IN THIS RELEASE**
+
 **Implemented enhancements:**
 
 - Add a simple working example for usage in an Angular app [\#6](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/6)
