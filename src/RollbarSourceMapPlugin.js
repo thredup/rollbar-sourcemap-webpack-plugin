@@ -75,7 +75,7 @@ class RollbarSourceMapPlugin {
         ...result,
         { sourceFile, sourceMap }
       ];
-    }, {});
+    }, []);
   }
 
   getPublicPath(sourceFile) {

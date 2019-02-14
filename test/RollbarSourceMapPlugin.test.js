@@ -3,9 +3,11 @@ import nock from 'nock';
 import RollbarSourceMapPlugin from '../src/RollbarSourceMapPlugin';
 import { ROLLBAR_ENDPOINT } from '../src/constants';
 
-describe('RollbarSourceMapPlugin', function() {
-  beforeEach(function() {
-    this.compiler = {
+describe('RollbarSourceMapPlugin', function () {
+  let compiler;
+  let plugin;
+  beforeEach(function () {
+    compiler = {
       options: {},
       plugin: createSpy(),
       hooks: {
@@ -25,121 +27,123 @@ describe('RollbarSourceMapPlugin', function() {
       },
     };
 
-    this.options = {
+    const options = {
       accessToken: 'aaaabbbbccccddddeeeeffff00001111',
       version: 'master-latest-sha',
       publicPath: 'https://my.cdn.net/assets'
     };
 
-    this.plugin = new RollbarSourceMapPlugin(this.options);
+    plugin = new RollbarSourceMapPlugin(options);
   });
 
-  describe('constructor', function() {
-    it('should return an instance', function() {
-      expect(this.plugin).toBeA(RollbarSourceMapPlugin);
+  describe('constructor', function () {
+    it('returns an instance', function () {
+      expect(plugin).toBeA(RollbarSourceMapPlugin);
     });
 
-    it('should set options', function() {
+    it('sets options', function () {
       const options = Object.assign({}, this.options, {
         includeChunks: ['foo', 'bar'],
         silent: true
       });
-      const plugin = new RollbarSourceMapPlugin(options);
+      plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude(options);
     });
 
-    it('should default silent to false', function() {
-      expect(this.plugin).toInclude({ silent: false });
+    it('defaults silent to false', function () {
+      expect(plugin).toInclude({ silent: false });
     });
 
-    it('should default includeChunks to []', function() {
-      expect(this.plugin).toInclude({ includeChunks: [] });
+    it('defaults includeChunks to []', function () {
+      expect(plugin).toInclude({ includeChunks: [] });
     });
 
-    it('should accept string value for includeChunks', function() {
+    it('accepts string value for includeChunks', function () {
       const options = Object.assign({}, this.options, { includeChunks: 'foo' });
-      const plugin = new RollbarSourceMapPlugin(options);
+      plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ includeChunks: ['foo'] });
     });
 
-    it('should accept array value for includeChunks', function() {
+    it('accepts array value for includeChunks', function () {
       const options = Object.assign({}, this.options, {
         includeChunks: ['foo', 'bar']
       });
-      const plugin = new RollbarSourceMapPlugin(options);
+      plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ includeChunks: ['foo', 'bar'] });
     });
 
-    it('should default rollbarEndpoint to ROLLBAR_ENDPOINT constant', function() {
-      expect(this.plugin).toInclude({ rollbarEndpoint: ROLLBAR_ENDPOINT });
+    it('defaults rollbarEndpoint to ROLLBAR_ENDPOINT constant', function () {
+      expect(plugin).toInclude({ rollbarEndpoint: ROLLBAR_ENDPOINT });
     });
 
-    it('should access string value for rollbarEndpoint', function() {
+    it('access string value for rollbarEndpoint', function () {
       const customEndpoint = 'https://api.rollbar.custom.com/api/1/sourcemap';
       const options = Object.assign({}, this.options, { rollbarEndpoint: customEndpoint });
-      const plugin = new RollbarSourceMapPlugin(options);
+      plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ rollbarEndpoint: customEndpoint });
     });
   });
 
-  describe('apply', function() {
-    it('should hook into "after-emit"', function() {
-      this.plugin.apply(this.compiler);
-      expect(this.compiler.hooks.afterEmit.tapAsync.calls.length).toBe(1);
-      expect(this.compiler.hooks.afterEmit.tapAsync.calls[0].arguments).toEqual([
+  describe('apply', function () {
+    it('hooks into "after-emit"', function () {
+      plugin.apply(compiler);
+      expect(compiler.hooks.afterEmit.tapAsync.calls.length).toBe(1);
+      expect(compiler.hooks.afterEmit.tapAsync.calls[0].arguments).toEqual([
         'after-emit',
-        this.plugin.afterEmit.bind(this.plugin)
+        plugin.afterEmit.bind(plugin)
       ]);
     });
 
-    it('should plug into `after-emit" when "hooks" is undefined', function() {
-      delete this.compiler.hooks;
-      this.plugin.apply(this.compiler);
-      expect(this.compiler.plugin.calls.length).toBe(1);
-      expect(this.compiler.plugin.calls[0].arguments).toEqual([
+    it('plugs into `after-emit" when "hooks" is undefined', function () {
+      delete compiler.hooks;
+      plugin.apply(compiler);
+      expect(compiler.plugin.calls.length).toBe(1);
+      expect(compiler.plugin.calls[0].arguments).toEqual([
         'after-emit',
-        this.plugin.afterEmit.bind(this.plugin)
+        plugin.afterEmit.bind(plugin)
       ]);
     });
   });
 
-  describe('afterEmit', function() {
-    beforeEach(function() {
-      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+  describe('afterEmit', function () {
+    let uploadSourceMaps;
+    beforeEach(function () {
+      uploadSourceMaps = spyOn(plugin, 'uploadSourceMaps')
         .andCall((compilation, callback) => callback());
     });
 
-    afterEach(function() {
+    afterEach(function () {
       if (isSpy(this.uploadSourceMaps)) {
         this.uploadSourceMaps.restore();
       }
     });
 
-    it('should call uploadSourceMaps', function(done) {
+    it('calls uploadSourceMaps', function (done) {
       const compilation = {
         errors: [],
         warnings: []
       };
-      this.plugin.afterEmit(compilation, () => {
-        expect(this.uploadSourceMaps.calls.length).toBe(1);
+
+      plugin.afterEmit(compilation, () => {
+        expect(uploadSourceMaps.calls.length).toBe(1);
         expect(compilation.errors.length).toBe(0);
         expect(compilation.warnings.length).toBe(0);
         done();
       });
     });
 
-    it('should add upload warnings to compilation warnings, ' +
-      'if ignoreErrors is true and silent is false', function(done) {
+    it('adds upload warnings to compilation warnings, ' +
+      'if ignoreErrors is true and silent is false', function (done) {
       const compilation = {
         errors: [],
         warnings: []
       };
-      this.plugin.ignoreErrors = true;
-      this.plugin.silent = false;
-      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+      plugin.ignoreErrors = true;
+      plugin.silent = false;
+      uploadSourceMaps = spyOn(plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
-      this.plugin.afterEmit(compilation, () => {
-        expect(this.uploadSourceMaps.calls.length).toBe(1);
+      plugin.afterEmit(compilation, () => {
+        expect(uploadSourceMaps.calls.length).toBe(1);
         expect(compilation.errors.length).toBe(0);
         expect(compilation.warnings.length).toBe(1);
         expect(compilation.warnings[0]).toBeA(Error);
@@ -147,33 +151,33 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
-    it('should not add upload errors to compilation warnings if silent is true', function(done) {
+    it('does not add upload errors to compilation warnings if silent is true', function (done) {
       const compilation = {
         errors: [],
         warnings: []
       };
-      this.plugin.ignoreErrors = true;
-      this.plugin.silent = true;
-      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+      plugin.ignoreErrors = true;
+      plugin.silent = true;
+      uploadSourceMaps = spyOn(plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
-      this.plugin.afterEmit(compilation, () => {
-        expect(this.uploadSourceMaps.calls.length).toBe(1);
+      plugin.afterEmit(compilation, () => {
+        expect(uploadSourceMaps.calls.length).toBe(1);
         expect(compilation.errors.length).toBe(0);
         expect(compilation.warnings.length).toBe(0);
         done();
       });
     });
 
-    it('should add upload errors to compilation errors', function(done) {
+    it('adds upload errors to compilation errors', function (done) {
       const compilation = {
         errors: [],
         warnings: []
       };
-      this.plugin.ignoreErrors = false;
-      this.uploadSourceMaps = spyOn(this.plugin, 'uploadSourceMaps')
+      plugin.ignoreErrors = false;
+      uploadSourceMaps = spyOn(plugin, 'uploadSourceMaps')
         .andCall((comp, callback) => callback(new Error()));
-      this.plugin.afterEmit(compilation, () => {
-        expect(this.uploadSourceMaps.calls.length).toBe(1);
+      plugin.afterEmit(compilation, () => {
+        expect(uploadSourceMaps.calls.length).toBe(1);
         expect(compilation.warnings.length).toBe(0);
         expect(compilation.errors.length).toBe(1);
         expect(compilation.errors[0]).toBeA(Error);
@@ -181,51 +185,57 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
-    it('should add validation errors to compilation', function(done) {
+    it('adds validation errors to compilation', function (done) {
       const compilation = {
         errors: [],
         warnings: []
       };
 
-      this.plugin = new RollbarSourceMapPlugin({
+      plugin = new RollbarSourceMapPlugin({
         version: 'master-latest-sha',
         publicPath: 'https://my.cdn.net/assets'
       });
-      this.plugin.afterEmit(compilation, () => {
-        expect(this.uploadSourceMaps.calls.length).toBe(0);
+
+      plugin.afterEmit(compilation, () => {
+        expect(uploadSourceMaps.calls.length).toBe(0);
         expect(compilation.errors.length).toBe(1);
         done();
       });
     });
   });
 
-  describe('getPublicPath', function() {
-    beforeEach(function() {
-      this.options = {
+  describe('getPublicPath', function () {
+    let defaultOptions;
+    let sourceFile;
+
+    beforeEach(function () {
+      defaultOptions = {
         accessToken: 'aaaabbbbccccddddeeeeffff00001111',
         version: 'master-latest-sha',
         publicPath: 'https://my.cdn.net/assets'
       };
-      this.sourceFile = 'vendor.5190.js';
+      sourceFile = 'vendor.5190.js';
     });
 
-    it('should return \'publicPath\' value if it\'s a string', function() {
-      const plugin = new RollbarSourceMapPlugin(this.options);
-      const result = plugin.getPublicPath(this.sourceFile);
+    it('returns \'publicPath\' value if it\'s a string', function () {
+      plugin = new RollbarSourceMapPlugin(defaultOptions);
+      const result = plugin.getPublicPath(sourceFile);
       expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
     });
 
-    it('should return whatever is returned by publicPath argument when it\'s a function', function () {
-      const options = Object.assign({}, this.options, { publicPath: sourceFile => `https://my.function.proxy.cdn/assets/${sourceFile}` });
-      const plugin = new RollbarSourceMapPlugin(options);
-      const result = plugin.getPublicPath(this.sourceFile);
+    it('returns whatever is returned by publicPath argument when it\'s a function', function () {
+      const options = Object.assign({}, defaultOptions, { publicPath: sourceFile => `https://my.function.proxy.cdn/assets/${sourceFile}` }); // eslint-disable-line no-shadow
+      plugin = new RollbarSourceMapPlugin(options);
+      const result = plugin.getPublicPath(sourceFile);
       expect(result).toBe('https://my.function.proxy.cdn/assets/vendor.5190.js');
     });
   });
 
-  describe('getAssets', function() {
-    beforeEach(function() {
-      this.chunks = [
+  describe('getAssets', function () {
+    let chunks;
+    let compilation;
+    beforeEach(function () {
+      chunks = [
         {
           id: 0,
           names: ['vendor'],
@@ -236,23 +246,24 @@ describe('RollbarSourceMapPlugin', function() {
           files: ['app.81c1.js', 'app.81c1.js.map']
         }
       ];
-      this.compilation = {
+
+      compilation = {
         getStats: () => ({
-          toJson: () => ({ chunks: this.chunks })
+          toJson: () => ({ chunks })
         })
       };
     });
 
-    it('should return an array of js, sourcemap tuples', function() {
-      const assets = this.plugin.getAssets(this.compilation);
+    it('returns an array of js, sourcemap tuples', function () {
+      const assets = plugin.getAssets(compilation);
       expect(assets).toEqual([
         { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' },
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ]);
     });
 
-    it('should ignore chunks that do not have a sourcemap asset', function() {
-      this.chunks = [
+    it('ignores chunks that do not have a sourcemap asset', function () {
+      chunks = [
         {
           id: 0,
           names: ['vendor'],
@@ -263,14 +274,14 @@ describe('RollbarSourceMapPlugin', function() {
           files: ['app.81c1.js', 'app.81c1.js.map']
         }
       ];
-      const assets = this.plugin.getAssets(this.compilation);
+      const assets = plugin.getAssets(compilation);
       expect(assets).toEqual([
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ]);
     });
 
-    it('should include unnamed chunks when includeChunks is not specified', function() {
-      this.chunks = [
+    it('includes unnamed chunks when includeChunks is not specified', function () {
+      chunks = [
         {
           id: 0,
           names: ['vendor'],
@@ -289,7 +300,7 @@ describe('RollbarSourceMapPlugin', function() {
           files: ['app.81c1.js', 'app.81c1.js.map']
         }
       ];
-      const assets = this.plugin.getAssets(this.compilation);
+      const assets = plugin.getAssets(compilation);
       expect(assets).toEqual([
         { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' },
         { sourceFile: '1.cfea.js', sourceMap: '1.cfea.js.map' },
@@ -298,61 +309,66 @@ describe('RollbarSourceMapPlugin', function() {
       ]);
     });
 
-    it('should filter out chunks that are not in includeChunks', function() {
-      this.plugin.includeChunks = ['app'];
-      const assets = this.plugin.getAssets(this.compilation);
+    it('filters out chunks that are not in includeChunks', function () {
+      plugin.includeChunks = ['app'];
+      const assets = plugin.getAssets(compilation);
       expect(assets).toEqual([
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ]);
     });
   });
 
-  describe('uploadSourceMaps', function() {
-    beforeEach(function() {
-      this.compilation = { name: 'test', errors: [] };
-      this.assets = [
+  describe('uploadSourceMaps', function () {
+    let compilation;
+    let assets;
+    let getAssets;
+    let uploadSourceMap;
+
+    beforeEach(function () {
+      compilation = { name: 'test', errors: [] };
+      assets = [
         { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' },
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ];
-      this.getAssets = spyOn(this.plugin, 'getAssets').andReturn(this.assets);
-      this.uploadSourceMap = spyOn(this.plugin, 'uploadSourceMap')
+      getAssets = spyOn(plugin, 'getAssets').andReturn(assets);
+      uploadSourceMap = spyOn(plugin, 'uploadSourceMap')
         .andCall((comp, chunk, callback) => callback());
     });
 
-    afterEach(function() {
-      [this.getAssets, this.uploadSourceMap].forEach((func) => {
+    afterEach(function () {
+      [getAssets, uploadSourceMap].forEach((func) => {
         if (isSpy(func)) {
           func.restore();
         }
       });
     });
 
-    it('should call uploadSourceMap for each chunk', function(done) {
-      this.plugin.uploadSourceMaps(this.compilation, (err) => {
+    it('calls uploadSourceMap for each chunk', function (done) {
+      plugin.uploadSourceMaps(compilation, (err) => {
         if (err) {
           return done(err);
         }
-        expect(this.getAssets.calls.length).toBe(1);
-        expect(this.compilation.errors.length).toBe(0);
-        expect(this.uploadSourceMap.calls.length).toBe(2);
+        expect(getAssets.calls.length).toBe(1);
+        expect(compilation.errors.length).toBe(0);
+        expect(uploadSourceMap.calls.length).toBe(2);
 
-        expect(this.uploadSourceMap.calls[0].arguments[0])
+        expect(uploadSourceMap.calls[0].arguments[0])
           .toEqual({ name: 'test', errors: [] });
-        expect(this.uploadSourceMap.calls[0].arguments[1])
+        expect(uploadSourceMap.calls[0].arguments[1])
           .toEqual({ sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' });
 
-        expect(this.uploadSourceMap.calls[1].arguments[0])
+        expect(uploadSourceMap.calls[1].arguments[0])
           .toEqual({ name: 'test', errors: [] });
-        expect(this.uploadSourceMap.calls[1].arguments[1])
+        expect(uploadSourceMap.calls[1].arguments[1])
           .toEqual({ sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' });
         done();
       });
     });
 
-    it('should call err-back if uploadSourceMap errors', function(done) {
-      this.uploadSourceMap = spyOn(this.plugin, 'uploadSourceMap')
+    it('calls err-back if uploadSourceMap errors', function (done) {
+      uploadSourceMap = spyOn(plugin, 'uploadSourceMap')
         .andCall((comp, chunk, callback) => callback(new Error()));
-      this.plugin.uploadSourceMaps(this.compilation, (err, result) => {
+      plugin.uploadSourceMaps(compilation, (err, result) => {
         expect(err).toExist();
         expect(err).toBeA(Error);
         expect(result).toBe(undefined);
@@ -361,10 +377,12 @@ describe('RollbarSourceMapPlugin', function() {
     });
   });
 
-  describe('uploadSourceMap', function() {
-    beforeEach(function() {
-      this.info = spyOn(console, 'info');
-      this.compilation = {
+  describe('uploadSourceMap', function () {
+    const info = spyOn(console, 'info');
+    let compilation;
+    let chunk;
+    beforeEach(function () {
+      compilation = {
         assets: {
           'vendor.5190.js.map': { source: () => '{"version":3,"sources":[]' },
           'app.81c1.js.map': { source: () => '{"version":3,"sources":[]' }
@@ -372,70 +390,66 @@ describe('RollbarSourceMapPlugin', function() {
         errors: []
       };
 
-      this.chunk = {
+      chunk = {
         sourceFile: 'vendor.5190.js',
         sourceMap: 'vendor.5190.js.map'
       };
     });
 
-    afterEach(function() {
-      this.info.restore();
+    afterEach(function () {
+      info.reset();
     });
 
-    it('should callback without err param if upload is success', function(done) {
+    it('callback without err param if upload is success', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      const { compilation, chunk } = this;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         if (err) {
           return done(err);
         }
-        expect(this.info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
+        expect(info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
         done();
       });
     });
 
-    it('should not log upload to console if silent option is true', function(done) {
+    it('does not log upload to console if silent option is true', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      const { compilation, chunk } = this;
-      this.plugin.silent = true;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.silent = true;
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         if (err) {
           return done(err);
         }
-        expect(this.info).toNotHaveBeenCalled();
+        expect(info).toNotHaveBeenCalled();
         done();
       });
     });
 
-    it('should log upload to console if silent option is false', function(done) {
+    it('logs upload to console if silent option is false', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      const { compilation, chunk } = this;
-      this.plugin.silent = false;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.silent = false;
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         if (err) {
           return done(err);
         }
-        expect(this.info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
+        expect(info).toHaveBeenCalledWith('Uploaded vendor.5190.js.map to Rollbar');
         done();
       });
     });
 
-    it('should return error message if failure response includes message', function(done) {
+    it('returns error message if failure response includes message', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(422, JSON.stringify({ err: 1, message: 'missing source_map file upload' }));
 
-      const { compilation, chunk } = this;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
         expect(err).toInclude({
           message: 'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
@@ -444,26 +458,24 @@ describe('RollbarSourceMapPlugin', function() {
       });
     });
 
-    it('should handle error response with empty body', function(done) {
+    it('handles error response with empty body', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(422, null);
 
-      const { compilation, chunk } = this;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
         expect(err.message).toMatch(/failed to upload vendor\.5190.js\.map to Rollbar: [\w\s]+/);
         done();
       });
     });
 
-    it('should handle HTTP request error', function(done) {
+    it('handles HTTP request error', function (done) {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .replyWithError('something awful happened');
 
-      const { compilation, chunk } = this;
-      this.plugin.uploadSourceMap(compilation, chunk, (err) => {
+      plugin.uploadSourceMap(compilation, chunk, (err) => {
         expect(err).toExist();
         expect(err).toInclude({
           message: 'failed to upload vendor.5190.js.map to Rollbar: something awful happened'
