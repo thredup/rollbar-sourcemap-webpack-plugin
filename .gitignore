@@ -3,4 +3,4 @@ dist
 tmp
 *.log
 .nyc_output
-coverage.lcov
+coverage

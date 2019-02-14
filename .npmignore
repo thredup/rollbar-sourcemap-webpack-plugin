@@ -5,5 +5,5 @@ test
 examples
 docs
 tmp
-coverage.lcov
+coverage
 .nyc_output
