@@ -64,8 +64,8 @@ class RollbarSourceMapPlugin {
         return result;
       }
 
-      const sourceFile = find(chunk.files, file => /\.js$/.test(file));
-      const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
+      const sourceFile = find(chunk.files, file => /\.js/.test(file));
+      const sourceMap = find(chunk.files, file => /\.js\.map/.test(file));
 
       if (!sourceFile || !sourceMap) {
         return result;
