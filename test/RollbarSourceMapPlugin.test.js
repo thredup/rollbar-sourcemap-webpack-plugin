@@ -64,7 +64,7 @@ describe('RollbarSourceMapPlugin', function() {
 
     it('should accept array value for includeChunks', function() {
       const options = Object.assign({}, this.options, {
-        includeChunks: ['foo', 'bar'],
+        includeChunks: ['foo', 'bar']
       });
       const plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toInclude({ includeChunks: ['foo', 'bar'] });
@@ -88,7 +88,7 @@ describe('RollbarSourceMapPlugin', function() {
       expect(this.compiler.hooks.emit.tapAsync.calls.length).toBe(1);
       expect(this.compiler.hooks.emit.tapAsync.calls[0].arguments).toEqual([
         'emit',
-        this.plugin.emit.bind(this.plugin),
+        this.plugin.emit.bind(this.plugin)
       ]);
     });
 
@@ -96,7 +96,10 @@ describe('RollbarSourceMapPlugin', function() {
       delete this.compiler.hooks;
       this.plugin.apply(this.compiler);
       expect(this.compiler.plugin.calls.length).toBe(1);
-      expect(this.compiler.plugin.calls[0].arguments).toEqual(['emit', this.plugin.emit.bind(this.plugin)]);
+      expect(this.compiler.plugin.calls[0].arguments).toEqual([
+        'emit',
+        this.plugin.emit.bind(this.plugin)
+      ]);
     });
   });
 
@@ -129,7 +132,7 @@ describe('RollbarSourceMapPlugin', function() {
       'if ignoreErrors is true and silent is false', function(done) {
       const compilation = {
         errors: [],
-        warnings: [],
+        warnings: []
       };
       this.plugin.ignoreErrors = true;
       this.plugin.silent = false;
@@ -147,7 +150,7 @@ describe('RollbarSourceMapPlugin', function() {
     it('should not add upload errors to compilation warnings if silent is true', function(done) {
       const compilation = {
         errors: [],
-        warnings: [],
+        warnings: []
       };
       this.plugin.ignoreErrors = true;
       this.plugin.silent = true;
@@ -212,7 +215,7 @@ describe('RollbarSourceMapPlugin', function() {
       expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
     });
 
-    it('should return whatever is returned by publicPath argument when it\'s a function', function() {
+    it('should return whatever is returned by publicPath argument when it\'s a function', function () {
       const options = Object.assign({}, this.options, { publicPath: sourceFile => `https://my.function.proxy.cdn/assets/${sourceFile}` });
       const plugin = new RollbarSourceMapPlugin(options);
       const result = plugin.getPublicPath(this.sourceFile);
@@ -226,11 +229,11 @@ describe('RollbarSourceMapPlugin', function() {
         {
           id: 0,
           names: ['vendor'],
-          files: ['vendor.5190.js', 'vendor.5190.js.map'],
+          files: ['vendor.5190.js', 'vendor.5190.js.map']
         }, {
           id: 1,
           names: ['app'],
-          files: ['app.81c1.js', 'app.81c1.js.map'],
+          files: ['app.81c1.js', 'app.81c1.js.map']
         }
       ];
       this.compilation = {
@@ -309,7 +312,7 @@ describe('RollbarSourceMapPlugin', function() {
       this.compilation = { name: 'test', errors: [] };
       this.assets = [
         { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' },
-        { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' },
+        { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
       ];
       this.getAssets = spyOn(this.plugin, 'getAssets').andReturn(this.assets);
       this.uploadSourceMap = spyOn(this.plugin, 'uploadSourceMap')
