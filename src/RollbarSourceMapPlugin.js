@@ -15,7 +15,7 @@ class RollbarSourceMapPlugin {
     includeChunks = [],
     silent = false,
     ignoreErrors = false,
-    rollbarEndpoint = ROLLBAR_ENDPOINT,
+    rollbarEndpoint = ROLLBAR_ENDPOINT
   }) {
     this.accessToken = accessToken;
     this.version = version;
@@ -58,25 +58,24 @@ class RollbarSourceMapPlugin {
     const { includeChunks } = this;
     const { chunks } = compilation.getStats().toJson();
 
-    return reduce(
-      chunks,
-      (result, chunk) => {
-        const chunkName = chunk.names[0];
-        if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
-          return result;
-        }
+    return reduce(chunks, (result, chunk) => {
+      const chunkName = chunk.names[0];
+      if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
+        return result;
+      }
 
-        const sourceFile = find(chunk.files, file => /\.js$/.test(file));
-        const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
+      const sourceFile = find(chunk.files, file => /\.js$/.test(file));
+      const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
 
-        if (!sourceFile || !sourceMap) {
-          return result;
-        }
+      if (!sourceFile || !sourceMap) {
+        return result;
+      }
 
-        return [...result, { sourceFile, sourceMap }];
-      },
-      {}
-    );
+      return [
+        ...result,
+        { sourceFile, sourceMap }
+      ];
+    }, {});
   }
 
   getPublicPath(sourceFile) {
@@ -114,7 +113,7 @@ class RollbarSourceMapPlugin {
     form.append('minified_url', this.getPublicPath(sourceFile));
     form.append('source_map', compilation.assets[sourceMap].source(), {
       filename: sourceMap,
-      contentType: 'application/json',
+      contentType: 'application/json'
     });
   }
 
