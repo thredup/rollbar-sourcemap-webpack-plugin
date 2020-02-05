@@ -80,7 +80,8 @@ class RollbarSourceMapPlugin {
 
   getPublicPath(sourceFile) {
     if (isString(this.publicPath)) {
-      return `${this.publicPath}/${sourceFile}`;
+      const sep = this.publicPath.endsWith('/') ? '' : '/';
+      return `${this.publicPath}${sep}${sourceFile}`;
     }
     return this.publicPath(sourceFile);
   }
