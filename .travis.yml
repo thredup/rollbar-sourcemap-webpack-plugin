@@ -18,5 +18,6 @@ script:
   - npm run lint
   - npm run test
   - npm run build
+  - ls -la coverage
 after_success:
   - npm run coverage:report
