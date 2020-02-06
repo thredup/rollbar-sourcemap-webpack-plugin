@@ -21,4 +21,6 @@ jobs:
   include:
     - stage: publish coverage report
       node_js: "12"
-      script: npm run coverage
+      script:
+        - npm run test
+        - npm run coverage
