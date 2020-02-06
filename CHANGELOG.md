@@ -1,7 +1,50 @@
 # Change Log
 
-## [2.5.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.5.0) (2018-12-02)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.4.0...2.5.0)
+## [2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.6.0) (2020-02-05)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...2.6.0)
+
+**Fixed bugs:**
+
+- Using publicPath with trailing slash breaks sourcemaps [\#74](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/74)
+
+**Closed issues:**
+
+- Two source maps not being uploaded [\#72](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/72)
+- Uploading the bundle to rollbar, not the map file [\#54](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/54)
+
+**Merged pull requests:**
+
+- Handle publicPath with or without trailing slash [\#75](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/75) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.5.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.3) (2020-01-14)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.2...v2.5.3)
+
+**Merged pull requests:**
+
+- Upgrade deps in react example [\#71](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/71) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.5.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.2) (2020-01-08)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.1...v2.5.2)
+
+**Merged pull requests:**
+
+- Update dependencies with security vulnerabilities [\#70](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/70) ([brandondoran](https://github.com/brandondoran))
+- update travis ci node versions [\#66](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/66) ([amilajack](https://github.com/amilajack))
+
+## [v2.5.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.1) (2019-04-08)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.0...v2.5.1)
+
+**Closed issues:**
+
+- Were there actually any breaking changes in v2? [\#59](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/59)
+
+**Merged pull requests:**
+
+- Make clear that there were no breaking changes in v2 [\#60](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/60) ([MatthewHerbst](https://github.com/MatthewHerbst))
+- Remove Node \< 6 from CI and add Node 10 [\#52](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/52) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.5.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.0) (2018-12-03)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.4.0...v2.5.0)
 
 **Merged pull requests:**
 
@@ -51,8 +94,6 @@
 
 ## [v2.0.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.0.0) (2017-03-06)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.7.0...v2.0.0)
-
-**NOTE: THERE WERE NO BREAKING CHANGES IN THIS RELEASE**
 
 **Implemented enhancements:**
 

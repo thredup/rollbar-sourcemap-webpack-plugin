@@ -204,27 +204,47 @@ describe('RollbarSourceMapPlugin', function () {
     });
   });
 
-  describe('getPublicPath', function () {
+  describe('getPublicPath', function() {
     let defaultOptions;
     let sourceFile;
 
-    beforeEach(function () {
+    beforeEach(function() {
       defaultOptions = {
         accessToken: 'aaaabbbbccccddddeeeeffff00001111',
         version: 'master-latest-sha',
-        publicPath: 'https://my.cdn.net/assets'
+        publicPath: 'https://my.cdn.net/assets/'
       };
       sourceFile = 'vendor.5190.js';
     });
 
-    it('returns \'publicPath\' value if it\'s a string', function () {
+    it('returns \'publicPath\' value if it\'s a string', function() {
       plugin = new RollbarSourceMapPlugin(defaultOptions);
       const result = plugin.getPublicPath(sourceFile);
       expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
     });
 
+    it('handles \'publicPath\' string without trailing /', function() {
+      const options = Object.assign({}, defaultOptions, {
+        publicPath: 'https://my.cdn.net/assets'
+      });
+      plugin = new RollbarSourceMapPlugin(options);
+      const result = plugin.getPublicPath(sourceFile);
+      expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
+    });
+
     it('returns whatever is returned by publicPath argument when it\'s a function', function () {
-      const options = Object.assign({}, defaultOptions, { publicPath: sourceFile => `https://my.function.proxy.cdn/assets/${sourceFile}` }); // eslint-disable-line no-shadow
+      const options = Object.assign({}, defaultOptions, {
+        publicPath: srcFile => `https://my.function.proxy.cdn/assets/${srcFile}`
+      });
+      plugin = new RollbarSourceMapPlugin(options);
+      const result = plugin.getPublicPath(sourceFile);
+      expect(result).toBe('https://my.function.proxy.cdn/assets/vendor.5190.js');
+    });
+
+    it('returns whatever is returned by publicPath argument when it\'s a function', function () {
+      const options = Object.assign({}, defaultOptions, {
+        publicPath: srcFile => `https://my.function.proxy.cdn/assets/${srcFile}`
+      });
       plugin = new RollbarSourceMapPlugin(options);
       const result = plugin.getPublicPath(sourceFile);
       expect(result).toBe('https://my.function.proxy.cdn/assets/vendor.5190.js');
