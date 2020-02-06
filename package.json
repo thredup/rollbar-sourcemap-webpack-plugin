@@ -5,11 +5,12 @@
   "main": "./dist/RollbarSourceMapPlugin.js",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
+    "coverage": "codecov",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
     "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
-    "test": "cross-env NODE_ENV='test' jest --coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "npm test -- -w",
     "changelog": "npm run changelog:generate && npm run changelog:add",
     "changelog:add": "git add CHANGELOG.md",
