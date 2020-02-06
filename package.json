@@ -5,6 +5,7 @@
   "main": "./dist/RollbarSourceMapPlugin.js",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
+    "coverage:report": "codecov",
     "lint": "./node_modules/.bin/eslint ./src --ext .js",
     "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
