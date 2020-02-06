@@ -18,4 +18,8 @@ script:
   - npm run lint
   - npm run test
   - npm run build
-  - npm run coverage
+jobs:
+  include:
+    - stage: publish coverage report
+      node_js: "12"
+      script: npm run coverage
