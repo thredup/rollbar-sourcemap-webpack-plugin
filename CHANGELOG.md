@@ -1,7 +1,23 @@
 # Change Log
 
-## [2.5.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.5.3) (2020-01-14)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.2...2.5.3)
+## [2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.6.0) (2020-02-05)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...2.6.0)
+
+**Fixed bugs:**
+
+- Using publicPath with trailing slash breaks sourcemaps [\#74](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/74)
+
+**Closed issues:**
+
+- Two source maps not being uploaded [\#72](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/72)
+- Uploading the bundle to rollbar, not the map file [\#54](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/54)
+
+**Merged pull requests:**
+
+- Handle publicPath with or without trailing slash [\#75](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/75) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.5.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.3) (2020-01-14)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.2...v2.5.3)
 
 **Merged pull requests:**
 
