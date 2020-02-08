@@ -50,7 +50,6 @@
     "eslint": "^4.19.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0",
-    "expect": "^1.20.2",
     "jest": "^24.1.0",
     "nock": "^9.2.3",
     "nyc": "^15.0.0",
