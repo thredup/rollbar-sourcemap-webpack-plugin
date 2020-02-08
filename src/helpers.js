@@ -11,7 +11,7 @@ export function handleError(err, prefix = 'RollbarSourceMapPlugin') {
   }
 
   const errors = [].concat(err);
-  return errors.map(e => new VError(e, prefix));
+  return errors.map((e) => new VError(e, prefix));
 }
 
 // Validate required options and return an array of errors or null if there
