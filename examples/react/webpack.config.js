@@ -3,7 +3,7 @@ const cp = require('child_process');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const S3Plugin = require('webpack-s3-plugin');
-const RollbarSourcemapPlugin = require('rollbar-sourcemap-webpack-plugin');
+const RollbarSourcemapPlugin = require('../../dist/RollbarSourceMapPlugin');
 
 const rollbarClientAccessToken = process.env.ROLLBAR_CLIENT_TOKEN;
 const rollbarServerAccessToken = process.env.ROLLBAR_SERVER_TOKEN;
