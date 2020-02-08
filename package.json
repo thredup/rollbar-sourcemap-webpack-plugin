@@ -44,25 +44,25 @@
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "babel-jest": "^25.1.0",
-    "codecov": "^3.6.1",
-    "cross-env": "^5.1.4",
+    "codecov": "^3.6.5",
     "eslint": "^4.19.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0",
     "jest": "^25.1.0",
-    "nock": "^9.2.3",
     "nyc": "^15.0.0",
-    "rimraf": "^2.6.2",
     "watch": "^1.0.1"
   },
   "dependencies": {
     "async": "^2.6.0",
+    "cross-env": "^7.0.0",
     "lodash.find": "^4.3.0",
     "lodash.foreach": "^4.2.0",
     "lodash.isfunction": "^3.0.9",
     "lodash.isstring": "^4.0.1",
     "lodash.reduce": "^4.3.0",
+    "nock": "^11.7.2",
     "request": "^2.88.0",
+    "rimraf": "^3.0.1",
     "verror": "^1.6.1"
   }
 }
