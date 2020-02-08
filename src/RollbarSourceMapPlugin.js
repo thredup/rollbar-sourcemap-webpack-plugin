@@ -90,7 +90,7 @@ class RollbarSourceMapPlugin {
     const req = request.post(this.rollbarEndpoint, (err, res, body) => {
       if (!err && res.statusCode === 200) {
         if (!this.silent) {
-          console.info(`Uploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
+          console.info(`\nUploaded ${sourceMap} to Rollbar`); // eslint-disable-line no-console
         }
         return cb();
       }
@@ -103,8 +103,8 @@ class RollbarSourceMapPlugin {
       try {
         const { message } = JSON.parse(body);
         return cb(new Error(message ? `${errMessage}: ${message}` : errMessage));
-      } catch (parseErr) {
-        return cb(new VError(parseErr, errMessage));
+      } catch (_err) {
+        return cb(new Error(errMessage));
       }
     });
 
