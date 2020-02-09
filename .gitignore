@@ -3,5 +3,6 @@ dist
 tmp
 *.log
 .env
+.eslintcache
 .nyc_output
 coverage

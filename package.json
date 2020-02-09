@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
     "coverage": "codecov",
-    "lint": "./node_modules/.bin/eslint ./src ./test --ext .js",
+    "lint": "eslint --cache ./src ./test --ext .js",
     "lint:staged": "lint-staged",
     "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
@@ -72,14 +72,10 @@
     "verror": "^1.6.1"
   },
   "lint-staged": {
-    "*.{ts,js}": [
-      "npm run lint -- --fix",
-      "git add"
+    "*.js": [
+      "eslint --cache --fix"
     ]
   },
-  "pre-commit": [
-    "lint:staged"
-  ],
   "prettier": {
     "singleQuote": true,
     "printWidth": 80
