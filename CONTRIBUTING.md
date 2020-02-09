@@ -30,13 +30,12 @@ npm run test:watch
 
 ### Style & Linting
 
-The codebase adheres to the [Airbnb Styleguide](https://github.com/airbnb/javascript) 
+The codebase adheres to the [Airbnb Styleguide](https://github.com/airbnb/javascript)
 with some tweaks per our personal preferences and is enforced using [ESLint](http://eslint.org/).
 
 ```bash
 npm run lint
 ```
-
 
 ### Building the plugin
 
@@ -52,12 +51,10 @@ npm run build
 npm run test:watch
 ```
 
-
 ## Test coverage
 
 We use the excellent module, [nyc](https://www.npmjs.com/package/nyc), for coverage and strive for 100%.
 The coverage report will be displayed in the terminal after tests run.
-
 
 ## Pull Request Guidelines
 
@@ -67,7 +64,6 @@ Before you submit a pull request from your forked repo, check that it meets thes
 with them.
 1. Please update README.md accordingly, if relevant, as part of the same PR.
 1. Please rebase and resolve all conflicts before submitting.
-
 
 ## Publishing to NPM (For maintainers with the publish bit)
 
@@ -91,4 +87,3 @@ npm version minor
 
 # publish a incompatible API change
 npm version major
-	

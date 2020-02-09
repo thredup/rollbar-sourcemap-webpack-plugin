@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const path = require('path');
 const cp = require('child_process');
 const webpack = require('webpack');
@@ -7,7 +9,7 @@ const RollbarSourcemapPlugin = require('../../dist/RollbarSourceMapPlugin');
 
 const rollbarClientAccessToken = process.env.ROLLBAR_CLIENT_TOKEN;
 const rollbarServerAccessToken = process.env.ROLLBAR_SERVER_TOKEN;
-const bucket = process.env.S3_BUCKET;
+const bucket = process.env.AWS_S3_BUCKET;
 const s3Options = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -16,6 +18,7 @@ const s3Options = {
 const basePath = 'assets';
 const publicPath = `https://s3-${s3Options.region}.amazonaws.com/${bucket}/${basePath}`;
 let version;
+
 try {
   version = cp.execSync('git rev-parse HEAD', {
     cwd: __dirname,
@@ -91,7 +94,17 @@ module.exports = {
         exclude: /node_modules/,
         include: path.join(__dirname, 'src'),
         use: [{
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: [
+              "@babel/preset-react",
+              [
+                '@babel/preset-env',
+                { targets: { browsers: ['last 2 versions'] } }
+              ]
+            ]
+          }
         }]
       }
     ]
