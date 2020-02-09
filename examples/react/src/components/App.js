@@ -5,6 +5,7 @@ class App extends Component {
     try {
       throw new Error('Something went wrong');
     } catch (e) {
+      console.error(e);
       window.Rollbar.error(e);
     }
 
