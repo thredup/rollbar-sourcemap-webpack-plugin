@@ -11,20 +11,25 @@ export function handleError(err, prefix = 'RollbarSourceMapPlugin') {
   }
 
   const errors = [].concat(err);
-  return errors.map((e) => new VError(e, prefix));
+  return errors.map(e => new VError(e, prefix));
 }
 
 // Validate required options and return an array of errors or null if there
 // are no errors.
 export function validateOptions(ref) {
   const errors = ROLLBAR_REQ_FIELDS.reduce((result, field) => {
-    if (field === 'publicPath'
-        && ref && ref[field]
-        && !isString(ref[field])
-        && !isFunction(ref[field])) {
+    if (
+      field === 'publicPath' &&
+      ref &&
+      ref[field] &&
+      !isString(ref[field]) &&
+      !isFunction(ref[field])
+    ) {
       return [
         ...result,
-        new TypeError(`invalid type. '${field}' expected to be string or function.`)
+        new TypeError(
+          `invalid type. '${field}' expected to be string or function.`
+        )
       ];
     }
 
@@ -32,10 +37,7 @@ export function validateOptions(ref) {
       return result;
     }
 
-    return [
-      ...result,
-      new Error(`required field, '${field}', is missing.`)
-    ];
+    return [...result, new Error(`required field, '${field}', is missing.`)];
   }, []);
 
   return errors.length ? errors : null;
