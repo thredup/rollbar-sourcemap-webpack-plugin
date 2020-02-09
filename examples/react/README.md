@@ -8,7 +8,7 @@ The build is meant to mimic a production build in that js bundles and sourcemaps
 
 ### Build the plugin
 
-See the [Contributors Guide](../CONTRIBUTING.md)
+See the [Contributors Guide](../../CONTRIBUTING.md)
 
 ## Build and run the app
 
