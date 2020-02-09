@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
     "coverage": "codecov",
-    "lint": "./node_modules/.bin/eslint ./src --ext .js",
+    "lint": "eslint --cache ./src ./test --ext .js",
+    "lint:staged": "lint-staged",
     "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
@@ -47,9 +48,14 @@
     "codecov": "^3.6.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.1",
     "jest": "^25.1.0",
+    "lint-staged": "^10.0.7",
     "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
     "watch": "^1.0.1"
   },
   "dependencies": {
@@ -64,5 +70,19 @@
     "request": "^2.88.0",
     "rimraf": "^3.0.1",
     "verror": "^1.6.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --cache --fix"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 80
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

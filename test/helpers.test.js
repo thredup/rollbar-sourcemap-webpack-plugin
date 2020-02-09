@@ -19,16 +19,19 @@ describe('helpers', () => {
     });
 
     it('prefixes message of single error', () => {
-      const result = helpers.handleError(new Error('required field missing'), 'Plugin');
+      const result = helpers.handleError(
+        new Error('required field missing'),
+        'Plugin'
+      );
       expect(result.length).toEqual(1);
       expect(result[0].message).toBe('Plugin: required field missing');
     });
 
     it('prefixes message of an array of errors', () => {
-      const result = helpers.handleError([
-        new Error('required field missing'),
-        new Error('request failed')
-      ], 'Plugin');
+      const result = helpers.handleError(
+        [new Error('required field missing'), new Error('request failed')],
+        'Plugin'
+      );
       expect(result.length).toEqual(2);
       expect(result[0].message).toBe('Plugin: required field missing');
     });
@@ -36,7 +39,9 @@ describe('helpers', () => {
     it('defaults prefix to "RollbarSourceMapPlugin"', () => {
       const result = helpers.handleError(new Error('required field missing'));
       expect(result.length).toEqual(1);
-      expect(result[0].message).toBe('RollbarSourceMapPlugin: required field missing');
+      expect(result[0].message).toBe(
+        'RollbarSourceMapPlugin: required field missing'
+      );
     });
 
     it('handles null', () => {
@@ -70,7 +75,9 @@ describe('helpers', () => {
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
       expect(result[0]).toBeInstanceOf(Error);
-      expect(result[0].message).toBe('required field, \'accessToken\', is missing.');
+      expect(result[0].message).toBe(
+        "required field, 'accessToken', is missing."
+      );
     });
 
     it('returns an error if version is not supplied', () => {
@@ -82,7 +89,7 @@ describe('helpers', () => {
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
       expect(result[0]).toBeInstanceOf(Error);
-      expect(result[0].message).toBe('required field, \'version\', is missing.');
+      expect(result[0].message).toBe("required field, 'version', is missing.");
     });
 
     it('returns an error if publicPath is not supplied', () => {
@@ -94,7 +101,9 @@ describe('helpers', () => {
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
       expect(result[0]).toBeInstanceOf(Error);
-      expect(result[0].message).toBe('required field, \'publicPath\', is missing.');
+      expect(result[0].message).toBe(
+        "required field, 'publicPath', is missing."
+      );
     });
 
     it('handles multiple missing required options', () => {
@@ -126,14 +135,16 @@ describe('helpers', () => {
       expect(result).toBeInstanceOf(Array);
       expect(result.length).toBe(1);
       expect(result[0]).toBeInstanceOf(TypeError);
-      expect(result[0].message).toBe('invalid type. \'publicPath\' expected to be string or function.');
+      expect(result[0].message).toBe(
+        "invalid type. 'publicPath' expected to be string or function."
+      );
     });
 
     it('returns null if all required arguments are provided and accept a function as the publicPath argument', () => {
       const options = {
         accessToken: 'aaabbbccc000111',
         version: 'latest',
-        publicPath: () => { }
+        publicPath: () => {}
       };
       const result = helpers.validateOptions(options);
       expect(result).toBe(null);

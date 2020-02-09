@@ -34,7 +34,7 @@ class RollbarSourceMapPlugin {
       return cb();
     }
 
-    this.uploadSourceMaps(compilation, (err) => {
+    this.uploadSourceMaps(compilation, err => {
       if (err) {
         if (!this.ignoreErrors) {
           compilation.errors.push(...handleError(err));
@@ -48,7 +48,10 @@ class RollbarSourceMapPlugin {
 
   apply(compiler) {
     if (compiler.hooks) {
-      compiler.hooks.afterEmit.tapAsync('after-emit', this.afterEmit.bind(this));
+      compiler.hooks.afterEmit.tapAsync(
+        'after-emit',
+        this.afterEmit.bind(this)
+      );
     } else {
       compiler.plugin('after-emit', this.afterEmit.bind(this));
     }
@@ -58,24 +61,25 @@ class RollbarSourceMapPlugin {
     const { includeChunks } = this;
     const { chunks } = compilation.getStats().toJson();
 
-    return reduce(chunks, (result, chunk) => {
-      const chunkName = chunk.names[0];
-      if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
-        return result;
-      }
+    return reduce(
+      chunks,
+      (result, chunk) => {
+        const chunkName = chunk.names[0];
+        if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
+          return result;
+        }
 
-      const sourceFile = find(chunk.files, (file) => /\.js$/.test(file));
-      const sourceMap = find(chunk.files, (file) => /\.js\.map$/.test(file));
+        const sourceFile = find(chunk.files, file => /\.js$/.test(file));
+        const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
 
-      if (!sourceFile || !sourceMap) {
-        return result;
-      }
+        if (!sourceFile || !sourceMap) {
+          return result;
+        }
 
-      return [
-        ...result,
-        { sourceFile, sourceMap }
-      ];
-    }, []);
+        return [...result, { sourceFile, sourceMap }];
+      },
+      []
+    );
   }
 
   getPublicPath(sourceFile) {
@@ -103,7 +107,9 @@ class RollbarSourceMapPlugin {
 
       try {
         const { message } = JSON.parse(body);
-        return cb(new Error(message ? `${errMessage}: ${message}` : errMessage));
+        return cb(
+          new Error(message ? `${errMessage}: ${message}` : errMessage)
+        );
       } catch (_err) {
         return cb(new Error(errMessage));
       }
