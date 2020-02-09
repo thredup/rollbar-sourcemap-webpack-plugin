@@ -44,14 +44,14 @@ module.exports = {
   optimization: {
     minimize: true,
     splitChunks: {
-      chunks: 'initial',
-    },
+      chunks: 'initial'
+    }
   },
   plugins: [
     new webpack.DefinePlugin({
       /* eslint-disable quote-props */
       'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       },
       /* eslint-enable quote-props */
       __ROLLBAR_ACCESS_TOKEN__: JSON.stringify(rollbarClientAccessToken),
@@ -93,19 +93,21 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: path.join(__dirname, 'src'),
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            babelrc: false,
-            presets: [
-              "@babel/preset-react",
-              [
-                '@babel/preset-env',
-                { targets: { browsers: ['last 2 versions'] } }
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              presets: [
+                '@babel/preset-react',
+                [
+                  '@babel/preset-env',
+                  { targets: { browsers: ['last 2 versions'] } }
+                ]
               ]
-            ]
+            }
           }
-        }]
+        ]
       }
     ]
   }
