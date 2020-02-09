@@ -1,7 +1,25 @@
 # Change Log
 
-## [2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.6.0) (2020-02-05)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...2.6.0)
+## [2.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.7.0) (2020-02-08)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.6.0...2.7.0)
+
+**Closed issues:**
+
+- Documentation example is misleading for using hidden source maps [\#69](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/69)
+- Migrate from mocha/expect to Jest [\#47](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/47)
+
+**Merged pull requests:**
+
+- Setup prettier [\#81](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/81) ([brandondoran](https://github.com/brandondoran))
+- Update React example [\#80](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/80) ([brandondoran](https://github.com/brandondoran))
+- Update dependencies [\#79](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/79) ([brandondoran](https://github.com/brandondoran))
+- Add devtool to usage example and update documentation [\#78](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/78) ([brandondoran](https://github.com/brandondoran))
+- Remove expect dependency and use jest expect [\#77](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/77) ([brandondoran](https://github.com/brandondoran))
+- Fix test coverage reporting [\#76](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/76) ([brandondoran](https://github.com/brandondoran))
+- Migrate to jest [\#62](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/62) ([rxrossi](https://github.com/rxrossi))
+
+## [v2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.6.0) (2020-02-06)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...v2.6.0)
 
 **Fixed bugs:**
 
