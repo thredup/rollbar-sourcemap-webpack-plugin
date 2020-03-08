@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
               __html: `
               var _rollbarConfig = {
                 enabled: ${process.env.NODE_ENV === 'production'},
-                accessToken: "<ROLLBAR_ACCESS_TOKEN>",
+                accessToken: ${process.env.ROLLBAR_ACCESS_TOKEN},
                 captureUncaught: true,
                 captureUnhandledRejections: true,
                 payload: {
@@ -19,7 +19,7 @@ export default class MyDocument extends Document {
                   client: {
                     javascript: {
                       source_map_enabled: true,
-                      code_version: "${process.env.GIT_REVISION}",
+                      code_version: "${process.env.NEXT_BUILD_ID}",
                       guess_uncaught_frames: true
                     }
                   }

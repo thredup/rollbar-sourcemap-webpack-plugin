@@ -13,6 +13,7 @@
     "react-dom": "16.13.0"
   },
   "devDependencies": {
+    "@zeit/next-source-maps": "0.0.3",
     "rollbar-sourcemap-webpack-plugin": "^2.7.0"
   }
 }
