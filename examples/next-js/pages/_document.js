@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
               __html: `
               var _rollbarConfig = {
                 enabled: ${process.env.NODE_ENV === 'production'},
-                accessToken: ${process.env.ROLLBAR_ACCESS_TOKEN},
+                accessToken: "${process.env.ROLLBAR_ACCESS_TOKEN}",
                 captureUncaught: true,
                 captureUnhandledRejections: true,
                 payload: {
