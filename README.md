@@ -119,6 +119,7 @@ output: {
 ## Examples
 
 - [React](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/master/examples/react)
+- [Next.js](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/master/examples/next-js)
 
 ## Contributing
 

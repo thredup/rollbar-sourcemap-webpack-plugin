@@ -1,8 +1,8 @@
 # Next.js Example
 
-This is a basic Next.js app (created via `npm init next-app`).
+This example show how to use `rollbar-sourcemap-webpack-plugin` with [Next.js](http://nextjs.org/).
 
-The pertinent files in this PR:
+The pertinent files in this example:
 
 * `examples/next-js/next.config.js`
     * We generate the sourcemaps using a custom webpack config and set an environment variable of `NEXT_BUILD_ID`. Lastly, we configure the `RollbarSourcemapPlugin` webpack plugin with our Rollbar access token, `NEXT_BUILD_ID`, and `publicPath`. `publicPath` is the domain of your website with a path of `/_next/` which is where the Next scripts live when deployed.
