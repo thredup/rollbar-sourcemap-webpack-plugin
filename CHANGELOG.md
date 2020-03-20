@@ -1,7 +1,18 @@
 # Change Log
 
-## [2.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.7.0) (2020-02-08)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.6.0...2.7.0)
+## [2.8.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.8.0) (2020-03-20)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.7.0...2.8.0)
+
+**Closed issues:**
+
+- Nextjs fn example [\#67](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/67)
+
+**Merged pull requests:**
+
+- Added Next.js example [\#83](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/83) ([jamesmosier](https://github.com/jamesmosier))
+
+## [v2.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.7.0) (2020-02-09)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.6.0...v2.7.0)
 
 **Closed issues:**
 
