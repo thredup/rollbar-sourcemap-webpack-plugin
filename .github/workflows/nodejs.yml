@@ -1,6 +1,6 @@
 name: Node.js CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -24,9 +24,6 @@ jobs:
       if: startsWith(matrix.node-version, '12.')
       uses: codecov/codecov-action@v1
       with:
-        # token: ${{ secrets.CODECOV_TOKEN }}
-        # file: ./coverage.xml
-        # flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
       env:
