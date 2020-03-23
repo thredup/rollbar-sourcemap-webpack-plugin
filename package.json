@@ -77,8 +77,10 @@
     ]
   },
   "prettier": {
+    "arrowParens": "avoid",
+    "printWidth": 80,
     "singleQuote": true,
-    "printWidth": 80
+    "trailingComma": "none"
   },
   "husky": {
     "hooks": {
