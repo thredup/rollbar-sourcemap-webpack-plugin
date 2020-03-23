@@ -1,7 +1,19 @@
 # Change Log
 
-## [2.8.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.8.0) (2020-03-20)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.7.0...2.8.0)
+## [2.9.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.9.0) (2020-03-23)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.8.0...2.9.0)
+
+**Merged pull requests:**
+
+- Bump nock from 11.7.2 to 12.0.3 [\#100](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/100) ([brandondoran](https://github.com/brandondoran))
+- Add Badge for GitHub Action CI Workflow [\#99](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/99) ([brandondoran](https://github.com/brandondoran))
+- Create nodejs.yml for github action CI workflow [\#98](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/98) ([brandondoran](https://github.com/brandondoran))
+- Add dependabot badge [\#97](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/97) ([brandondoran](https://github.com/brandondoran))
+- Update dependencies [\#96](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/96) ([brandondoran](https://github.com/brandondoran))
+- Add dependabot config [\#84](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/84) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.8.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.8.0) (2020-03-20)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.7.0...v2.8.0)
 
 **Closed issues:**
 
