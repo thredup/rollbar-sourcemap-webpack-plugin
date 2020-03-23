@@ -2,6 +2,7 @@
 
 [![Dependency Status](https://img.shields.io/david/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin)
 [![devDependency Status](https://img.shields.io/david/dev/thredup/rollbar-sourcemap-webpack-plugin.svg?maxAge=2592000?style=flat-square)](https://david-dm.org/thredup/rollbar-sourcemap-webpack-plugin#info=devDependencies)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=thredup/rollbar-sourcemap-webpack-plugin)](https://dependabot.com)
 [![Build Status](https://img.shields.io/travis/thredup/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://travis-ci.org/thredup/rollbar-sourcemap-webpack-plugin)
 [![Coverage](https://img.shields.io/codecov/c/github/thredup/rollbar-sourcemap-webpack-plugin/master.svg?style=flat-square)](https://codecov.io/gh/thredup/rollbar-sourcemap-webpack-plugin)
 [![Downloads](https://img.shields.io/npm/dm/rollbar-sourcemap-webpack-plugin.svg?style=flat-square)](https://www.npmjs.com/package/rollbar-sourcemap-webpack-plugin)
