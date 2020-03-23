@@ -1,7 +1,7 @@
 # Change Log
 
-## [2.9.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.9.0) (2020-03-23)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.8.0...2.9.0)
+## [2.10.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.0) (2020-03-23)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.8.0...2.10.0)
 
 **Merged pull requests:**
 
