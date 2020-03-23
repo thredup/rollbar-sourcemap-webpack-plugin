@@ -54,6 +54,7 @@
     "husky": "^4.2.1",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.7",
+    "nock": "^12.0.3",
     "nyc": "^15.0.0",
     "prettier": "^2.0.1",
     "watch": "^1.0.1"
@@ -66,7 +67,6 @@
     "lodash.isfunction": "^3.0.9",
     "lodash.isstring": "^4.0.1",
     "lodash.reduce": "^4.3.0",
-    "nock": "^11.7.2",
     "request": "^2.88.0",
     "rimraf": "^3.0.1",
     "verror": "^1.6.1"
