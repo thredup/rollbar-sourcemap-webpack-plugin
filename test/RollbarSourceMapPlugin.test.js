@@ -208,10 +208,10 @@ describe('RollbarSourceMapPlugin', () => {
     });
   });
 
-  describe('getPublicPath', function() {
+  describe('getPublicPath', () => {
     let sourceFile;
 
-    beforeEach(function() {
+    beforeEach(() => {
       defaultOptions = {
         accessToken: 'aaaabbbbccccddddeeeeffff00001111',
         version: 'master-latest-sha',
@@ -220,13 +220,13 @@ describe('RollbarSourceMapPlugin', () => {
       sourceFile = 'vendor.5190.js';
     });
 
-    it("returns 'publicPath' value if it's a string", function() {
+    it("returns 'publicPath' value if it's a string", () => {
       plugin = new RollbarSourceMapPlugin(defaultOptions);
       const result = plugin.getPublicPath(sourceFile);
       expect(result).toBe('https://my.cdn.net/assets/vendor.5190.js');
     });
 
-    it("handles 'publicPath' string without trailing /", function() {
+    it("handles 'publicPath' string without trailing /", () => {
       const options = {
         ...defaultOptions,
         publicPath: 'https://my.cdn.net/assets'
