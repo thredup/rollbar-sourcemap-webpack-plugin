@@ -1,7 +1,17 @@
 # Change Log
 
-## [2.10.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.0) (2020-03-23)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.8.0...2.10.0)
+## [2.10.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.1) (2020-04-17)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.0...2.10.1)
+
+**Merged pull requests:**
+
+- Update and cleanup dependencies [\#133](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/133) ([brandondoran](https://github.com/brandondoran))
+- Bump jest from 25.1.0 to 25.2.0 [\#106](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/106) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump @babel/core from 7.8.4 to 7.9.0 [\#103](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/103) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump prettier from 2.0.1 to 2.0.2 [\#101](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/101) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+## [v2.10.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.10.0) (2020-03-23)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.8.0...v2.10.0)
 
 **Merged pull requests:**
 
@@ -22,6 +32,7 @@
 **Merged pull requests:**
 
 - Added Next.js example [\#83](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/83) ([jamesmosier](https://github.com/jamesmosier))
+- Upgrade deps in react example [\#71](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/71) ([brandondoran](https://github.com/brandondoran))
 
 ## [v2.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.7.0) (2020-02-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.6.0...v2.7.0)
@@ -59,10 +70,6 @@
 
 ## [v2.5.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.3) (2020-01-14)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.2...v2.5.3)
-
-**Merged pull requests:**
-
-- Upgrade deps in react example [\#71](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/71) ([brandondoran](https://github.com/brandondoran))
 
 ## [v2.5.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.2) (2020-01-08)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.1...v2.5.2)
