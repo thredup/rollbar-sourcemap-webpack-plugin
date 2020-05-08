@@ -1,7 +1,14 @@
 # Change Log
 
-## [2.10.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.1) (2020-04-17)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.0...2.10.1)
+## [2.10.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.2) (2020-05-08)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.1...2.10.2)
+
+**Merged pull requests:**
+
+- chore\(dev-deps\): update dev dependencies to latest [\#157](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/157) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.10.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.10.1) (2020-04-17)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.0...v2.10.1)
 
 **Merged pull requests:**
 
@@ -32,7 +39,6 @@
 **Merged pull requests:**
 
 - Added Next.js example [\#83](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/83) ([jamesmosier](https://github.com/jamesmosier))
-- Upgrade deps in react example [\#71](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/71) ([brandondoran](https://github.com/brandondoran))
 
 ## [v2.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.7.0) (2020-02-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.6.0...v2.7.0)
@@ -70,6 +76,10 @@
 
 ## [v2.5.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.3) (2020-01-14)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.2...v2.5.3)
+
+**Merged pull requests:**
+
+- Upgrade deps in react example [\#71](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/71) ([brandondoran](https://github.com/brandondoran))
 
 ## [v2.5.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.2) (2020-01-08)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.1...v2.5.2)
