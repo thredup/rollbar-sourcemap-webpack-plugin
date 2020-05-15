@@ -1,7 +1,14 @@
 # Change Log
 
-## [2.10.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.2) (2020-05-08)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.1...2.10.2)
+## [2.10.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.10.3) (2020-05-15)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.2...2.10.3)
+
+**Merged pull requests:**
+
+- Patch security vulnerabilities in dependencies [\#158](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/158) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.10.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.10.2) (2020-05-08)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.10.1...v2.10.2)
 
 **Merged pull requests:**
 
@@ -57,6 +64,7 @@
 - Remove expect dependency and use jest expect [\#77](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/77) ([brandondoran](https://github.com/brandondoran))
 - Fix test coverage reporting [\#76](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/76) ([brandondoran](https://github.com/brandondoran))
 - Migrate to jest [\#62](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/62) ([rxrossi](https://github.com/rxrossi))
+- Make clear that there were no breaking changes in v2 [\#60](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/60) ([MatthewHerbst](https://github.com/MatthewHerbst))
 
 ## [v2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.6.0) (2020-02-06)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...v2.6.0)
@@ -96,11 +104,6 @@
 
 - Were there actually any breaking changes in v2? [\#59](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/59)
 
-**Merged pull requests:**
-
-- Make clear that there were no breaking changes in v2 [\#60](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/60) ([MatthewHerbst](https://github.com/MatthewHerbst))
-- Remove Node \< 6 from CI and add Node 10 [\#52](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/52) ([brandondoran](https://github.com/brandondoran))
-
 ## [v2.5.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.5.0) (2018-12-03)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.4.0...v2.5.0)
 
@@ -115,6 +118,7 @@
 
 - Update example to use webpack 4 [\#57](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/57) ([brandondoran](https://github.com/brandondoran))
 - Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
+- Remove Node \< 6 from CI and add Node 10 [\#52](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/52) ([brandondoran](https://github.com/brandondoran))
 
 ## [v2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.3.0) (2018-04-29)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...v2.3.0)
@@ -168,7 +172,6 @@
 **Fixed bugs:**
 
 - Code splitted sourcemaps not uploaded, despite being emitted by webpack [\#27](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/27)
-- Upload unnamed chunks when includeChunks is not specified [\#28](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/28) ([brandondoran](https://github.com/brandondoran))
 
 ## [v1.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.6.0) (2017-01-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.5.0...v1.6.0)
@@ -191,6 +194,10 @@
 
 ## [v1.4.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.4.0) (2016-10-07)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.3.1...v1.4.0)
+
+**Fixed bugs:**
+
+- Upload unnamed chunks when includeChunks is not specified [\#28](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/28) ([brandondoran](https://github.com/brandondoran))
 
 **Merged pull requests:**
 
