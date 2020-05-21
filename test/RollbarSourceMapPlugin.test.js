@@ -82,6 +82,10 @@ describe('RollbarSourceMapPlugin', () => {
       plugin = new RollbarSourceMapPlugin(options);
       expect(plugin).toMatchObject({ rollbarEndpoint: customEndpoint });
     });
+
+    it('defaults encodeFilename = false', () => {
+      expect(plugin.encodeFilename).toBe(false);
+    });
   });
 
   describe('apply', () => {
@@ -349,6 +353,26 @@ describe('RollbarSourceMapPlugin', () => {
       const assets = plugin.getAssets(compilation);
       expect(assets).toEqual([
         { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
+      ]);
+    });
+
+    it('encodes filename if encodeFilename is set to true', () => {
+      chunks = [
+        {
+          id: 0,
+          names: ['vendor'],
+          files: ['[test].vendor.5190.js', '[test].vendor.5190.js.map']
+        }
+      ];
+
+      plugin.encodeFilename = true;
+
+      const assets = plugin.getAssets(compilation);
+      expect(assets).toEqual([
+        {
+          sourceFile: '%5Btest%5D.vendor.5190.js',
+          sourceMap: '[test].vendor.5190.js.map'
+        }
       ]);
     });
   });

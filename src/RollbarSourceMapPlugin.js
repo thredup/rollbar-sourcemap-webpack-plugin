@@ -15,7 +15,8 @@ class RollbarSourceMapPlugin {
     includeChunks = [],
     silent = false,
     ignoreErrors = false,
-    rollbarEndpoint = ROLLBAR_ENDPOINT
+    rollbarEndpoint = ROLLBAR_ENDPOINT,
+    encodeFilename = false
   }) {
     this.accessToken = accessToken;
     this.version = version;
@@ -24,6 +25,7 @@ class RollbarSourceMapPlugin {
     this.silent = silent;
     this.ignoreErrors = ignoreErrors;
     this.rollbarEndpoint = rollbarEndpoint;
+    this.encodeFilename = encodeFilename;
   }
 
   afterEmit(compilation, cb) {
@@ -58,7 +60,7 @@ class RollbarSourceMapPlugin {
   }
 
   getAssets(compilation) {
-    const { includeChunks } = this;
+    const { includeChunks, encodeFilename } = this;
     const { chunks } = compilation.getStats().toJson();
 
     return reduce(
@@ -76,7 +78,13 @@ class RollbarSourceMapPlugin {
           return result;
         }
 
-        return [...result, { sourceFile, sourceMap }];
+        return [
+          ...result,
+          {
+            sourceFile: encodeFilename ? encodeURI(sourceFile) : sourceFile,
+            sourceMap
+          }
+        ];
       },
       []
     );
