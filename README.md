@@ -90,6 +90,10 @@ If you do not want to fail the build but you do want to see the failures as warn
 
 A string defining the Rollbar API endpoint to upload the sourcemaps to. It can be used for self-hosted Rollbar instances.
 
+### `encodeFilename: boolean` **(default: `false`)**
+
+Set to true to encode the filename. NextJS will reference the encode the URL when referencing the minified script which must match exactly with the minified file URL uploaded to Rollbar.
+
 ## Webpack Sourcemap Configuration
 
 The [`output.devtool`](https://webpack.js.org/configuration/devtool/) field in webpack configuration controls how sourcemaps are generated.
