@@ -1,7 +1,17 @@
 # Change Log
 
-## [2.11.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.11.2) (2020-07-11)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.1...2.11.2)
+## [2.11.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.11.3) (2020-07-17)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.2...2.11.3)
+
+**Merged pull requests:**
+
+- chore\(deps-dev\): Bump codecov from 3.7.0 to 3.7.1 [\#201](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/201) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- chore\(deps\): \[Security\] Bump lodash from 4.17.15 to 4.17.19 [\#200](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/200) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- chore\(deps-dev\): Bump @babel/core from 7.10.4 to 7.10.5 [\#199](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/199) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- chore\(deps-dev\): Bump @babel/cli from 7.10.4 to 7.10.5 [\#198](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/198) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+## [v2.11.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.11.2) (2020-07-11)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.1...v2.11.2)
 
 **Closed issues:**
 
@@ -116,6 +126,7 @@
 - Remove expect dependency and use jest expect [\#77](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/77) ([brandondoran](https://github.com/brandondoran))
 - Fix test coverage reporting [\#76](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/76) ([brandondoran](https://github.com/brandondoran))
 - Migrate to jest [\#62](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/62) ([rxrossi](https://github.com/rxrossi))
+- Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
 
 ## [v2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.6.0) (2020-02-06)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.5.3...v2.6.0)
@@ -173,7 +184,6 @@
 **Merged pull requests:**
 
 - Update example to use webpack 4 [\#57](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/57) ([brandondoran](https://github.com/brandondoran))
-- Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
 
 ## [v2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.3.0) (2018-04-29)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...v2.3.0)
@@ -220,6 +230,7 @@
 **Merged pull requests:**
 
 - Add an ignoreErrors option [\#31](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/31) ([brandondoran](https://github.com/brandondoran))
+- Update eslint-config-airbnb-base to version 3.0.1 🚀 [\#10](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/10) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 
 ## [v1.7.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.7.0) (2017-01-15)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.6.0...v1.7.0)
@@ -227,7 +238,6 @@
 **Fixed bugs:**
 
 - Code splitted sourcemaps not uploaded, despite being emitted by webpack [\#27](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/issues/27)
-- Upload unnamed chunks when includeChunks is not specified [\#28](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/28) ([brandondoran](https://github.com/brandondoran))
 
 ## [v1.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.6.0) (2017-01-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.5.0...v1.6.0)
@@ -304,10 +314,13 @@
 ## [v1.0.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.4) (2016-05-09)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.3...v1.0.4)
 
+**Fixed bugs:**
+
+- Upload unnamed chunks when includeChunks is not specified [\#28](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/28) ([brandondoran](https://github.com/brandondoran))
+
 **Merged pull requests:**
 
 - chore\(package\): update nyc to version 6.4.4 [\#12](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/12) ([brandondoran](https://github.com/brandondoran))
-- Update eslint-config-airbnb-base to version 3.0.1 🚀 [\#10](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/10) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Update eslint-config-airbnb-base to version 3.0.0 🚀 [\#9](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/9) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 
 ## [v1.0.3](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.3) (2016-05-07)
