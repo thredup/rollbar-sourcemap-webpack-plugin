@@ -1,7 +1,15 @@
 # Change Log
 
-## [2.11.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.11.4) (2020-07-31)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.3...2.11.4)
+## [2.11.5](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.11.5) (2020-08-28)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.4...2.11.5)
+
+**Merged pull requests:**
+
+- Update dependencies [\#228](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/228) ([brandondoran](https://github.com/brandondoran))
+- chore\(deps-dev\): Bump eslint from 7.5.0 to 7.6.0 [\#215](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/215) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+## [v2.11.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.11.4) (2020-07-31)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.3...v2.11.4)
 
 **Closed issues:**
 

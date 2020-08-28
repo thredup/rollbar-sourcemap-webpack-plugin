@@ -1,6 +1,6 @@
 {
   "name": "rollbar-sourcemap-webpack-plugin",
-  "version": "2.11.4",
+  "version": "2.11.5",
   "description": "A Webpack plugin to upload sourcemaps to Rollbar after build",
   "main": "./dist/RollbarSourceMapPlugin.js",
   "scripts": {
