@@ -1,7 +1,20 @@
 # Change Log
 
-## [2.11.5](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.11.5) (2020-08-28)
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.4...2.11.5)
+## [2.12.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/2.12.0) (2020-09-11)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.5...2.12.0)
+
+**Merged pull requests:**
+
+- Add .env support to next-js build [\#243](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/243) ([brandondoran](https://github.com/brandondoran))
+- Remove Node 13 from CI and add Node 14 [\#242](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/242) ([brandondoran](https://github.com/brandondoran))
+- Update dependencies for next-js example [\#241](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/241) ([brandondoran](https://github.com/brandondoran))
+- chore\(deps\): \[Security\] Bump node-fetch from 2.6.0 to 2.6.1 [\#240](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/240) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- chore\(deps-dev\): Bump husky from 4.2.5 to 4.3.0 [\#239](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/239) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Update dependencies for React example [\#238](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/238) ([brandondoran](https://github.com/brandondoran))
+- Update dev depencencies [\#237](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/237) ([brandondoran](https://github.com/brandondoran))
+
+## [v2.11.5](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.11.5) (2020-08-28)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.11.4...v2.11.5)
 
 **Merged pull requests:**
 
@@ -145,7 +158,6 @@
 - Update dependencies [\#79](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/79) ([brandondoran](https://github.com/brandondoran))
 - Add devtool to usage example and update documentation [\#78](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/78) ([brandondoran](https://github.com/brandondoran))
 - Remove expect dependency and use jest expect [\#77](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/77) ([brandondoran](https://github.com/brandondoran))
-- Fix test coverage reporting [\#76](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/76) ([brandondoran](https://github.com/brandondoran))
 - Migrate to jest [\#62](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/62) ([rxrossi](https://github.com/rxrossi))
 
 ## [v2.6.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.6.0) (2020-02-06)
@@ -188,6 +200,7 @@
 
 **Merged pull requests:**
 
+- Fix test coverage reporting [\#76](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/76) ([brandondoran](https://github.com/brandondoran))
 - Make clear that there were no breaking changes in v2 [\#60](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/60) ([MatthewHerbst](https://github.com/MatthewHerbst))
 - Remove Node \< 6 from CI and add Node 10 [\#52](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/52) ([brandondoran](https://github.com/brandondoran))
 
@@ -204,7 +217,6 @@
 **Merged pull requests:**
 
 - Update example to use webpack 4 [\#57](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/57) ([brandondoran](https://github.com/brandondoran))
-- Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
 
 ## [v2.3.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.3.0) (2018-04-29)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.2.0...v2.3.0)
@@ -215,6 +227,7 @@
 
 **Merged pull requests:**
 
+- Support webpack 4 hooks API [\#53](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/53) ([ColinWhitmarsh](https://github.com/ColinWhitmarsh))
 - Update dependencies [\#48](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/48) ([brandondoran](https://github.com/brandondoran))
 - Support configurable Rollbar sourcemap endpoint [\#43](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/43) ([chengderrick](https://github.com/chengderrick))
 
@@ -319,6 +332,7 @@
 **Merged pull requests:**
 
 - Transfer to thredup [\#15](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/15) ([brandondoran](https://github.com/brandondoran))
+- Disable travis email notifications and limit build to master [\#1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/1) ([brandondoran](https://github.com/brandondoran))
 
 ## [v1.1.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.1.0) (2016-05-12)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.4...v1.1.0)
@@ -357,7 +371,6 @@
 - Update all dependencies 🌴 [\#8](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/8) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Make publicPath required [\#4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/4) ([brandondoran](https://github.com/brandondoran))
 - Make handleError helper pure [\#2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/2) ([brandondoran](https://github.com/brandondoran))
-- Disable travis email notifications and limit build to master [\#1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/1) ([brandondoran](https://github.com/brandondoran))
 
 ## [v1.0.2](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.0.2) (2016-05-05)
 [Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.0.1...v1.0.2)
