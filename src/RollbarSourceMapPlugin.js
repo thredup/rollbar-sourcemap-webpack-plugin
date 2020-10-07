@@ -1,9 +1,9 @@
-import async from 'async';
-import request from 'request';
-import VError from 'verror';
+import fetch from 'node-fetch';
+import FormData from 'form-data';
 import find from 'lodash.find';
-import reduce from 'lodash.reduce';
 import isString from 'lodash.isstring';
+import reduce from 'lodash.reduce';
+import VError from 'verror';
 import { handleError, validateOptions } from './helpers';
 import { ROLLBAR_ENDPOINT } from './constants';
 
@@ -28,35 +28,30 @@ class RollbarSourceMapPlugin {
     this.encodeFilename = encodeFilename;
   }
 
-  afterEmit(compilation, cb) {
+  async afterEmit(compilation) {
     const errors = validateOptions(this);
 
     if (errors) {
       compilation.errors.push(...handleError(errors));
-      return cb();
+      return;
     }
 
-    this.uploadSourceMaps(compilation, err => {
-      if (err) {
-        if (!this.ignoreErrors) {
-          compilation.errors.push(...handleError(err));
-        } else if (!this.silent) {
-          compilation.warnings.push(...handleError(err));
-        }
+    try {
+      await this.uploadSourceMaps(compilation);
+    } catch (err) {
+      if (!this.ignoreErrors) {
+        compilation.errors.push(...handleError(err));
+      } else if (!this.silent) {
+        compilation.warnings.push(...handleError(err));
       }
-      cb();
-    });
+    }
   }
 
   apply(compiler) {
-    if (compiler.hooks) {
-      compiler.hooks.afterEmit.tapAsync(
-        'after-emit',
-        this.afterEmit.bind(this)
-      );
-    } else {
-      compiler.plugin('after-emit', this.afterEmit.bind(this));
-    }
+    compiler.hooks.afterEmit.tapPromise(
+      'after-emit',
+      this.afterEmit.bind(this)
+    );
   }
 
   getAssets(compilation) {
@@ -98,32 +93,9 @@ class RollbarSourceMapPlugin {
     return this.publicPath(sourceFile);
   }
 
-  uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
-    const req = request.post(this.rollbarEndpoint, (err, res, body) => {
-      if (!err && res.statusCode === 200) {
-        if (!this.silent) {
-          // eslint-disable-next-line no-console
-          console.info(`Uploaded ${sourceMap} to Rollbar`);
-        }
-        return cb();
-      }
+  async uploadSourceMap(compilation, { sourceFile, sourceMap }) {
+    const form = new FormData();
 
-      const errMessage = `failed to upload ${sourceMap} to Rollbar`;
-      if (err) {
-        return cb(new VError(err, errMessage));
-      }
-
-      try {
-        const { message } = JSON.parse(body);
-        return cb(
-          new Error(message ? `${errMessage}: ${message}` : errMessage)
-        );
-      } catch (_err) {
-        return cb(new Error(errMessage));
-      }
-    });
-
-    const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
     form.append('minified_url', this.getPublicPath(sourceFile));
@@ -131,22 +103,43 @@ class RollbarSourceMapPlugin {
       filename: sourceMap,
       contentType: 'application/json'
     });
+
+    try {
+      const res = await fetch(this.rollbarEndpoint, {
+        method: 'POST',
+        body: form
+      });
+      if (res.ok) {
+        if (!this.silent) {
+          // eslint-disable-next-line no-console
+          console.info(`Uploaded ${sourceMap} to Rollbar`);
+        }
+        return;
+      }
+
+      let message;
+      try {
+        const text = await res.text();
+        ({ message } = JSON.parse(text));
+      } catch (_parseErr) {
+        // Error parsing response
+      }
+      throw new Error(message);
+    } catch (err) {
+      throw new VError(err, `failed to upload ${sourceMap} to Rollbar`);
+    }
   }
 
-  uploadSourceMaps(compilation, cb) {
+  uploadSourceMaps(compilation) {
     const assets = this.getAssets(compilation);
-    const upload = this.uploadSourceMap.bind(this, compilation);
 
     /* istanbul ignore if */
     if (assets.length > 0) {
       process.stdout.write('\n');
     }
-    async.each(assets, upload, (err, results) => {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, results);
-    });
+    return Promise.all(
+      assets.map(asset => this.uploadSourceMap(compilation, asset))
+    );
   }
 }
 
