@@ -1,8 +1,6 @@
 import fetch from 'node-fetch';
 import FormData from 'form-data';
-import find from 'lodash.find';
 import isString from 'lodash.isstring';
-import reduce from 'lodash.reduce';
 import VError from 'verror';
 import { handleError, validateOptions } from './helpers';
 import { ROLLBAR_ENDPOINT } from './constants';
@@ -58,31 +56,27 @@ class RollbarSourceMapPlugin {
     const { includeChunks, encodeFilename } = this;
     const { chunks } = compilation.getStats().toJson();
 
-    return reduce(
-      chunks,
-      (result, chunk) => {
-        const chunkName = chunk.names[0];
-        if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
-          return result;
+    return chunks.reduce((result, chunk) => {
+      const chunkName = chunk.names[0];
+      if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
+        return result;
+      }
+
+      const sourceFile = chunk.files.find(file => /\.js$/.test(file));
+      const sourceMap = chunk.files.find(file => /\.js\.map$/.test(file));
+
+      if (!sourceFile || !sourceMap) {
+        return result;
+      }
+
+      return [
+        ...result,
+        {
+          sourceFile: encodeFilename ? encodeURI(sourceFile) : sourceFile,
+          sourceMap
         }
-
-        const sourceFile = find(chunk.files, file => /\.js$/.test(file));
-        const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
-
-        if (!sourceFile || !sourceMap) {
-          return result;
-        }
-
-        return [
-          ...result,
-          {
-            sourceFile: encodeFilename ? encodeURI(sourceFile) : sourceFile,
-            sourceMap
-          }
-        ];
-      },
-      []
-    );
+      ];
+    }, []);
   }
 
   getPublicPath(sourceFile) {
