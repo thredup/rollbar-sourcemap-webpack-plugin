@@ -96,16 +96,6 @@ describe('RollbarSourceMapPlugin', () => {
         expect.any(Function)
       );
     });
-
-    it('plugs into `after-emit" when "hooks" is undefined', () => {
-      delete compiler.hooks;
-      plugin.apply(compiler);
-      expect(compiler.plugin).toHaveBeenCalledTimes(1);
-      expect(compiler.plugin).toHaveBeenCalledWith(
-        'after-emit',
-        expect.any(Function)
-      );
-    });
   });
 
   describe('afterEmit', () => {

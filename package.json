@@ -69,6 +69,9 @@
     "request": "^2.88.0",
     "verror": "^1.6.1"
   },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
+  },
   "lint-staged": {
     "*.js": [
       "eslint --cache --fix"
