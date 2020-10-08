@@ -88,6 +88,7 @@ class RollbarSourceMapPlugin {
   }
 
   async uploadSourceMap(compilation, { sourceFile, sourceMap }) {
+    const errMessage = `failed to upload ${sourceMap} to Rollbar`;
     const form = new FormData();
 
     form.append('access_token', this.accessToken);
@@ -98,36 +99,42 @@ class RollbarSourceMapPlugin {
       contentType: 'application/json'
     });
 
+    let res;
     try {
-      const res = await fetch(this.rollbarEndpoint, {
+      res = await fetch(this.rollbarEndpoint, {
         method: 'POST',
         body: form
       });
-      if (res.ok) {
-        if (!this.silent) {
-          // eslint-disable-next-line no-console
-          console.info(`Uploaded ${sourceMap} to Rollbar`);
-        }
-        return;
+    } catch (err) {
+      // Network or operational errors
+      throw new VError(err, errMessage);
+    }
+
+    // 4xx or 5xx response
+    if (!res.ok) {
+      // Attempt to parse error details from response
+      let details;
+      try {
+        const body = await res.json();
+        details = body?.message ?? `${res.status} - ${res.statusText}`;
+      } catch (parseErr) {
+        details = `${res.status} - ${res.statusText}`;
       }
 
-      let message;
-      try {
-        const text = await res.text();
-        ({ message } = JSON.parse(text));
-      } catch (_parseErr) {
-        // Error parsing response
-      }
-      throw new Error(message);
-    } catch (err) {
-      throw new VError(err, `failed to upload ${sourceMap} to Rollbar`);
+      throw new Error(`${errMessage}: ${details}`);
+    }
+
+    // Success
+    if (!this.silent) {
+      // eslint-disable-next-line no-console
+      console.info(`Uploaded ${sourceMap} to Rollbar`);
     }
   }
 
   uploadSourceMaps(compilation) {
     const assets = this.getAssets(compilation);
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (assets.length > 0) {
       process.stdout.write('\n');
     }

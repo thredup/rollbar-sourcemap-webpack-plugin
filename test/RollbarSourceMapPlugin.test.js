@@ -476,13 +476,13 @@ describe('RollbarSourceMapPlugin', () => {
       );
     });
 
-    it('returns generic error message if response body does not have message', async () => {
+    it('returns response status text if response body does not have message', async () => {
       const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
         .post('/api/1/sourcemap')
         .reply(422, JSON.stringify({ err: 1 }));
 
       await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar'
+        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
       );
     });
 
@@ -492,7 +492,17 @@ describe('RollbarSourceMapPlugin', () => {
         .reply(422, null);
 
       await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar'
+        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
+      );
+    });
+
+    it('handles error response with body not in JSON format', async () => {
+      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+        .post('/api/1/sourcemap')
+        .reply(422, '<html></html>');
+
+      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
       );
     });
 
