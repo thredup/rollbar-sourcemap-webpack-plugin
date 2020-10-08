@@ -1,6 +1,5 @@
 .*rc
 .eslintignore
-.travis.yml
 test
 examples
 docs
