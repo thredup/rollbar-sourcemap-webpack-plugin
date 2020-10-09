@@ -8,13 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^9.5.3",
+    "next": "^9.5.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "dotenv": "^8.2.0",
-    "rollbar-sourcemap-webpack-plugin": "^2.11.5"
+    "rollbar-sourcemap-webpack-plugin": "^2.12.0"
   }
 }
