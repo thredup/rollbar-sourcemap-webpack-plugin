@@ -15,7 +15,7 @@
     "test:watch": "npm test -- -w",
     "changelog": "npm run changelog:generate && npm run changelog:add",
     "changelog:add": "git add CHANGELOG.md",
-    "changelog:generate": "github_changelog_generator --future-release $npm_package_version",
+    "changelog:generate": "github_changelog_generator --user thredup --project rollbar-sourcemap-webpack-plugin --future-release $npm_package_version",
     "preversion": "npm run -s lint && npm run -s test && npm run -s build",
     "version": "npm run changelog",
     "version:amend": "git commit --amend -m \"Release v${npm_package_version}\"",
