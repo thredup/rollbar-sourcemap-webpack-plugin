@@ -16,6 +16,10 @@ You may be doing this now in a shell script, triggered during your deploy proces
 that makes curl posts to the Rollbar API. This can be finicky and error prone to setup.
 RollbarSourceMapPlugin aims to remove that burden and automatically upload the sourcemaps when they are emitted by webpack.
 
+## Prerequisites
+
+**As of version 3.0.0, Webpack 4 is required. This plugin is no longer compatible with Webpack 3 and older.**
+
 ## Installation
 
 Install the plugin with npm:

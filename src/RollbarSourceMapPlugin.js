@@ -1,11 +1,9 @@
-import async from 'async';
-import request from 'request';
-import VError from 'verror';
-import find from 'lodash.find';
-import reduce from 'lodash.reduce';
+import fetch from 'node-fetch';
+import FormData from 'form-data';
 import isString from 'lodash.isstring';
+import VError from 'verror';
 import { handleError, validateOptions } from './helpers';
-import { ROLLBAR_ENDPOINT } from './constants';
+import { PLUGIN_NAME, ROLLBAR_ENDPOINT } from './constants';
 
 class RollbarSourceMapPlugin {
   constructor({
@@ -28,59 +26,54 @@ class RollbarSourceMapPlugin {
     this.encodeFilename = encodeFilename;
   }
 
-  afterEmit(compilation, cb) {
+  async afterEmit(compilation) {
     const errors = validateOptions(this);
 
     if (errors) {
       compilation.errors.push(...handleError(errors));
-      return cb();
+      return;
     }
 
-    this.uploadSourceMaps(compilation, err => {
-      if (err) {
-        if (!this.ignoreErrors) {
-          compilation.errors.push(...handleError(err));
-        } else if (!this.silent) {
-          compilation.warnings.push(...handleError(err));
-        }
+    try {
+      await this.uploadSourceMaps(compilation);
+    } catch (err) {
+      if (!this.ignoreErrors) {
+        compilation.errors.push(...handleError(err));
+      } else if (!this.silent) {
+        compilation.warnings.push(...handleError(err));
       }
-      cb();
-    });
+    }
   }
 
   apply(compiler) {
-    compiler.hooks.afterEmit.tapAsync('after-emit', this.afterEmit.bind(this));
+    compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, this.afterEmit.bind(this));
   }
 
   getAssets(compilation) {
     const { includeChunks, encodeFilename } = this;
     const { chunks } = compilation.getStats().toJson();
 
-    return reduce(
-      chunks,
-      (result, chunk) => {
-        const chunkName = chunk.names[0];
-        if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
-          return result;
+    return chunks.reduce((result, chunk) => {
+      const chunkName = chunk.names[0];
+      if (includeChunks.length && includeChunks.indexOf(chunkName) === -1) {
+        return result;
+      }
+
+      const sourceFile = chunk.files.find(file => /\.js$/.test(file));
+      const sourceMap = chunk.files.find(file => /\.js\.map$/.test(file));
+
+      if (!sourceFile || !sourceMap) {
+        return result;
+      }
+
+      return [
+        ...result,
+        {
+          sourceFile: encodeFilename ? encodeURI(sourceFile) : sourceFile,
+          sourceMap
         }
-
-        const sourceFile = find(chunk.files, file => /\.js$/.test(file));
-        const sourceMap = find(chunk.files, file => /\.js\.map$/.test(file));
-
-        if (!sourceFile || !sourceMap) {
-          return result;
-        }
-
-        return [
-          ...result,
-          {
-            sourceFile: encodeFilename ? encodeURI(sourceFile) : sourceFile,
-            sourceMap
-          }
-        ];
-      },
-      []
-    );
+      ];
+    }, []);
   }
 
   getPublicPath(sourceFile) {
@@ -91,32 +84,10 @@ class RollbarSourceMapPlugin {
     return this.publicPath(sourceFile);
   }
 
-  uploadSourceMap(compilation, { sourceFile, sourceMap }, cb) {
-    const req = request.post(this.rollbarEndpoint, (err, res, body) => {
-      if (!err && res.statusCode === 200) {
-        if (!this.silent) {
-          // eslint-disable-next-line no-console
-          console.info(`Uploaded ${sourceMap} to Rollbar`);
-        }
-        return cb();
-      }
+  async uploadSourceMap(compilation, { sourceFile, sourceMap }) {
+    const errMessage = `failed to upload ${sourceMap} to Rollbar`;
+    const form = new FormData();
 
-      const errMessage = `failed to upload ${sourceMap} to Rollbar`;
-      if (err) {
-        return cb(new VError(err, errMessage));
-      }
-
-      try {
-        const { message } = JSON.parse(body);
-        return cb(
-          new Error(message ? `${errMessage}: ${message}` : errMessage)
-        );
-      } catch (_err) {
-        return cb(new Error(errMessage));
-      }
-    });
-
-    const form = req.form();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
     form.append('minified_url', this.getPublicPath(sourceFile));
@@ -124,22 +95,49 @@ class RollbarSourceMapPlugin {
       filename: sourceMap,
       contentType: 'application/json'
     });
+
+    let res;
+    try {
+      res = await fetch(this.rollbarEndpoint, {
+        method: 'POST',
+        body: form
+      });
+    } catch (err) {
+      // Network or operational errors
+      throw new VError(err, errMessage);
+    }
+
+    // 4xx or 5xx response
+    if (!res.ok) {
+      // Attempt to parse error details from response
+      let details;
+      try {
+        const body = await res.json();
+        details = body?.message ?? `${res.status} - ${res.statusText}`;
+      } catch (parseErr) {
+        details = `${res.status} - ${res.statusText}`;
+      }
+
+      throw new Error(`${errMessage}: ${details}`);
+    }
+
+    // Success
+    if (!this.silent) {
+      // eslint-disable-next-line no-console
+      console.info(`Uploaded ${sourceMap} to Rollbar`);
+    }
   }
 
-  uploadSourceMaps(compilation, cb) {
+  uploadSourceMaps(compilation) {
     const assets = this.getAssets(compilation);
-    const upload = this.uploadSourceMap.bind(this, compilation);
 
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (assets.length > 0) {
       process.stdout.write('\n');
     }
-    async.each(assets, upload, (err, results) => {
-      if (err) {
-        return cb(err);
-      }
-      return cb(null, results);
-    });
+    return Promise.all(
+      assets.map(asset => this.uploadSourceMap(compilation, asset))
+    );
   }
 }
 
