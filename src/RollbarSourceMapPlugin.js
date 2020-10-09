@@ -3,7 +3,7 @@ import FormData from 'form-data';
 import isString from 'lodash.isstring';
 import VError from 'verror';
 import { handleError, validateOptions } from './helpers';
-import { ROLLBAR_ENDPOINT } from './constants';
+import { PLUGIN_NAME, ROLLBAR_ENDPOINT } from './constants';
 
 class RollbarSourceMapPlugin {
   constructor({
@@ -46,10 +46,7 @@ class RollbarSourceMapPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.afterEmit.tapPromise(
-      'after-emit',
-      this.afterEmit.bind(this)
-    );
+    compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, this.afterEmit.bind(this));
   }
 
   getAssets(compilation) {
