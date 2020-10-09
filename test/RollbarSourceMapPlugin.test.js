@@ -1,6 +1,6 @@
 import nock from 'nock';
 import RollbarSourceMapPlugin from '../src/RollbarSourceMapPlugin';
-import { ROLLBAR_ENDPOINT } from '../src/constants';
+import { PLUGIN_NAME, ROLLBAR_ENDPOINT } from '../src/constants';
 
 describe('RollbarSourceMapPlugin', () => {
   let compiler;
@@ -92,7 +92,7 @@ describe('RollbarSourceMapPlugin', () => {
     it('hooks into "after-emit"', () => {
       plugin.apply(compiler);
       expect(compiler.hooks.afterEmit.tapPromise).toHaveBeenCalledWith(
-        'after-emit',
+        PLUGIN_NAME,
         expect.any(Function)
       );
     });
