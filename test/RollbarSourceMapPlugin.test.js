@@ -14,6 +14,9 @@ describe('RollbarSourceMapPlugin', () => {
       hooks: {
         afterEmit: {
           tapPromise: jest.fn()
+        },
+        assetEmitted: {
+          tap: jest.fn()
         }
       },
       resolvers: {
@@ -89,9 +92,17 @@ describe('RollbarSourceMapPlugin', () => {
   });
 
   describe('apply', () => {
-    it('hooks into "after-emit"', () => {
+    it('hooks into "afterEmit"', () => {
       plugin.apply(compiler);
       expect(compiler.hooks.afterEmit.tapPromise).toHaveBeenCalledWith(
+        PLUGIN_NAME,
+        expect.any(Function)
+      );
+    });
+
+    it('hooks into "assetEmitted"', () => {
+      plugin.apply(compiler);
+      expect(compiler.hooks.assetEmitted.tap).toHaveBeenCalledWith(
         PLUGIN_NAME,
         expect.any(Function)
       );
@@ -194,6 +205,25 @@ describe('RollbarSourceMapPlugin', () => {
       await plugin.afterEmit(compilation);
       expect(uploadSourceMaps).not.toHaveBeenCalled();
       expect(compilation.errors.length).toBe(1);
+    });
+  });
+
+  describe('assetEmitted', () => {
+    const file = 'vendor.5190.js';
+    const content = '{"version":3,"sources":[]';
+
+    beforeEach(() => {
+      plugin.emittedAssets.clear();
+    });
+
+    afterAll(() => {
+      plugin.emittedAssets.clear();
+    });
+
+    it('sets and entry emittedAssets map', () => {
+      plugin.assetEmitted(file, content);
+      expect(plugin.emittedAssets.get(file)).toBe(content);
+      expect(plugin.emittedAssets.size).toBe(1);
     });
   });
 
@@ -386,17 +416,15 @@ describe('RollbarSourceMapPlugin', () => {
       expect(compilation.errors.length).toBe(0);
       expect(uploadSourceMap).toHaveBeenCalledTimes(2);
 
-      expect(uploadSourceMap).toHaveBeenNthCalledWith(
-        1,
-        { name: 'test', errors: [] },
-        { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' }
-      );
+      expect(uploadSourceMap).toHaveBeenNthCalledWith(1, {
+        sourceFile: 'vendor.5190.js',
+        sourceMap: 'vendor.5190.js.map'
+      });
 
-      expect(uploadSourceMap).toHaveBeenNthCalledWith(
-        2,
-        { name: 'test', errors: [] },
-        { sourceFile: 'app.81c1.js', sourceMap: 'app.81c1.js.map' }
-      );
+      expect(uploadSourceMap).toHaveBeenNthCalledWith(2, {
+        sourceFile: 'app.81c1.js',
+        sourceMap: 'app.81c1.js.map'
+      });
     });
 
     it('throws if uploadSourceMap errors', async () => {
@@ -410,22 +438,22 @@ describe('RollbarSourceMapPlugin', () => {
 
   describe('uploadSourceMap', () => {
     let info;
-    let compilation;
-    let chunk;
+    let asset;
 
     beforeEach(() => {
-      compilation = {
-        assets: {
-          'vendor.5190.js.map': { source: () => '{"version":3,"sources":[]' },
-          'app.81c1.js.map': { source: () => '{"version":3,"sources":[]' }
-        },
-        errors: []
-      };
+      plugin.emittedAssets.set(
+        'vendor.5190.js.map',
+        '{"version":3,"sources":[]'
+      );
 
-      chunk = {
+      asset = {
         sourceFile: 'vendor.5190.js',
         sourceMap: 'vendor.5190.js.map'
       };
+    });
+
+    afterEach(() => {
+      plugin.emittedAssets.clear();
     });
 
     it('logs to console if upload is success', async () => {
@@ -434,7 +462,7 @@ describe('RollbarSourceMapPlugin', () => {
         .post('/api/1/sourcemap')
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      await plugin.uploadSourceMap(compilation, chunk);
+      await plugin.uploadSourceMap(asset);
       expect(info).toHaveBeenCalledWith(
         'Uploaded vendor.5190.js.map to Rollbar'
       );
@@ -447,7 +475,7 @@ describe('RollbarSourceMapPlugin', () => {
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
       plugin.silent = true;
-      await plugin.uploadSourceMap(compilation, chunk);
+      await plugin.uploadSourceMap(asset);
       expect(info).not.toHaveBeenCalled();
     });
 
@@ -457,7 +485,7 @@ describe('RollbarSourceMapPlugin', () => {
         .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
       plugin.silent = false;
-      await plugin.uploadSourceMap(compilation, chunk);
+      await plugin.uploadSourceMap(asset);
       expect(info).toHaveBeenCalledWith(
         'Uploaded vendor.5190.js.map to Rollbar'
       );
@@ -471,7 +499,7 @@ describe('RollbarSourceMapPlugin', () => {
           JSON.stringify({ err: 1, message: 'missing source_map file upload' })
         );
 
-      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
         'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
       );
     });
@@ -481,7 +509,7 @@ describe('RollbarSourceMapPlugin', () => {
         .post('/api/1/sourcemap')
         .reply(422, JSON.stringify({ err: 1 }));
 
-      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
         'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
       );
     });
@@ -491,7 +519,7 @@ describe('RollbarSourceMapPlugin', () => {
         .post('/api/1/sourcemap')
         .reply(422, null);
 
-      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
         'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
       );
     });
@@ -501,7 +529,7 @@ describe('RollbarSourceMapPlugin', () => {
         .post('/api/1/sourcemap')
         .reply(422, '<html></html>');
 
-      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
         'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
       );
     });
@@ -511,7 +539,7 @@ describe('RollbarSourceMapPlugin', () => {
         .post('/api/1/sourcemap')
         .replyWithError('something awful happened');
 
-      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
         `failed to upload vendor.5190.js.map to Rollbar: request to ${ROLLBAR_ENDPOINT} failed, reason: something awful happened`
       );
     });

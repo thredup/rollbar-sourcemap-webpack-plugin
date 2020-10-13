@@ -24,6 +24,7 @@ class RollbarSourceMapPlugin {
     this.ignoreErrors = ignoreErrors;
     this.rollbarEndpoint = rollbarEndpoint;
     this.encodeFilename = encodeFilename;
+    this.emittedAssets = new Map();
   }
 
   async afterEmit(compilation) {
@@ -45,8 +46,13 @@ class RollbarSourceMapPlugin {
     }
   }
 
+  assetEmitted(file, content) {
+    this.emittedAssets.set(file, content);
+  }
+
   apply(compiler) {
     compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, this.afterEmit.bind(this));
+    compiler.hooks.assetEmitted.tap(PLUGIN_NAME, this.assetEmitted.bind(this));
   }
 
   getAssets(compilation) {
@@ -84,14 +90,16 @@ class RollbarSourceMapPlugin {
     return this.publicPath(sourceFile);
   }
 
-  async uploadSourceMap(compilation, { sourceFile, sourceMap }) {
+  async uploadSourceMap(asset) {
+    const { sourceFile, sourceMap } = asset;
+    const content = this.emittedAssets.get(sourceMap);
     const errMessage = `failed to upload ${sourceMap} to Rollbar`;
     const form = new FormData();
 
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
     form.append('minified_url', this.getPublicPath(sourceFile));
-    form.append('source_map', compilation.assets[sourceMap].source(), {
+    form.append('source_map', content, {
       filename: sourceMap,
       contentType: 'application/json'
     });
@@ -135,9 +143,7 @@ class RollbarSourceMapPlugin {
     if (assets.length > 0) {
       process.stdout.write('\n');
     }
-    return Promise.all(
-      assets.map(asset => this.uploadSourceMap(compilation, asset))
-    );
+    return Promise.all(assets.map(asset => this.uploadSourceMap(asset)));
   }
 }
 
