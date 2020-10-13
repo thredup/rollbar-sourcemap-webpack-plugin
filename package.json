@@ -12,14 +12,7 @@
     "build": "babel src -d dist",
     "build:watch": "watch 'npm run build' ./src",
     "test": "cross-env NODE_ENV=test jest --coverage",
-    "test:watch": "npm test -- -w",
-    "changelog": "npm run changelog:generate && npm run changelog:add",
-    "changelog:add": "git add CHANGELOG.md",
-    "changelog:generate": "github_changelog_generator --user thredup --project rollbar-sourcemap-webpack-plugin --future-release $npm_package_version",
-    "preversion": "npm run -s lint && npm run -s test && npm run -s build",
-    "version": "npm run changelog",
-    "version:amend": "git commit --amend -m \"Release v${npm_package_version}\"",
-    "postversion": "npm run version:amend && git push origin master --tags && npm publish"
+    "test:watch": "npm test -- -w"
   },
   "repository": {
     "type": "git",
@@ -46,6 +39,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
+    "@semantic-release/git": "^9.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.5.2",
     "codecov": "^3.8.0",
@@ -61,6 +55,7 @@
     "nock": "^13.0.2",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
+    "semantic-release": "^17.2.1",
     "watch": "^1.0.1"
   },
   "dependencies": {
@@ -88,5 +83,15 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ],
+    "preset": "angular"
   }
 }
