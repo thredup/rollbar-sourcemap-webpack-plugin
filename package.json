@@ -61,6 +61,7 @@
     "nock": "^13.0.2",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
+    "semantic-release": "^17.2.1",
     "watch": "^1.0.1"
   },
   "dependencies": {
