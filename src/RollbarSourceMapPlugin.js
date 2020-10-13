@@ -52,7 +52,14 @@ class RollbarSourceMapPlugin {
 
   apply(compiler) {
     compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, this.afterEmit.bind(this));
-    compiler.hooks.assetEmitted.tap(PLUGIN_NAME, this.assetEmitted.bind(this));
+
+    // Support older versions of webpack 4
+    if (compiler.hooks.assetEmitted) {
+      compiler.hooks.assetEmitted.tap(
+        PLUGIN_NAME,
+        this.assetEmitted.bind(this)
+      );
+    }
   }
 
   getAssets(compilation) {
@@ -90,9 +97,11 @@ class RollbarSourceMapPlugin {
     return this.publicPath(sourceFile);
   }
 
-  async uploadSourceMap(asset) {
+  async uploadSourceMap(compilation, asset) {
     const { sourceFile, sourceMap } = asset;
-    const content = this.emittedAssets.get(sourceMap);
+    const content =
+      this.emittedAssets.get(sourceMap) ||
+      compilation.assets[sourceMap].source();
     const errMessage = `failed to upload ${sourceMap} to Rollbar`;
     const form = new FormData();
 
@@ -143,7 +152,9 @@ class RollbarSourceMapPlugin {
     if (assets.length > 0) {
       process.stdout.write('\n');
     }
-    return Promise.all(assets.map(asset => this.uploadSourceMap(asset)));
+    return Promise.all(
+      assets.map(asset => this.uploadSourceMap(compilation, asset))
+    );
   }
 }
 

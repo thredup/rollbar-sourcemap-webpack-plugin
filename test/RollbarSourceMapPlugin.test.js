@@ -92,7 +92,7 @@ describe('RollbarSourceMapPlugin', () => {
   });
 
   describe('apply', () => {
-    it('hooks into "afterEmit"', () => {
+    it('taps into "afterEmit" hook', () => {
       plugin.apply(compiler);
       expect(compiler.hooks.afterEmit.tapPromise).toHaveBeenCalledWith(
         PLUGIN_NAME,
@@ -100,12 +100,17 @@ describe('RollbarSourceMapPlugin', () => {
       );
     });
 
-    it('hooks into "assetEmitted"', () => {
+    it('taps into "assetEmitted" hook when defined', () => {
       plugin.apply(compiler);
       expect(compiler.hooks.assetEmitted.tap).toHaveBeenCalledWith(
         PLUGIN_NAME,
         expect.any(Function)
       );
+    });
+
+    it('handles undefined "assetEmitted" hook', () => {
+      delete compiler.hooks.assetEmitted;
+      expect(() => plugin.apply(compiler)).not.toThrow();
     });
   });
 
@@ -416,15 +421,23 @@ describe('RollbarSourceMapPlugin', () => {
       expect(compilation.errors.length).toBe(0);
       expect(uploadSourceMap).toHaveBeenCalledTimes(2);
 
-      expect(uploadSourceMap).toHaveBeenNthCalledWith(1, {
-        sourceFile: 'vendor.5190.js',
-        sourceMap: 'vendor.5190.js.map'
-      });
+      expect(uploadSourceMap).toHaveBeenNthCalledWith(
+        1,
+        { name: 'test', errors: [] },
+        {
+          sourceFile: 'vendor.5190.js',
+          sourceMap: 'vendor.5190.js.map'
+        }
+      );
 
-      expect(uploadSourceMap).toHaveBeenNthCalledWith(2, {
-        sourceFile: 'app.81c1.js',
-        sourceMap: 'app.81c1.js.map'
-      });
+      expect(uploadSourceMap).toHaveBeenNthCalledWith(
+        2,
+        { name: 'test', errors: [] },
+        {
+          sourceFile: 'app.81c1.js',
+          sourceMap: 'app.81c1.js.map'
+        }
+      );
     });
 
     it('throws if uploadSourceMap errors', async () => {
@@ -439,12 +452,16 @@ describe('RollbarSourceMapPlugin', () => {
   describe('uploadSourceMap', () => {
     let info;
     let asset;
+    let compilation;
 
     beforeEach(() => {
-      plugin.emittedAssets.set(
-        'vendor.5190.js.map',
-        '{"version":3,"sources":[]'
-      );
+      compilation = {
+        assets: {
+          'vendor.5190.js.map': { source: () => '{"version":3,"sources":[]' },
+          'app.81c1.js.map': { source: () => '{"version":3,"sources":[]' }
+        },
+        errors: []
+      };
 
       asset = {
         sourceFile: 'vendor.5190.js',
@@ -452,96 +469,136 @@ describe('RollbarSourceMapPlugin', () => {
       };
     });
 
-    afterEach(() => {
-      plugin.emittedAssets.clear();
-    });
-
-    it('logs to console if upload is success', async () => {
-      info = jest.spyOn(console, 'info').mockImplementation();
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
-
-      await plugin.uploadSourceMap(asset);
-      expect(info).toHaveBeenCalledWith(
-        'Uploaded vendor.5190.js.map to Rollbar'
-      );
-    });
-
-    it('does not log upload to console if silent option is true', async () => {
-      info = jest.spyOn(console, 'info').mockImplementation();
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
-
-      plugin.silent = true;
-      await plugin.uploadSourceMap(asset);
-      expect(info).not.toHaveBeenCalled();
-    });
-
-    it('logs upload to console if silent option is false', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
-
-      plugin.silent = false;
-      await plugin.uploadSourceMap(asset);
-      expect(info).toHaveBeenCalledWith(
-        'Uploaded vendor.5190.js.map to Rollbar'
-      );
-    });
-
-    it('returns error message if failure response includes message', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(
-          422,
-          JSON.stringify({ err: 1, message: 'missing source_map file upload' })
+    describe('webpack 4 prior to futureEmitAssets', () => {
+      beforeEach(() => {
+        plugin.emittedAssets.clear();
+        compilation.assets[asset.sourceMap].source = jest.fn(
+          () => '{"version":3,"sources":[]'
         );
+      });
 
-      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
-      );
+      it('should ', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
+
+        await plugin.uploadSourceMap(compilation, asset);
+        expect(compilation.assets[asset.sourceMap].source).toHaveBeenCalled();
+      });
     });
 
-    it('returns response status text if response body does not have message', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(422, JSON.stringify({ err: 1 }));
+    describe('webpack 4 post futureEmitAssets', () => {
+      beforeEach(() => {
+        plugin.emittedAssets.set(
+          'vendor.5190.js.map',
+          '{"version":3,"sources":[]'
+        );
+      });
 
-      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
-      );
-    });
+      afterEach(() => {
+        plugin.emittedAssets.clear();
+      });
 
-    it('handles error response with empty body', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(422, null);
+      it('logs to console if upload is success', async () => {
+        info = jest.spyOn(console, 'info').mockImplementation();
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
-      );
-    });
+        await plugin.uploadSourceMap(compilation, asset);
+        expect(info).toHaveBeenCalledWith(
+          'Uploaded vendor.5190.js.map to Rollbar'
+        );
+      });
 
-    it('handles error response with body not in JSON format', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .reply(422, '<html></html>');
+      it('does not log upload to console if silent option is true', async () => {
+        info = jest.spyOn(console, 'info').mockImplementation();
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
-        'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
-      );
-    });
+        plugin.silent = true;
+        await plugin.uploadSourceMap(compilation, asset);
+        expect(info).not.toHaveBeenCalled();
+      });
 
-    it('handles HTTP request error', async () => {
-      const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
-        .post('/api/1/sourcemap')
-        .replyWithError('something awful happened');
+      it('logs upload to console if silent option is false', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(200, JSON.stringify({ err: 0, result: 'master-latest-sha' }));
 
-      await expect(plugin.uploadSourceMap(asset)).rejects.toThrow(
-        `failed to upload vendor.5190.js.map to Rollbar: request to ${ROLLBAR_ENDPOINT} failed, reason: something awful happened`
-      );
+        plugin.silent = false;
+        await plugin.uploadSourceMap(compilation, asset);
+        expect(info).toHaveBeenCalledWith(
+          'Uploaded vendor.5190.js.map to Rollbar'
+        );
+      });
+
+      it('returns error message if failure response includes message', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(
+            422,
+            JSON.stringify({
+              err: 1,
+              message: 'missing source_map file upload'
+            })
+          );
+
+        await expect(
+          plugin.uploadSourceMap(compilation, asset)
+        ).rejects.toThrow(
+          'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
+        );
+      });
+
+      it('returns response status text if response body does not have message', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(422, JSON.stringify({ err: 1 }));
+
+        await expect(
+          plugin.uploadSourceMap(compilation, asset)
+        ).rejects.toThrow(
+          'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
+        );
+      });
+
+      it('handles error response with empty body', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(422, null);
+
+        await expect(
+          plugin.uploadSourceMap(compilation, asset)
+        ).rejects.toThrow(
+          'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
+        );
+      });
+
+      it('handles error response with body not in JSON format', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .reply(422, '<html></html>');
+
+        await expect(
+          plugin.uploadSourceMap(compilation, asset)
+        ).rejects.toThrow(
+          'failed to upload vendor.5190.js.map to Rollbar: 422 - Unprocessable Entity'
+        );
+      });
+
+      it('handles HTTP request error', async () => {
+        const scope = nock('https://api.rollbar.com:443') // eslint-disable-line no-unused-vars
+          .post('/api/1/sourcemap')
+          .replyWithError('something awful happened');
+
+        await expect(
+          plugin.uploadSourceMap(compilation, asset)
+        ).rejects.toThrow(
+          `failed to upload vendor.5190.js.map to Rollbar: request to ${ROLLBAR_ENDPOINT} failed, reason: something awful happened`
+        );
+      });
     });
   });
 });
