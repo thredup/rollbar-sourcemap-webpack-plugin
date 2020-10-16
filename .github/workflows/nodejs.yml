@@ -27,9 +27,6 @@ jobs:
     - name: Test
       run: npm test
 
-    - name: Build
-      run: npm run build --if-present
-
     - name: Upload coverage to Codecov
       if: startsWith(matrix.node-version, '12.')
       uses: codecov/codecov-action@v1
@@ -38,6 +35,12 @@ jobs:
         fail_ci_if_error: true
       env:
         CI: true
+
+    - name: Build
+      run: pwd && ls -la coverage
+
+    - name: Build
+      run: npm run build --if-present
 
     - name: Upload dist
       if: startsWith(matrix.node-version, '12.')
