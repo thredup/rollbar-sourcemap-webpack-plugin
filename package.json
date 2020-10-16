@@ -46,6 +46,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.11.5",
+    "@semantic-release/git": "^9.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.5.2",
     "codecov": "^3.8.0",
@@ -89,5 +90,15 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ],
+    "preset": "angular"
   }
 }
