@@ -37,9 +37,6 @@ jobs:
         CI: true
 
     - name: Build
-      run: pwd && ls -la coverage
-
-    - name: Build
       run: npm run build --if-present
 
     - name: Upload dist
