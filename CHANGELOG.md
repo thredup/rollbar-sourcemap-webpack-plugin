@@ -1,8 +1,20 @@
 # Changelog
 
-## [3.0.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/3.0.0) (2020-10-09)
+## [3.0.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/3.0.1) (2020-10-23)
 
-[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.12.0...3.0.0)
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v1.1.0-beta.1...3.0.1)
+
+**Merged pull requests:**
+
+- Upgrade dev dependencies [\#285](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/285) ([brandondoran](https://github.com/brandondoran))
+
+## [v1.1.0-beta.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.1.0-beta.1) (2020-10-16)
+
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v3.0.0...v1.1.0-beta.1)
+
+## [v3.0.0](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v3.0.0) (2020-10-09)
+
+[Full Changelog](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/compare/v2.12.0...v3.0.0)
 
 **Implemented enhancements:**
 
@@ -37,7 +49,6 @@
 - chore\(deps-dev\): Bump husky from 4.2.5 to 4.3.0 [\#239](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/239) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Update dependencies for React example [\#238](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/238) ([brandondoran](https://github.com/brandondoran))
 - Update dev depencencies [\#237](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/237) ([brandondoran](https://github.com/brandondoran))
-- chore\(deps-dev\): Bump eslint from 7.5.0 to 7.6.0 [\#215](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/215) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v2.11.5](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.11.5) (2020-08-28)
 
@@ -46,6 +57,7 @@
 **Merged pull requests:**
 
 - Update dependencies [\#228](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/228) ([brandondoran](https://github.com/brandondoran))
+- chore\(deps-dev\): Bump eslint from 7.5.0 to 7.6.0 [\#215](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/215) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v2.11.4](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v2.11.4) (2020-07-31)
 
@@ -375,7 +387,6 @@
 
 - Uprade devDependencies [\#19](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/19) ([brandondoran](https://github.com/brandondoran))
 - Add test case for silent flag [\#18](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/18) ([brandondoran](https://github.com/brandondoran))
-- Add an example for React [\#13](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/pull/13) ([brandondoran](https://github.com/brandondoran))
 
 ## [v1.2.1](https://github.com/thredup/rollbar-sourcemap-webpack-plugin/tree/v1.2.1) (2016-07-27)
 
