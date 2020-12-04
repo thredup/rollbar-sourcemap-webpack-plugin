@@ -1,3 +1,4 @@
+import { promises as fs } from 'fs';
 import nock from 'nock';
 import RollbarSourceMapPlugin from '../src/RollbarSourceMapPlugin';
 import { PLUGIN_NAME, ROLLBAR_ENDPOINT } from '../src/constants';
@@ -409,9 +410,11 @@ describe('RollbarSourceMapPlugin', () => {
   });
 
   describe('uploadSourceMap', () => {
+    const outputPath = '/some/fake/path/';
     let info;
     let compilation;
     let chunk;
+    let spyReadFile;
 
     beforeEach(() => {
       compilation = {
@@ -419,13 +422,21 @@ describe('RollbarSourceMapPlugin', () => {
           'vendor.5190.js.map': { source: () => '{"version":3,"sources":[]' },
           'app.81c1.js.map': { source: () => '{"version":3,"sources":[]' }
         },
-        errors: []
+        compiler: {
+          outputPath
+        },
+        errors: [],
+        getPath: () => outputPath
       };
 
       chunk = {
         sourceFile: 'vendor.5190.js',
         sourceMap: 'vendor.5190.js.map'
       };
+
+      spyReadFile = jest
+        .spyOn(fs, 'readFile')
+        .mockImplementation(() => Promise.resolve('data'));
     });
 
     it('logs to console if upload is success', async () => {
@@ -473,6 +484,14 @@ describe('RollbarSourceMapPlugin', () => {
 
       await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
         'failed to upload vendor.5190.js.map to Rollbar: missing source_map file upload'
+      );
+    });
+
+    it('returns error message if unable to read sourceMap file', async () => {
+      const err = new Error('ENOENT: no such file or directory');
+      spyReadFile.mockImplementationOnce(() => Promise.reject(err));
+      await expect(plugin.uploadSourceMap(compilation, chunk)).rejects.toThrow(
+        `failed to upload vendor.5190.js.map to Rollbar: ${err.message}`
       );
     });
 

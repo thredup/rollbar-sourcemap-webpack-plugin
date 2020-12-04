@@ -1,3 +1,5 @@
+import { promises as fs } from 'fs';
+import { join } from 'path';
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import isString from 'lodash.isstring';
@@ -49,6 +51,19 @@ class RollbarSourceMapPlugin {
     compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, this.afterEmit.bind(this));
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  getAssetPath(compilation, name) {
+    return join(
+      compilation.getPath(compilation.compiler.outputPath),
+      name.split('?')[0]
+    );
+  }
+
+  getSource(compilation, name) {
+    const path = this.getAssetPath(compilation, name);
+    return fs.readFile(path, { encoding: 'utf-8' });
+  }
+
   getAssets(compilation) {
     const { includeChunks, encodeFilename } = this;
     const { chunks } = compilation.getStats().toJson();
@@ -86,12 +101,19 @@ class RollbarSourceMapPlugin {
 
   async uploadSourceMap(compilation, { sourceFile, sourceMap }) {
     const errMessage = `failed to upload ${sourceMap} to Rollbar`;
-    const form = new FormData();
+    let sourceMapSource;
 
+    try {
+      sourceMapSource = await this.getSource(compilation, sourceMap);
+    } catch (err) {
+      throw new VError(err, errMessage);
+    }
+
+    const form = new FormData();
     form.append('access_token', this.accessToken);
     form.append('version', this.version);
     form.append('minified_url', this.getPublicPath(sourceFile));
-    form.append('source_map', compilation.assets[sourceMap].source(), {
+    form.append('source_map', sourceMapSource, {
       filename: sourceMap,
       contentType: 'application/json'
     });
