@@ -71,7 +71,7 @@
     "verror": "^1.6.1"
   },
   "peerDependencies": {
-    "webpack": "^4.0.0"
+    "webpack": ">= 4"
   },
   "lint-staged": {
     "*.js": [
