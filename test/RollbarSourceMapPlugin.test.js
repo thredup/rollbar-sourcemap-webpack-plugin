@@ -361,6 +361,22 @@ describe('RollbarSourceMapPlugin', () => {
         }
       ]);
     });
+
+    it('works with webpack 5', () => {
+      chunks = [
+        {
+          id: 0,
+          names: ['vendor'],
+          files: ['vendor.5190.js'],
+          auxiliaryFiles: ['vendor.5190.js.map']
+        }
+      ];
+
+      const assets = plugin.getAssets(compilation);
+      expect(assets).toEqual([
+        { sourceFile: 'vendor.5190.js', sourceMap: 'vendor.5190.js.map' }
+      ]);
+    });
   });
 
   describe('uploadSourceMaps', () => {
