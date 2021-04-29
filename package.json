@@ -62,7 +62,7 @@
     "watch": "^1.0.1"
   },
   "dependencies": {
-    "form-data": "^3.0.0",
+    "form-data": "^4.0.0",
     "lodash.isfunction": "^3.0.9",
     "lodash.isstring": "^4.0.1",
     "node-fetch": "^2.6.1",
