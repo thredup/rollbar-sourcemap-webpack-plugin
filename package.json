@@ -5,7 +5,6 @@
   "main": "./dist/RollbarSourceMapPlugin.js",
   "scripts": {
     "clean": "rimraf dist && rimraf coverage",
-    "coverage": "codecov",
     "lint": "eslint --cache ./src ./test --ext .js",
     "lint:staged": "lint-staged",
     "prebuild": "npm run -s clean",
@@ -48,7 +47,6 @@
     "@babel/preset-env": "^7.12.11",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "codecov": "^3.8.1",
     "cross-env": "^7.0.2",
     "eslint": "^7.17.0",
     "eslint-config-airbnb-base": "^14.2.1",
