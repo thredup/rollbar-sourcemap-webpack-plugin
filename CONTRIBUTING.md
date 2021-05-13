@@ -23,11 +23,6 @@ npm install
 npm test
 ```
 
-```bash
-# run tests in watch mode for faster feedback
-npm run test:watch
-```
-
 ### Style & Linting
 
 The codebase adheres to the [Airbnb Styleguide](https://github.com/airbnb/javascript)
@@ -60,8 +55,7 @@ The coverage report will be displayed in the terminal after tests run.
 
 Before you submit a pull request from your forked repo, check that it meets these guidelines:
 
-1. If the pull request fixes a bug, it should include tests that fail without the changes, and pass
-with them.
+1. If the pull request fixes a bug, it should include tests that fail without the changes, and pass with them.
 1. Please update README.md accordingly, if relevant, as part of the same PR.
 1. Please rebase and resolve all conflicts before submitting.
 
@@ -87,3 +81,4 @@ npm version minor
 
 # publish a incompatible API change
 npm version major
+```
