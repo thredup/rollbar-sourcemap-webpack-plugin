@@ -9,9 +9,7 @@
     "lint:staged": "lint-staged",
     "prebuild": "npm run -s clean",
     "build": "babel src -d dist",
-    "build:watch": "watch 'npm run build' ./src",
     "test": "cross-env NODE_ENV=test jest --coverage",
-    "test:watch": "npm test -- -w",
     "changelog": "npm run changelog:generate && npm run changelog:add",
     "changelog:add": "git add CHANGELOG.md",
     "changelog:generate": "github_changelog_generator --user thredup --project rollbar-sourcemap-webpack-plugin --future-release $npm_package_version",
@@ -58,8 +56,7 @@
     "lint-staged": "^11.0.0",
     "nock": "^13.0.5",
     "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
-    "watch": "^1.0.1"
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "form-data": "^4.0.0",
