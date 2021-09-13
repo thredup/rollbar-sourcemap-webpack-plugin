@@ -1,4 +1,3 @@
-import { STATUS_CODES } from 'http';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
@@ -140,12 +139,11 @@ class RollbarSourceMapPlugin {
     if (!res.ok) {
       // Attempt to parse error details from response
       let details;
-      const statusText = res.statusText || STATUS_CODES[res.status];
       try {
         const body = await res.json();
-        details = body?.message ?? `${res.status} - ${statusText}`;
+        details = body?.message ?? `${res.status} - ${res.statusText}`;
       } catch (parseErr) {
-        details = `${res.status} - ${statusText}`;
+        details = `${res.status} - ${res.statusText}`;
       }
 
       throw new Error(`${errMessage}: ${details}`);
