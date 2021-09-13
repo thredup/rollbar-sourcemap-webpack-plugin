@@ -63,7 +63,7 @@
     "form-data": "^4.0.0",
     "lodash.isfunction": "^3.0.9",
     "lodash.isstring": "^4.0.1",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^2.6.1",
     "verror": "^1.6.1"
   },
   "peerDependencies": {
