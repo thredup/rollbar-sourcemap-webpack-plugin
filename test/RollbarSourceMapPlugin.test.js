@@ -551,4 +551,82 @@ describe('RollbarSourceMapPlugin', () => {
       );
     });
   });
+
+  describe('uploadSourceMapWithRetry', () => {
+    let compilation;
+    let chunk;
+    let info;
+    const err = new Error('502 - Bad Gateway');
+    let uploadSourceMapSpy;
+
+    beforeEach(() => {
+      info = jest.spyOn(console, 'info').mockImplementation();
+      compilation = {};
+
+      chunk = {
+        sourceFile: 'vendor.5190.js',
+        sourceMap: 'vendor.5190.js.map'
+      };
+    });
+
+    it('calls uploadSourceMap once if no errors are thrown', async () => {
+      uploadSourceMapSpy = jest
+        .spyOn(plugin, 'uploadSourceMap')
+        .mockImplementation();
+
+      await plugin.uploadSourceMapWithRetry(compilation, chunk);
+      expect(uploadSourceMapSpy).toHaveBeenCalledTimes(1);
+      expect(uploadSourceMapSpy).toHaveBeenCalledWith(compilation, chunk);
+      expect(info).toHaveBeenCalledWith(
+        'Uploading vendor.5190.js.map to Rollbar'
+      );
+    });
+
+    it('throws when uploadSourceMap fails, if maxRetries is not set', async () => {
+      uploadSourceMapSpy = jest
+        .spyOn(plugin, 'uploadSourceMap')
+        .mockImplementationOnce(() => Promise.reject(err));
+
+      await expect(
+        plugin.uploadSourceMapWithRetry(compilation, chunk)
+      ).rejects.toThrow(err);
+      expect(uploadSourceMapSpy).toHaveBeenCalledWith(compilation, chunk);
+    });
+
+    it('retries when uploadSourceMap fails', async () => {
+      plugin.maxRetries = 1;
+      uploadSourceMapSpy = jest
+        .spyOn(plugin, 'uploadSourceMap')
+        .mockImplementation(() => Promise.reject(err));
+
+      await expect(
+        plugin.uploadSourceMapWithRetry(compilation, chunk)
+      ).rejects.toThrow(err);
+      expect(uploadSourceMapSpy).toHaveBeenCalledTimes(2);
+      expect(uploadSourceMapSpy).toHaveBeenNthCalledWith(2, compilation, chunk);
+      expect(info).toHaveBeenCalledWith(
+        'Uploading vendor.5190.js.map to Rollbar failed with error: 502 - Bad Gateway'
+      );
+    });
+
+    it('succeeds with exponential backoff when uploadSourceMap succeeds on a subsequent try', async () => {
+      plugin.maxRetries = 5;
+      uploadSourceMapSpy = jest
+        .spyOn(plugin, 'uploadSourceMap')
+        .mockImplementationOnce(() => Promise.reject(err))
+        .mockImplementationOnce(() => Promise.reject(err))
+        .mockImplementationOnce(() => Promise.reject(err))
+        .mockImplementationOnce(() => Promise.reject(err))
+        .mockImplementationOnce(() => Promise.reject(err))
+        .mockImplementationOnce(() => undefined);
+
+      await plugin.uploadSourceMapWithRetry(compilation, chunk);
+      expect(uploadSourceMapSpy).toHaveBeenCalledTimes(6);
+      expect(info).toHaveBeenCalledWith('Retrying in 10ms...');
+      expect(info).toHaveBeenCalledWith('Retrying in 20ms...');
+      expect(info).toHaveBeenCalledWith('Retrying in 40ms...');
+      expect(info).toHaveBeenCalledWith('Retrying in 80ms...');
+      expect(info).toHaveBeenCalledWith('Retrying in 160ms...');
+    });
+  });
 });

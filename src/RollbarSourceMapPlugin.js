@@ -7,6 +7,10 @@ import VError from 'verror';
 import { handleError, validateOptions } from './helpers';
 import { PLUGIN_NAME, ROLLBAR_ENDPOINT } from './constants';
 
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class RollbarSourceMapPlugin {
   constructor({
     accessToken,
@@ -16,7 +20,8 @@ class RollbarSourceMapPlugin {
     silent = false,
     ignoreErrors = false,
     rollbarEndpoint = ROLLBAR_ENDPOINT,
-    encodeFilename = false
+    encodeFilename = false,
+    maxRetries = 0
   }) {
     this.accessToken = accessToken;
     this.version = version;
@@ -26,6 +31,7 @@ class RollbarSourceMapPlugin {
     this.ignoreErrors = ignoreErrors;
     this.rollbarEndpoint = rollbarEndpoint;
     this.encodeFilename = encodeFilename;
+    this.maxRetries = maxRetries;
   }
 
   async afterEmit(compilation) {
@@ -164,8 +170,34 @@ class RollbarSourceMapPlugin {
       process.stdout.write('\n');
     }
     return Promise.all(
-      assets.map(asset => this.uploadSourceMap(compilation, asset))
+      assets.map(asset => this.uploadSourceMapWithRetry(compilation, asset))
     );
+  }
+
+  async uploadSourceMapWithRetry(compilation, asset, depth = 0) {
+    try {
+      // eslint-disable-next-line no-console
+      console.info(`Uploading ${asset.sourceMap} to Rollbar`);
+      return await this.uploadSourceMap(compilation, asset);
+    } catch (error) {
+      if (depth >= this.maxRetries) {
+        throw error;
+      }
+      // Delay with exponential backoff
+      const delay = 2 ** depth * 10;
+      if (!this.silent) {
+        // eslint-disable-next-line no-console
+        console.info(
+          `Uploading ${asset.sourceMap} to Rollbar failed with error: ${
+            error.message || error
+          }`
+        );
+        // eslint-disable-next-line no-console
+        console.info(`Retrying in ${delay}ms...`);
+      }
+      await wait(delay);
+      return this.uploadSourceMapWithRetry(compilation, asset, depth + 1);
+    }
   }
 }
 
