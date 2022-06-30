@@ -176,8 +176,10 @@ class RollbarSourceMapPlugin {
 
   async uploadSourceMapWithRetry(compilation, asset, depth = 0) {
     try {
-      // eslint-disable-next-line no-console
-      console.info(`Uploading ${asset.sourceMap} to Rollbar`);
+      if (!this.silent) {
+        // eslint-disable-next-line no-console
+        console.info(`Uploading ${asset.sourceMap} to Rollbar`);
+      }
       return await this.uploadSourceMap(compilation, asset);
     } catch (error) {
       if (depth >= this.maxRetries) {
