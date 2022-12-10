@@ -41,7 +41,7 @@
     "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
     "dotenv": "^9.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "html-webpack-plugin": "^4.5.1",
     "rimraf": "^3.0.2",
     "webpack": "^4.45.0",
