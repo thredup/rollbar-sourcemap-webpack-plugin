@@ -97,6 +97,10 @@ A string defining the Rollbar API endpoint to upload the sourcemaps to. It can b
 
 Set to true to encode the filename. NextJS will reference the encode the URL when referencing the minified script which must match exactly with the minified file URL uploaded to Rollbar.
 
+### `maxRetries: string` **(default: `0`)**
+
+The maximum number of times to retry if uploading fails. Retries are implemented with exponential backoff to avoid inundating a potentially overloaded server.
+
 ## Webpack Sourcemap Configuration
 
 The [`output.devtool`](https://webpack.js.org/configuration/devtool/) field in webpack configuration controls how sourcemaps are generated.
